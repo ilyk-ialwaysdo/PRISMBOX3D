@@ -46,7 +46,7 @@ function App() {
           <Route path="/payment" element={<Payment isAdmin={isAdmin} />} />
         </Routes>
 
-        <Analytics />
+        <Analytics /> {/* <-- ADD THIS LINE HERE */}
       </div>
     </Router>
   );
