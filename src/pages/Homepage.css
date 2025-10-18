@@ -10,6 +10,41 @@
   --secondary: #34C759;
   --accent: #FF9500;
   
+  /* ===== FORCE WIREFRAME CUBE LOGO (OVERRIDE ALL OTHER STYLES) ===== */
+.logo-icon .cube-3d {
+  width: 20px !important;
+  height: 20px !important;
+  position: relative !important;
+  transform-style: preserve-3d !important;
+  animation: cubeWireframeRotate 8s infinite ease-in-out !important;
+}
+
+.logo-icon .cube-face {
+  position: absolute !important;
+  width: 20px !important;
+  height: 20px !important;
+  background: transparent !important;
+  border: 1.5px solid #007AFF !important;
+  border-radius: 2px !important;
+  opacity: 0.8 !important;
+  box-shadow: none !important;
+}
+
+/* Wireframe cube faces with !important */
+.logo-icon .cube-face.front { transform: rotateY(0deg) translateZ(10px) !important; }
+.logo-icon .cube-face.back { transform: rotateY(180deg) translateZ(10px) !important; }
+.logo-icon .cube-face.right { transform: rotateY(90deg) translateZ(10px) !important; }
+.logo-icon .cube-face.left { transform: rotateY(-90deg) translateZ(10px) !important; }
+.logo-icon .cube-face.top { transform: rotateX(90deg) translateZ(10px) !important; }
+.logo-icon .cube-face.bottom { transform: rotateX(-90deg) translateZ(10px) !important; }
+
+@keyframes cubeWireframeRotate {
+  0%, 100% { transform: rotateX(15deg) rotateY(0deg) !important; }
+  25% { transform: rotateX(15deg) rotateY(90deg) !important; }
+  50% { transform: rotateX(15deg) rotateY(180deg) !important; }
+  75% { transform: rotateX(15deg) rotateY(270deg) !important; }
+}
+
   /* Neutral Palette */
   --gray-50: #FAFAFA;
   --gray-100: #F5F5F7;
