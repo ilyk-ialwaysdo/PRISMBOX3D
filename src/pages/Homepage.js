@@ -8,6 +8,7 @@ const Homepage = () => {
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [openFAQ, setOpenFAQ] = useState(null);
   const { scrollYProgress } = useScroll();
   
   const yHero = useTransform(scrollYProgress, [0, 0.3], ['0%', '10%']);
@@ -28,6 +29,10 @@ const Homepage = () => {
       });
     }
   }, []);
+
+  const toggleFAQ = useCallback((index) => {
+    setOpenFAQ(openFAQ === index ? null : index);
+  }, [openFAQ]);
 
   useEffect(() => {
     setIsLoaded(true);
@@ -104,8 +109,9 @@ const Homepage = () => {
             {[
               { label: 'How It Works', target: 'process' },
               { label: 'Services', target: 'services' },
+              { label: 'Materials', target: 'materials' },
               { label: 'Pricing', target: 'pricing' },
-              { label: 'Guarantee', target: 'guarantee' },
+              { label: 'FAQ', target: 'faq' },
               { label: 'Contact', target: 'contact' }
             ].map((item, index) => (
               <motion.button
@@ -310,27 +316,17 @@ const Homepage = () => {
         <div className="services-grid">
           {[
             {
-              title: 'Rapid Prototyping',
-              description: 'Quick iterations for product development and testing',
+              title: 'Personal Projects',
+              description: 'Upload your STL files for personal items, home organizers, replacement parts, and hobby projects.',
               icon: (
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <polygon points="13,2 3,14 12,14 11,22 21,10 12,10 13,2" stroke="currentColor" strokeWidth="2" fill="none"/>
-                </svg>
-              )
-            },
-            {
-              title: 'Custom Parts',
-              description: 'Replacement parts, tools, and custom mechanical components',
-              icon: (
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2"/>
-                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="currentColor" strokeWidth="2"/>
+                  <path d="M12 2L2 7V10C2 16 6 20.5 12 22C18 20.5 22 16 22 10V7L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               )
             },
             {
               title: 'Student Projects',
-              description: 'Educational models and assignments with special discounts',
+              description: 'Educational models, school assignments, and thesis projects. We offer special pricing for students.',
               icon: (
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                   <path d="M22 10V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v4" stroke="currentColor" strokeWidth="2"/>
@@ -341,10 +337,44 @@ const Homepage = () => {
             },
             {
               title: 'Creative Projects',
-              description: 'Art pieces, miniatures, decorative items and complex geometries',
+              description: 'Art pieces, miniatures, decorative items, figurines, and unique creative designs from your files.',
               icon: (
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="2" fill="none"/>
+                </svg>
+              )
+            },
+            {
+              title: 'Business Projects',
+              description: 'Prototypes, product samples, marketing materials, and professional items for businesses and entrepreneurs.',
+              icon: (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2" stroke="currentColor" strokeWidth="2"/>
+                  <line x1="8" y1="21" x2="16" y2="21" stroke="currentColor" strokeWidth="2"/>
+                  <line x1="12" y1="17" x2="12" y2="21" stroke="currentColor" strokeWidth="2"/>
+                </svg>
+              )
+            },
+            {
+              title: 'Replacement Parts',
+              description: 'Print replacement parts for appliances, tools, toys, and household items from your STL files.',
+              icon: (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="currentColor" strokeWidth="2"/>
+                </svg>
+              )
+            },
+            {
+              title: 'Gaming & Hobbies',
+              description: 'Gaming accessories, board game pieces, model parts, drone components, and hobby-related items.',
+              icon: (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <rect x="2" y="3" width="20" height="11" rx="2" ry="2" stroke="currentColor" strokeWidth="2"/>
+                  <circle cx="8" cy="9" r="1" stroke="currentColor" strokeWidth="2"/>
+                  <path d="M16 8L18 10L16 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <line x1="12" y1="17" x2="12" y2="22" stroke="currentColor" strokeWidth="2"/>
+                  <line x1="8" y1="22" x2="16" y2="22" stroke="currentColor" strokeWidth="2"/>
                 </svg>
               )
             }
@@ -364,6 +394,146 @@ const Homepage = () => {
             </motion.div>
           ))}
         </div>
+      </RaycastSection>
+
+      <RaycastSection id="materials" className="materials-section">
+        <motion.h2 className="section-title">
+          Materials & Colors
+        </motion.h2>
+        
+        <div className="materials-grid">
+          {[
+            {
+              name: 'PLA',
+              description: 'Easy to print, biodegradable, perfect for beginners and decorative items.',
+              properties: ['Eco-friendly', 'Low odor', 'Good surface finish', 'Not heat resistant'],
+              colors: ['White', 'Black', 'Red', 'Blue', 'Green', 'Yellow', 'Orange', 'Purple'],
+              icon: (
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                  <path d="M16 4L4 10V22C4 26 10 28 16 28C22 28 28 26 28 22V10L16 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M16 4V28" stroke="currentColor" strokeWidth="2"/>
+                  <path d="M4 10L28 10" stroke="currentColor" strokeWidth="2"/>
+                </svg>
+              )
+            },
+            {
+              name: 'PETG',
+              description: 'Strong, chemical resistant, crystal clear. Great for functional parts and containers.',
+              properties: ['Chemical resistant', 'Impact resistant', 'Crystal clear', 'Food safe'],
+              colors: ['Clear', 'White', 'Black', 'Red', 'Blue', 'Green'],
+              icon: (
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                  <rect x="4" y="4" width="24" height="24" rx="3" stroke="currentColor" strokeWidth="2"/>
+                  <path d="M16 4V28" stroke="currentColor" strokeWidth="2"/>
+                  <path d="M4 16H28" stroke="currentColor" strokeWidth="2"/>
+                </svg>
+              )
+            },
+            {
+              name: 'ABS',
+              description: 'Durable, heat resistant, perfect for mechanical parts and automotive applications.',
+              properties: ['Heat resistant', 'Strong & durable', 'Post-processable', 'Chemical resistant'],
+              colors: ['White', 'Black', 'Red', 'Blue', 'Gray'],
+              icon: (
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                  <circle cx="16" cy="16" r="12" stroke="currentColor" strokeWidth="2"/>
+                  <path d="M16 8V24" stroke="currentColor" strokeWidth="2"/>
+                  <path d="M8 16H24" stroke="currentColor" strokeWidth="2"/>
+                  <circle cx="16" cy="16" r="4" stroke="currentColor" strokeWidth="2"/>
+                </svg>
+              )
+            }
+          ].map((material, index) => (
+            <motion.div
+              key={index}
+              className="material-card"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+            >
+              <div className="material-header">
+                <div className="material-icon">{material.icon}</div>
+                <h3>{material.name}</h3>
+              </div>
+              <p className="material-description">{material.description}</p>
+              
+              <div className="material-properties">
+                <h4>Properties</h4>
+                <div className="properties-list">
+                  {material.properties.map((prop, idx) => (
+                    <span key={idx} className="property-tag">{prop}</span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="material-colors">
+                <h4>Available Colors</h4>
+                <div className="colors-grid">
+                  {material.colors.map((color, idx) => (
+                    <span key={idx} className="color-tag">{color}</span>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+        
+        <motion.div 
+          className="file-requirements"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <h3>File Requirements</h3>
+          <div className="requirements-grid">
+            <div className="requirement-card">
+              <div className="req-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M14 2V8H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              <h4>Supported Formats</h4>
+              <p>STL, OBJ, 3MF, PLY files accepted</p>
+            </div>
+
+            <div className="requirement-card">
+              <div className="req-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2"/>
+                  <path d="M9 12L11 14L15 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              <h4>File Size</h4>
+              <p>Maximum 100MB per file</p>
+            </div>
+
+            <div className="requirement-card">
+              <div className="req-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M12 22V12" stroke="currentColor" strokeWidth="2"/>
+                  <path d="M2 7L12 12L22 7" stroke="currentColor" strokeWidth="2"/>
+                </svg>
+              </div>
+              <h4>Model Integrity</h4>
+              <p>Ensure your model is watertight and manifold</p>
+            </div>
+
+            <div className="requirement-card">
+              <div className="req-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M21 16V8C21 6.9 20.1 6 19 6H5C3.9 6 3 6.9 3 8V16C3 17.1 3.9 18 5 18H19C20.1 18 21 17.1 21 16Z" stroke="currentColor" strokeWidth="2"/>
+                  <path d="M7 10H17" stroke="currentColor" strokeWidth="2"/>
+                  <path d="M7 14H13" stroke="currentColor" strokeWidth="2"/>
+                </svg>
+              </div>
+              <h4>Scale & Units</h4>
+              <p>Files should be in millimeters (mm)</p>
+            </div>
+          </div>
+        </motion.div>
       </RaycastSection>
 
       <RaycastSection id="pricing" className="pricing-section">
@@ -424,6 +594,71 @@ const Homepage = () => {
             ))}
           </div>
         </motion.div>
+      </RaycastSection>
+
+      <RaycastSection id="faq" className="faq-section">
+        <motion.h2 className="section-title">
+          Frequently Asked Questions
+        </motion.h2>
+        
+        <div className="faq-container">
+          {[
+            {
+              question: 'What file formats do you accept?',
+              answer: 'We accept STL, OBJ, 3MF, and PLY files. STL is the most common format for 3D printing. Make sure your files are under 100MB and your models are watertight (manifold).'
+            },
+            {
+              question: 'How do you calculate the price?',
+              answer: 'Our pricing is transparent: ₱5/gram for material + ₱150 setup & labor + ₱50 service fee. Upload your file to get instant weight calculation and exact pricing before ordering.'
+            },
+            {
+              question: 'What is your turnaround time?',
+              answer: 'Turnaround varies based on size and complexity. Small items (under 50g): 1-2 days. Medium items (50-200g): 2-3 days. Large items (200g+): 3-5 days. We\'ll provide exact timing after file analysis.'
+            },
+            {
+              question: 'Do you offer student discounts?',
+              answer: 'Yes! Students get special pricing for educational projects. Contact us with your student ID and project details for a custom quote.'
+            },
+            {
+              question: 'What if my print fails or gets damaged during delivery?',
+              answer: 'We offer a comprehensive guarantee. Print failures due to our equipment issues get a free reprint or 60% refund. Delivery damage is covered with video proof - we\'ll reprint or refund 60%.'
+            },
+            {
+              question: 'Can you print in multiple colors?',
+              answer: 'Each print is single-color, but we offer a wide range of colors for PLA, PETG, and ABS. For multi-color designs, you\'ll need to split your model into separate files for each color.'
+            },
+            {
+              question: 'Do you provide design services?',
+              answer: 'No, we\'re a printing service only. You need to provide ready-to-print 3D files. If you need design help, consider using online platforms like Fiverr or Upwork to find 3D designers.'
+            },
+            {
+              question: 'How do I pay and place an order?',
+              answer: 'Upload your file, choose materials, and get instant pricing. Payment via GCash or bank transfer. Once paid, we\'ll start printing and provide progress updates until delivery.'
+            }
+          ].map((faq, index) => (
+            <motion.div
+              key={index}
+              className={`faq-item ${openFAQ === index ? 'open' : ''}`}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.05 }}
+            >
+              <button
+                className="faq-question"
+                onClick={() => toggleFAQ(index)}
+              >
+                <span>{faq.question}</span>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className={`faq-icon ${openFAQ === index ? 'open' : ''}`}>
+                  <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+              <div className="faq-answer">
+                <p>{faq.answer}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </RaycastSection>
 
       <RaycastSection id="guarantee" className="guarantee-section">
@@ -495,6 +730,36 @@ const Homepage = () => {
           <div className="note-content">
             <h4>Why 60% Refund?</h4>
             <p>This covers material costs and protects against fraudulent claims while ensuring you're fairly compensated. It's the industry standard for small 3D printing services.</p>
+          </div>
+        </motion.div>
+      </RaycastSection>
+
+      <RaycastSection id="testimonials" className="testimonials-section">
+        <motion.h2 className="section-title">
+          Coming Soon: Customer Reviews
+        </motion.h2>
+        
+        <motion.div 
+          className="testimonials-placeholder"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <div className="placeholder-content">
+            <div className="placeholder-icon">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                <path d="M24 4L30.18 16.82L44 18L34 27.18L36.36 41L24 34.36L11.64 41L14 27.18L4 18L17.82 16.82L24 4Z" stroke="currentColor" strokeWidth="2" fill="none"/>
+              </svg>
+            </div>
+            <h3>Your Reviews Will Go Here</h3>
+            <p>We're in BETA mode! Be one of our first customers and your review could be featured here. We're building our reputation one quality print at a time.</p>
+            <div className="placeholder-stars">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <svg key={star} width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 2L15.09 8.26L22 9L17 13.74L18.18 20.02L12 16.77L5.82 20.02L7 13.74L2 9L8.91 8.26L12 2Z" stroke="currentColor" strokeWidth="2" fill="none"/>
+                </svg>
+              ))}
+            </div>
           </div>
         </motion.div>
       </RaycastSection>
@@ -578,6 +843,75 @@ const Homepage = () => {
           </motion.div>
         </div>
       </RaycastSection>
+
+      <footer className="site-footer">
+        <div className="footer-container">
+          <div className="footer-content">
+            <div className="footer-brand">
+              <div className="footer-logo">
+                <div className="logo-icon">
+                  <div className="cube-3d">
+                    <div className="cube-face front"></div>
+                    <div className="cube-face back"></div>
+                    <div className="cube-face right"></div>
+                    <div className="cube-face left"></div>
+                    <div className="cube-face top"></div>
+                    <div className="cube-face bottom"></div>
+                  </div>
+                </div>
+                <span>Prism Box 3D</span>
+              </div>
+              <p className="footer-description">
+                Professional 3D printing service in San Jose del Monte, Bulacan. Quality prints with transparent pricing and service guarantee.
+              </p>
+            </div>
+
+            <div className="footer-links">
+              <div className="footer-section">
+                <h4>Services</h4>
+                <ul>
+                  <li><button onClick={() => smoothScrollTo('services')}>Personal Projects</button></li>
+                  <li><button onClick={() => smoothScrollTo('services')}>Student Projects</button></li>
+                  <li><button onClick={() => smoothScrollTo('services')}>Business Prints</button></li>
+                  <li><button onClick={() => smoothScrollTo('materials')}>Materials</button></li>
+                </ul>
+              </div>
+
+              <div className="footer-section">
+                <h4>Information</h4>
+                <ul>
+                  <li><button onClick={() => smoothScrollTo('pricing')}>Pricing</button></li>
+                  <li><button onClick={() => smoothScrollTo('faq')}>FAQ</button></li>
+                  <li><button onClick={() => smoothScrollTo('guarantee')}>Guarantee</button></li>
+                  <li><button onClick={() => smoothScrollTo('process')}>How It Works</button></li>
+                </ul>
+              </div>
+
+              <div className="footer-section">
+                <h4>Contact</h4>
+                <ul>
+                  <li>San Jose del Monte, Bulacan</li>
+                  <li>GCash & Bank Transfer</li>
+                  <li>24-72h Turnaround</li>
+                  <li>Quality Guaranteed</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div className="footer-bottom">
+            <div className="footer-bottom-content">
+              <p>&copy; 2025 Prism Box 3D. All rights reserved.</p>
+              <div className="footer-status">
+                <span className="status-badge">
+                  <div className="status-dot"></div>
+                  BETA Service
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
