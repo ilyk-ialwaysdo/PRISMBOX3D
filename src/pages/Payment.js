@@ -5,22 +5,16 @@ import axios from "axios";
 import ReCAPTCHA from "react-google-recaptcha";
 import "./Payment.css";
 
-// --- TEMPORARILY DISABLED API KEYS ---
-const RECAPTCHA_SITE_KEY = "6LdFae4rAAAAAOT2-pnF-q0crcRNlY5AWqw7lcMP";
+// --- API KEYS ---
+const RECAPTCHA_SITE_KEY = "6Lfnbu4rAAAAADQBQ9H_snq5x_g4UWfGGFSDKVuZ";
 const MAILBOXLAYER_KEY = "9f85e9a8f8f649c7c13b1ebbdd612967";
 const NUMVERIFY_KEY = "9d19023e000f6d6077c08a7f15fd7d5a";
 
-<ReCAPTCHA
-  ref={recaptchaRef}
-  sitekey={RECAPTCHA_SITE_KEY}
-  onChange={() => setCaptchaVerified(true)}
-/>
-
 // --- Constants for Your Business ---
-const TRUE_FILAMENT_COST_PER_GRAM = 0.40; // Your actual cost per gram from your supplier
-const TRUE_LABOR_COST = 50;               // Your estimated labor cost per print
-const TRUE_KWH_RATE = 12;                 // Your Meralco rate per kWh
-const PRINTER_WATT = 200;                 // Your printer's average wattage
+const TRUE_FILAMENT_COST_PER_GRAM = 0.40;
+const TRUE_LABOR_COST = 50;
+const TRUE_KWH_RATE = 12;
+const PRINTER_WATT = 200;
 
 const Payment = ({ isAdmin }) => {
   const navigate = useNavigate();
