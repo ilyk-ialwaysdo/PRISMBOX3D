@@ -6,7 +6,7 @@ import axios from "axios";
 import "./Payment.css";
 
 // --- TEMPORARILY DISABLED API KEYS ---
-const RECAPTCHA_SITE_KEY = "6LdnaO4rAAAAAMcaVwLbgU2gs4OfoCIl9_8gpMcl";
+const RECAPTCHA_SITE_KEY = "6LdFae4rAAAAAOT2-pnF-q0crcRNlY5AWqw7lcMP";
 const MAILBOXLAYER_KEY = "9f85e9a8f8f649c7c13b1ebbdd612967";
 const NUMVERIFY_KEY = "9d19023e000f6d6077c08a7f15fd7d5a";
 
