@@ -1,24 +1,44 @@
-/* Homepage.css - Styles for the main landing page content */
+/* Homepage.css - Enhanced with breathing animations and mouse effects */
 
 .homepage {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 140px 20px 40px; /* More padding at the top for the header */
-  background: transparent; /* Makes sure our prism background is visible */
+  padding: 140px 20px 40px;
+  background: transparent;
   color: white;
   text-align: center;
   overflow: hidden;
+  position: relative;
+}
+
+/* Mouse follower glow effect */
+.mouse-glow {
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(
+    circle,
+    rgba(34, 197, 94, 0.15) 0%,
+    rgba(34, 197, 94, 0.08) 30%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  transition: all 0.1s ease-out;
+  filter: blur(20px);
 }
 
 .hero-section {
   max-width: 900px;
   width: 100%;
   position: relative;
-  z-index: 1; /* Content is above the background */
+  z-index: 1;
 }
 
+/* Breathing glow animation for title */
 .hero-title {
   font-size: clamp(2.5rem, 6vw, 4.5rem);
   font-weight: 800;
@@ -29,13 +49,42 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+.breathing-glow {
+  animation: breathingGlow 3s ease-in-out infinite;
+}
+
+@keyframes breathingGlow {
+  0%, 100% {
+    text-shadow: 
+      0 0 20px rgba(255, 255, 255, 0.2),
+      0 0 40px rgba(34, 197, 94, 0.1);
+  }
+  50% {
+    text-shadow: 
+      0 0 30px rgba(255, 255, 255, 0.4),
+      0 0 60px rgba(34, 197, 94, 0.3),
+      0 0 80px rgba(34, 197, 94, 0.1);
+  }
 }
 
 .hero-subtitle {
   font-size: clamp(1rem, 2.5vw, 1.4rem);
-  color: #22c55e; /* Green accent color */
+  color: #22c55e;
   font-weight: 500;
   margin-bottom: 1.5rem;
+  animation: subtleGlow 4s ease-in-out infinite;
+}
+
+@keyframes subtleGlow {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(34, 197, 94, 0.6);
+  }
 }
 
 .hero-description {
@@ -53,42 +102,84 @@
   margin-bottom: 3.5rem;
 }
 
+/* Enhanced glass morphism cards */
 .highlight-card {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(15px);
   border-radius: 16px;
   padding: 2rem 1.5rem;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-morphism::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(34, 197, 94, 0.1),
+    transparent
+  );
+  transition: left 0.6s ease;
+}
+
+.highlight-card:hover::before {
+  left: 100%;
 }
 
 .highlight-card:hover {
-  transform: translateY(-8px);
-  border-color: rgba(34, 197, 94, 0.4);
-  background: rgba(34, 197, 94, 0.05);
+  transform: translateY(-12px) scale(1.02);
+  border-color: rgba(34, 197, 94, 0.5);
+  background: rgba(34, 197, 94, 0.08);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    0 0 30px rgba(34, 197, 94, 0.2);
 }
 
 .highlight-icon {
   font-size: 2.5rem;
   margin-bottom: 1rem;
   display: block;
+  transition: transform 0.3s ease;
+}
+
+.highlight-card:hover .highlight-icon {
+  transform: scale(1.1) rotateY(180deg);
 }
 
 .highlight-card h3 {
   color: #fff;
   font-weight: 600;
   margin-bottom: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.highlight-card:hover h3 {
+  color: #22c55e;
 }
 
 .highlight-card p {
   font-size: 0.9rem;
   color: rgba(255, 255, 255, 0.6);
   line-height: 1.5;
+  transition: color 0.3s ease;
 }
 
+.highlight-card:hover p {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Enhanced breathing button */
 .cta-button {
-  background: #22c55e;
+  background: linear-gradient(135deg, #22c55e 0%, #16a085 100%);
   color: #0a0a0a;
   font-weight: 700;
   font-size: 1.1rem;
@@ -100,13 +191,114 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+  box-shadow: 
+    0 0 20px rgba(34, 197, 94, 0.3),
+    0 8px 25px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.breathing-button {
+  animation: buttonBreathing 2.5s ease-in-out infinite;
+}
+
+@keyframes buttonBreathing {
+  0%, 100% {
+    box-shadow: 
+      0 0 20px rgba(34, 197, 94, 0.3),
+      0 8px 25px rgba(0, 0, 0, 0.2);
+  }
+  50% {
+    box-shadow: 
+      0 0 30px rgba(34, 197, 94, 0.5),
+      0 0 40px rgba(34, 197, 94, 0.2),
+      0 12px 35px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.cta-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.6s ease;
+}
+
+.cta-button:hover::before {
+  left: 100%;
 }
 
 .button-arrow {
   transition: transform 0.3s ease;
+  font-size: 1.2rem;
 }
 
 .cta-button:hover .button-arrow {
   transform: translateX(5px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .homepage {
+    padding: 120px 15px 30px;
+  }
+  
+  .mouse-glow {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .service-highlights {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .highlight-card {
+    padding: 1.5rem 1rem;
+  }
+  
+  .hero-title {
+    margin-bottom: 1rem;
+  }
+  
+  .hero-subtitle {
+    margin-bottom: 1.2rem;
+  }
+  
+  .hero-description {
+    margin-bottom: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cta-button {
+    padding: 14px 28px;
+    font-size: 1rem;
+  }
+  
+  .highlight-icon {
+    font-size: 2rem;
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .breathing-glow,
+  .breathing-button,
+  .mouse-glow {
+    animation: none;
+  }
+  
+  .highlight-card,
+  .cta-button {
+    transition: none;
+  }
 }
