@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-// import ReCAPTCHA from "react-google-recaptcha";  // DISABLED
+import ReCAPTCHA from "react-google-recaptcha";
 import "./Payment.css";
 
 // --- TEMPORARILY DISABLED API KEYS ---
@@ -10,8 +10,11 @@ const RECAPTCHA_SITE_KEY = "6LdFae4rAAAAAOT2-pnF-q0crcRNlY5AWqw7lcMP";
 const MAILBOXLAYER_KEY = "9f85e9a8f8f649c7c13b1ebbdd612967";
 const NUMVERIFY_KEY = "9d19023e000f6d6077c08a7f15fd7d5a";
 
-// Rest of your code stays the same...
-
+<ReCAPTCHA
+  ref={recaptchaRef}
+  sitekey={RECAPTCHA_SITE_KEY}
+  onChange={() => setCaptchaVerified(true)}
+/>
 
 // --- Constants for Your Business ---
 const TRUE_FILAMENT_COST_PER_GRAM = 0.40; // Your actual cost per gram from your supplier
