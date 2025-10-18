@@ -5,6 +5,7 @@ import Homepage from "./pages/Homepage";
 import Configuration from "./pages/Configuration";
 import Payment from "./pages/Payment";
 import "./App.css";
+import { Analytics } from "@vercel/analytics/react";
 
 function App() {
   const [isAdmin, setIsAdmin] = useState(() => localStorage.getItem("adminMode") === "true");
@@ -44,6 +45,8 @@ function App() {
           <Route path="/configure" element={<Configuration isAdmin={isAdmin} />} />
           <Route path="/payment" element={<Payment isAdmin={isAdmin} />} />
         </Routes>
+
+        <Analytics />
       </div>
     </Router>
   );
