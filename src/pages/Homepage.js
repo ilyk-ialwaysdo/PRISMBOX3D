@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import PrismBackground from '../components/PrismBackground';
 import './Homepage.css';
 
@@ -10,18 +10,9 @@ const Homepage = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [openFAQ, setOpenFAQ] = useState(null);
   const [email, setEmail] = useState('');
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const { scrollYProgress } = useScroll();
   
-  const yHero = useTransform(scrollYProgress, [0, 0.3], ['0%', '15%']);
-  const scaleProgress = useTransform(scrollYProgress, [0, 0.2], [1, 0.95]);
-  const opacityProgress = useTransform(scrollYProgress, [0, 0.2], [1, 0.8]);
-  
-  // Smooth spring animations
-  const springConfig = { damping: 25, stiffness: 120 };
-  const springY = useSpring(yHero, springConfig);
-  const springScale = useSpring(scaleProgress, springConfig);
-  const springOpacity = useSpring(opacityProgress, springConfig);
+  const yHero = useTransform(scrollYProgress, [0, 0.3], ['0%', '10%']);
 
   const handleScroll = useCallback(() => {
     const scrolled = window.scrollY > 50;
@@ -29,13 +20,6 @@ const Homepage = () => {
       setIsScrolled(scrolled);
     }
   }, [isScrolled]);
-
-  const handleMouseMove = useCallback((e) => {
-    setMousePosition({
-      x: (e.clientX / window.innerWidth) * 100,
-      y: (e.clientY / window.innerHeight) * 100,
-    });
-  }, []);
 
   const smoothScrollTo = useCallback((elementId) => {
     const element = document.getElementById(elementId);
@@ -60,13 +44,8 @@ const Homepage = () => {
   useEffect(() => {
     setIsLoaded(true);
     window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, [handleScroll, handleMouseMove]);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
 
   const variants = useMemo(() => ({
     container: {
@@ -74,8 +53,8 @@ const Homepage = () => {
       visible: {
         opacity: 1,
         transition: {
-          staggerChildren: 0.06,
-          delayChildren: 0.1
+          staggerChildren: 0.1,
+          delayChildren: 0.2
         }
       }
     },
@@ -85,32 +64,55 @@ const Homepage = () => {
         opacity: 1,
         y: 0,
         transition: {
-          duration: 0.5,
+          duration: 0.6,
           ease: [0.25, 0.46, 0.45, 0.94]
-        }
-      }
-    },
-    float: {
-      animate: {
-        y: [0, -10, 0],
-        transition: {
-          duration: 3,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }
-      }
-    },
-    pulse: {
-      animate: {
-        scale: [1, 1.05, 1],
-        transition: {
-          duration: 2,
-          repeat: Infinity,
-          ease: "easeInOut"
         }
       }
     }
   }), []);
+
+  // SIMPLIFIED LOGO COMPONENT - Subtle animation
+  const PrismLogo = ({ size = 24 }) => (
+    <motion.div
+      className="prism-logo"
+      style={{ width: size, height: size }}
+      animate={{ 
+        rotateY: [0, 360]
+      }}
+      transition={{
+        duration: 8,
+        repeat: Infinity,
+        ease: "linear"
+      }}
+    >
+      <svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        className="prism-svg"
+      >
+        <path
+          d="M4 8L12 4L20 8V16L12 20L4 16V8Z"
+          stroke="url(#prismGradient)"
+          strokeWidth="2"
+          fill="rgba(0, 122, 255, 0.1)"
+        />
+        <path
+          d="M12 4V20M4 8L20 16M4 16L20 8"
+          stroke="url(#prismGradient)"
+          strokeWidth="1"
+          opacity="0.6"
+        />
+        <defs>
+          <linearGradient id="prismGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#007AFF" />
+            <stop offset="100%" stopColor="#34C759" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </motion.div>
+  );
 
   if (!isLoaded) {
     return (
@@ -118,14 +120,7 @@ const Homepage = () => {
         <div className="loader-icon">
           <div className="loader-cube"></div>
         </div>
-        <motion.p 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="loader-text"
-        >
-          Loading amazing 3D printing experience...
-        </motion.p>
+        <p className="loader-text">Loading...</p>
       </div>
     );
   }
@@ -134,72 +129,23 @@ const Homepage = () => {
     <div className="homepage raycast-theme">
       <PrismBackground />
       
-      {/* Floating elements for visual appeal */}
-      <div className="floating-elements">
-        <motion.div
-          className="float-cube float-1"
-          variants={variants.float}
-          animate="animate"
-          style={{
-            transform: `translate(${mousePosition.x * 0.02}px, ${mousePosition.y * 0.02}px)`
-          }}
-        />
-        <motion.div
-          className="float-cube float-2"
-          variants={variants.float}
-          animate="animate"
-          transition={{ delay: 0.5 }}
-          style={{
-            transform: `translate(${mousePosition.x * -0.01}px, ${mousePosition.y * -0.01}px)`
-          }}
-        />
-        <motion.div
-          className="float-cube float-3"
-          variants={variants.float}
-          animate="animate"
-          transition={{ delay: 1 }}
-          style={{
-            transform: `translate(${mousePosition.x * 0.015}px, ${mousePosition.y * 0.015}px)`
-          }}
-        />
-      </div>
-      
       <motion.header 
         className={`raycast-header ${isScrolled ? 'scrolled' : ''}`}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.1 }}
+        transition={{ duration: 0.6 }}
       >
         <div className="header-container">
-          <motion.div 
-            className="logo-group"
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: "spring", stiffness: 400, damping: 17 }}
-          >
-            <div className="logo-icon">
-              <div className="cube-3d rotating-cube">
-                <div className="cube-face front"></div>
-                <div className="cube-face back"></div>
-                <div className="cube-face right"></div>
-                <div className="cube-face left"></div>
-                <div className="cube-face top"></div>
-                <div className="cube-face bottom"></div>
-              </div>
-            </div>
+          <div className="logo-group">
+            <PrismLogo size={24} />
             <div className="logo-content">
               <div className="logo-title-row">
                 <h1 className="logo-title">Prism Box 3D</h1>
-                <motion.span 
-                  className="beta-badge"
-                  variants={variants.pulse}
-                  animate="animate"
-                >
-                  BETA
-                </motion.span>
+                <span className="beta-badge">BETA</span>
               </div>
               <span className="logo-subtitle">3D Printing Service</span>
             </div>
-          </motion.div>
+          </div>
 
           <nav className="nav-links">
             {[
@@ -213,14 +159,10 @@ const Homepage = () => {
                 key={item.target}
                 className="nav-link"
                 onClick={() => smoothScrollTo(item.target)}
-                whileHover={{ 
-                  scale: 1.05,
-                  backgroundColor: 'rgba(0, 122, 255, 0.1)' 
-                }}
-                whileTap={{ scale: 0.95 }}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 + (index * 0.1) }}
+                whileHover={{ scale: 1.02 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.1 + (index * 0.05) }}
               >
                 {item.label}
               </motion.button>
@@ -229,14 +171,10 @@ const Homepage = () => {
         </div>
       </motion.header>
 
-      {/* ===== ENHANCED HERO SECTION ===== */}
+      {/* ===== HERO SECTION ===== */}
       <motion.section 
         className="hero-section"
-        style={{ 
-          y: springY,
-          scale: springScale,
-          opacity: springOpacity
-        }}
+        style={{ y: yHero }}
       >
         <div className="hero-container">
           <motion.div 
@@ -245,29 +183,14 @@ const Homepage = () => {
             initial="hidden"
             animate="visible"
           >
-            <motion.div 
-              className="status-badge" 
-              variants={variants.item}
-              whileHover={{ scale: 1.05 }}
-            >
-              <motion.div 
-                className="status-dot"
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
+            <motion.div className="status-badge" variants={variants.item}>
+              <div className="status-dot"></div>
               <span>Quality Guaranteed</span>
             </motion.div>
 
             <motion.h1 className="hero-title" variants={variants.item}>
               Your 3D files, 
-              <motion.span 
-                className="highlight-text"
-                initial={{ backgroundSize: '0% 100%' }}
-                animate={{ backgroundSize: '100% 100%' }}
-                transition={{ delay: 1, duration: 0.8 }}
-              >
-                printed & delivered
-              </motion.span>
+              <span className="highlight-text">printed & delivered</span>
             </motion.h1>
 
             <motion.p className="hero-description" variants={variants.item}>
@@ -282,103 +205,47 @@ const Homepage = () => {
                 'Professional quality with service guarantee',
                 'Fast local delivery with damage protection'
               ].map((feature, index) => (
-                <motion.div 
-                  key={index}
-                  className="feature-item"
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.8 + (index * 0.1) }}
-                  whileHover={{ x: 5 }}
-                >
-                  <motion.div 
-                    className="feature-icon"
-                    whileHover={{ rotate: 360 }}
-                    transition={{ duration: 0.3 }}
-                  >
+                <div key={index} className="feature-item">
+                  <div className="feature-icon">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                       <path d="M10 3L4.5 8.5L2 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
-                  </motion.div>
+                  </div>
                   <span>{feature}</span>
-                </motion.div>
+                </div>
               ))}
             </motion.div>
 
             <motion.div className="hero-actions" variants={variants.item}>
               <motion.button
-                className="primary-button large glow-button"
+                className="primary-button large"
                 onClick={() => navigate('/configure')}
-                whileHover={{ 
-                  scale: 1.05,
-                  boxShadow: '0 0 25px rgba(0, 122, 255, 0.4)'
-                }}
-                whileTap={{ scale: 0.95 }}
-                animate={{ 
-                  boxShadow: [
-                    '0 0 0px rgba(0, 122, 255, 0)',
-                    '0 0 20px rgba(0, 122, 255, 0.3)',
-                    '0 0 0px rgba(0, 122, 255, 0)'
-                  ]
-                }}
-                transition={{
-                  boxShadow: { duration: 2, repeat: Infinity, ease: "easeInOut" }
-                }}
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.98 }}
               >
-                <motion.span>Upload File & Get Quote</motion.span>
-                <motion.svg 
-                  width="16" 
-                  height="16" 
-                  viewBox="0 0 16 16" 
-                  fill="none"
-                  animate={{ x: [0, 3, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                >
+                <span>Upload File & Get Quote</span>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </motion.svg>
+                </svg>
               </motion.button>
             </motion.div>
           </motion.div>
 
           <motion.div 
             className="hero-visual"
-            initial={{ opacity: 0, x: 40, scale: 0.9 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            whileHover={{ 
-              y: -8,
-              transition: { duration: 0.3 }
-            }}
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <motion.div 
-              className="info-card"
-              animate={{ 
-                y: [0, -5, 0],
-                rotateY: [0, 1, 0]
-              }}
-              transition={{ 
-                duration: 4, 
-                repeat: Infinity, 
-                ease: "easeInOut" 
-              }}
-            >
+            <div className="info-card">
               <div className="card-header">
-                <motion.div 
-                  className="card-badge"
-                  whileHover={{ scale: 1.1 }}
-                >
-                  <motion.svg 
-                    width="14" 
-                    height="14" 
-                    viewBox="0 0 14 14" 
-                    fill="none"
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                  >
+                <div className="card-badge">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                     <path d="M9 2L13 6L9 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     <path d="M1 6H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </motion.svg>
+                  </svg>
                   <span>Quality First</span>
-                </motion.div>
+                </div>
               </div>
               
               <div className="card-content">
@@ -386,108 +253,43 @@ const Homepage = () => {
                 <p>Modern startup focused on quality prints with competitive rates, reliable delivery, and comprehensive service guarantee.</p>
                 
                 <div className="stats-grid">
-                  <motion.div 
-                    className="stat"
-                    whileHover={{ scale: 1.05 }}
-                  >
-                    <motion.div 
-                      className="stat-value"
-                      animate={{ scale: [1, 1.1, 1] }}
-                      transition={{ duration: 2, repeat: Infinity, delay: 0 }}
-                    >
-                      99.8%
-                    </motion.div>
+                  <div className="stat">
+                    <div className="stat-value">99.8%</div>
                     <div className="stat-label">Print Success</div>
-                  </motion.div>
-                  <motion.div 
-                    className="stat"
-                    whileHover={{ scale: 1.05 }}
-                  >
-                    <motion.div 
-                      className="stat-value"
-                      animate={{ scale: [1, 1.1, 1] }}
-                      transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-                    >
-                      24h
-                    </motion.div>
+                  </div>
+                  <div className="stat">
+                    <div className="stat-value">24h</div>
                     <div className="stat-label">Avg Turnaround</div>
-                  </motion.div>
+                  </div>
                 </div>
                 
                 <div className="features-list">
                   {['Quality guarantee', 'Modern equipment', 'Fair pricing'].map((item, index) => (
-                    <motion.div 
-                      key={index}
-                      className="feature-tag"
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 1 + (index * 0.1) }}
-                      whileHover={{ scale: 1.1 }}
-                    >
+                    <div key={index} className="feature-tag">
                       <span>{item}</span>
-                    </motion.div>
+                    </div>
                   ))}
                 </div>
               </div>
-            </motion.div>
+            </div>
           </motion.div>
         </div>
       </motion.section>
 
-      {/* ===== ENHANCED VISUAL BREAK 1: ANIMATED DIVIDER ===== */}
-      <motion.div 
-        className="section-divider"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-      >
+      {/* ===== VISUAL BREAK 1 ===== */}
+      <div className="section-divider">
         <div className="divider-content">
-          <motion.div 
-            className="divider-line"
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.2 }}
-          />
-          <motion.div 
-            className="divider-icon"
-            initial={{ scale: 0, rotate: -180 }}
-            whileInView={{ scale: 1, rotate: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            whileHover={{ 
-              rotate: 180,
-              scale: 1.1
-            }}
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="currentColor" strokeWidth="2"/>
-              <path d="M12 22V12" stroke="currentColor" strokeWidth="2"/>
-              <path d="M2 7L12 12L22 7" stroke="currentColor" strokeWidth="2"/>
-            </svg>
-          </motion.div>
-          <motion.div 
-            className="divider-line"
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.7 }}
-          />
+          <div className="divider-line"></div>
+          <div className="divider-icon">
+            <PrismLogo size={24} />
+          </div>
+          <div className="divider-line"></div>
         </div>
-      </motion.div>
+      </div>
 
-      {/* ===== ENHANCED PROCESS SECTION ===== */}
+      {/* ===== PROCESS SECTION ===== */}
       <RaycastSection id="process" className="process-section">
-        <motion.h2 
-          className="section-title"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          Simple 4-Step Process
-        </motion.h2>
+        <h2 className="section-title">Simple 4-Step Process</h2>
         
         <div className="process-grid">
           {[
@@ -497,8 +299,8 @@ const Homepage = () => {
               description: 'Upload STL, OBJ, or 3MF files. Automatic weight calculation and material analysis.',
               icon: (
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M14 2V8H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2Z" stroke="currentColor" strokeWidth="2"/>
+                  <path d="M14 2V8H20" stroke="currentColor" strokeWidth="2"/>
                 </svg>
               )
             },
@@ -508,8 +310,9 @@ const Homepage = () => {
               description: 'Select from PLA, PETG, ABS filaments in various colors. Real-time price updates.',
               icon: (
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2"/>
-                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="currentColor" strokeWidth="2"/>
+                  <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="2"/>
+                  <circle cx="12" cy="12" r="1" fill="currentColor"/>
+                  <path d="M21 12c0 1.66-4.03 3-9 3s-9-1.34-9-3" stroke="currentColor" strokeWidth="2"/>
                 </svg>
               )
             },
@@ -540,56 +343,24 @@ const Homepage = () => {
           ].map((item, index) => (
             <motion.div
               key={item.step}
-              className="process-card enhanced-card"
-              initial={{ opacity: 0, y: 50 }}
+              className="process-card"
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ 
-                delay: index * 0.2,
-                duration: 0.6,
-                ease: [0.25, 0.46, 0.45, 0.94]
-              }}
-              whileHover={{ 
-                y: -8, 
-                rotateY: 5,
-                transition: { duration: 0.3 } 
-              }}
+              transition={{ delay: index * 0.1 }}
+              whileHover={{ y: -4 }}
             >
-              <motion.div 
-                className="card-step"
-                whileHover={{ rotate: 360 }}
-                transition={{ duration: 0.6 }}
-              >
-                {item.step}
-              </motion.div>
-              <motion.div 
-                className="card-icon"
-                whileHover={{ scale: 1.2, rotate: 10 }}
-                transition={{ duration: 0.3 }}
-              >
-                {item.icon}
-              </motion.div>
+              <div className="card-step">{item.step}</div>
+              <div className="card-icon">{item.icon}</div>
               <h3>{item.title}</h3>
               <p>{item.description}</p>
-              <motion.div
-                className="card-glow"
-                initial={{ opacity: 0 }}
-                whileHover={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-              />
             </motion.div>
           ))}
         </div>
       </RaycastSection>
 
-      {/* ===== ENHANCED STATS BREAK ===== */}
-      <motion.div 
-        className="stats-break"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-      >
+      {/* ===== STATS BREAK ===== */}
+      <div className="stats-break">
         <div className="stats-container">
           {[
             { value: '99.8%', label: 'Print Success Rate' },
@@ -600,76 +371,31 @@ const Homepage = () => {
             <motion.div
               key={index}
               className="stat-item"
-              initial={{ opacity: 0, scale: 0.5 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ 
-                delay: index * 0.1,
-                duration: 0.6,
-                type: "spring",
-                stiffness: 200
-              }}
-              whileHover={{ 
-                scale: 1.1,
-                y: -5
-              }}
+              transition={{ delay: index * 0.1 }}
+              whileHover={{ y: -3 }}
             >
-              <motion.div 
-                className="stat-value"
-                animate={{ 
-                  textShadow: [
-                    '0 0 5px rgba(255,255,255,0.8)',
-                    '0 0 20px rgba(255,255,255,0.5)',
-                    '0 0 5px rgba(255,255,255,0.8)'
-                  ]
-                }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                {stat.value}
-              </motion.div>
+              <div className="stat-value">{stat.value}</div>
               <div className="stat-label">{stat.label}</div>
             </motion.div>
           ))}
         </div>
-      </motion.div>
+      </div>
 
-      {/* Continue with remaining sections... */}
-      {/* I'll provide the rest in parts due to length */}
-
-      {/* ===== ABOUT & SERVICES SECTION (Enhanced) ===== */}
+      {/* ===== ABOUT & SERVICES SECTION ===== */}
       <RaycastSection id="about" className="about-services-section">
         <div className="about-services-container">
           <motion.div 
             className="about-content"
-            initial={{ opacity: 0, x: -60 }}
+            initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
           >
-            <motion.h2
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-            >
-              About Prism Box 3D
-            </motion.h2>
-            <motion.div 
-              className="about-story enhanced-card"
-              whileHover={{ 
-                scale: 1.02,
-                rotateY: 2
-              }}
-              transition={{ duration: 0.3 }}
-            >
-              <motion.p
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.3 }}
-              >
-                We're a modern 3D printing startup based in San Jose del Monte, Bulacan. Our mission is simple: make professional 3D printing accessible to everyone - from students working on thesis projects to entrepreneurs creating prototypes.
-              </motion.p>
+            <h2>About Prism Box 3D</h2>
+            <div className="about-story">
+              <p>We're a modern 3D printing startup based in San Jose del Monte, Bulacan. Our mission is simple: make professional 3D printing accessible to everyone - from students working on thesis projects to entrepreneurs creating prototypes.</p>
               
               <div className="about-values">
                 {[
@@ -699,58 +425,32 @@ const Homepage = () => {
                     text: 'Fast Service'
                   }
                 ].map((value, index) => (
-                  <motion.div
-                    key={index}
-                    className="value-item"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.4 + (index * 0.1) }}
-                    whileHover={{ x: 5, scale: 1.05 }}
-                  >
-                    <motion.div 
-                      className="value-icon"
-                      whileHover={{ rotate: 360 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      {value.icon}
-                    </motion.div>
+                  <div key={index} className="value-item">
+                    <div className="value-icon">{value.icon}</div>
                     <span>{value.text}</span>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
 
-              <motion.div 
-                className="beta-callout"
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.7 }}
-                whileHover={{ scale: 1.02 }}
-              >
-                <motion.div 
-                  className="beta-icon"
-                  animate={{ rotate: [0, 10, -10, 0] }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                >
+              <div className="beta-callout">
+                <div className="beta-icon">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                     <path d="M12 2L13.09 8.26L22 9L17 14L18.18 22L12 18.77L5.82 22L7 14L2 9L10.91 8.26L12 2Z" stroke="currentColor" strokeWidth="2"/>
                   </svg>
-                </motion.div>
+                </div>
                 <div className="beta-content">
                   <h4>Join Our BETA Launch!</h4>
                   <p>Early customers get special pricing and direct input on our service improvements.</p>
                 </div>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           </motion.div>
 
           <motion.div 
             className="services-content"
-            initial={{ opacity: 0, x: 60 }}
+            initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
           >
             <h2>What We Print</h2>
             <div className="services-grid">
@@ -771,8 +471,8 @@ const Homepage = () => {
                   description: 'Home organizers, replacement parts, hobby projects, custom designs.',
                   icon: (
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                      <path d="M3 9L12 2L21 9V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <polyline points="9,22 9,12 15,12 15,22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M3 9L12 2L21 9V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z" stroke="currentColor" strokeWidth="2"/>
+                      <polyline points="9,22 9,12 15,12 15,22" stroke="currentColor" strokeWidth="2"/>
                     </svg>
                   )
                 },
@@ -814,71 +514,49 @@ const Homepage = () => {
                   description: 'Appliance parts, tool components, toy parts, household items.',
                   icon: (
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2"/>
-                      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" stroke="currentColor" strokeWidth="2"/>
                     </svg>
                   )
                 }
               ].map((service, index) => (
                 <motion.div
                   key={index}
-                  className="service-card enhanced-card"
-                  initial={{ opacity: 0, y: 30 }}
+                  className="service-card"
+                  initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: index * 0.1, duration: 0.6 }}
-                  whileHover={{ 
-                    y: -5, 
-                    scale: 1.03,
-                    rotateX: 5
-                  }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ y: -3 }}
                 >
-                  <motion.div 
-                    className="service-icon"
-                    whileHover={{ 
-                      rotate: [0, -10, 10, 0],
-                      scale: 1.1
-                    }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    {service.icon}
-                  </motion.div>
+                  <div className="service-icon">{service.icon}</div>
                   <h4>{service.title}</h4>
                   <p>{service.description}</p>
-                  <motion.div
-                    className="card-glow"
-                    initial={{ opacity: 0 }}
-                    whileHover={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
-                  />
                 </motion.div>
               ))}
             </div>
 
             <motion.div 
-              className="newsletter-signup enhanced-card"
-              initial={{ opacity: 0, y: 30 }}
+              className="newsletter-signup"
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.6 }}
             >
               <h4>Stay Updated</h4>
               <p>Be the first to know about new materials and special BETA offers.</p>
               <form className="signup-form" onSubmit={handleNewsletterSubmit}>
-                <motion.input
+                <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   className="email-input"
                   required
-                  whileFocus={{ scale: 1.02 }}
                 />
                 <motion.button
                   type="submit"
                   className="signup-button"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                 >
                   Join BETA
                 </motion.button>
@@ -888,26 +566,12 @@ const Homepage = () => {
         </div>
       </RaycastSection>
 
-      {/* Continue with remaining sections in next part... */}
-
       {/* ===== MATERIALS & PRICING SECTION ===== */}
       <RaycastSection id="materials" className="materials-pricing-section">
-        <motion.h2 
-          className="section-title"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          Materials & Pricing
-        </motion.h2>
+        <h2 className="section-title">Materials & Pricing</h2>
         
         <div className="materials-pricing-container">
-          <motion.div 
-            className="materials-content"
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-          >
+          <div className="materials-content">
             <h3>Premium Materials</h3>
             <div className="materials-grid">
               {[
@@ -932,38 +596,18 @@ const Homepage = () => {
               ].map((material, index) => (
                 <motion.div
                   key={index}
-                  className="material-card enhanced-card"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
+                  className="material-card"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: index * 0.2 }}
-                  whileHover={{ 
-                    scale: 1.03,
-                    rotateY: 5
-                  }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ y: -3 }}
                 >
-                  <motion.h4
-                    animate={{ 
-                      color: ['#1C1C1E', '#007AFF', '#1C1C1E'] 
-                    }}
-                    transition={{ duration: 3, repeat: Infinity }}
-                  >
-                    {material.name}
-                  </motion.h4>
+                  <h4>{material.name}</h4>
                   <p>{material.description}</p>
                   <div className="properties">
                     {material.properties.map((prop, idx) => (
-                      <motion.span 
-                        key={idx} 
-                        className="property-tag"
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: (index * 0.2) + (idx * 0.1) }}
-                        whileHover={{ scale: 1.1 }}
-                      >
-                        {prop}
-                      </motion.span>
+                      <span key={idx} className="property-tag">{prop}</span>
                     ))}
                   </div>
                   <div className="colors">
@@ -973,13 +617,7 @@ const Homepage = () => {
               ))}
             </div>
 
-            <motion.div 
-              className="file-requirements enhanced-card"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.6 }}
-            >
+            <div className="file-requirements">
               <h4>File Requirements</h4>
               <div className="requirements-grid">
                 {[
@@ -988,85 +626,37 @@ const Homepage = () => {
                   { label: 'Units:', value: 'Millimeters (mm)' },
                   { label: 'Model:', value: 'Watertight & manifold' }
                 ].map((req, index) => (
-                  <motion.div 
-                    key={index}
-                    className="req-item"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.7 + (index * 0.1) }}
-                    whileHover={{ x: 5 }}
-                  >
+                  <div key={index} className="req-item">
                     <span className="req-label">{req.label}</span>
                     <span>{req.value}</span>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
 
-          <motion.div 
-            className="pricing-content enhanced-card"
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-          >
+          <div className="pricing-content">
             <h3>Transparent Pricing</h3>
-            <motion.div 
-              className="pricing-formula"
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.4 }}
-            >
+            <div className="pricing-formula">
               {[
                 { label: 'Material', value: '₱5.00/gram' },
                 { label: 'Setup & Labor', value: '₱150.00' },
                 { label: 'Service Fee', value: '₱50.00' }
               ].map((part, index) => (
                 <React.Fragment key={index}>
-                  <motion.div 
-                    className="formula-part"
-                    whileHover={{ scale: 1.05, y: -2 }}
-                  >
+                  <div className="formula-part">
                     <span className="label">{part.label}</span>
-                    <motion.span 
-                      className="value"
-                      animate={{ 
-                        textShadow: [
-                          '0 0 5px rgba(0,122,255,0.5)',
-                          '0 0 15px rgba(0,122,255,0.3)',
-                          '0 0 5px rgba(0,122,255,0.5)'
-                        ]
-                      }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    >
-                      {part.value}
-                    </motion.span>
-                  </motion.div>
+                    <span className="value">{part.value}</span>
+                  </div>
                   {index < 2 && <span className="plus">+</span>}
                 </React.Fragment>
               ))}
               <span className="equals">=</span>
-              <motion.div 
-                className="formula-result"
-                whileHover={{ scale: 1.1 }}
-                animate={{ 
-                  boxShadow: [
-                    '0 0 10px rgba(0,122,255,0.3)',
-                    '0 0 20px rgba(0,122,255,0.2)',
-                    '0 0 10px rgba(0,122,255,0.3)'
-                  ]
-                }}
-                transition={{ 
-                  boxShadow: { duration: 2, repeat: Infinity }
-                }}
-              >
+              <div className="formula-result">
                 <span className="label">Total Price</span>
                 <span className="example">50g print = ₱450</span>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
 
             <div className="pricing-includes">
               <h4>What's Included</h4>
@@ -1078,58 +668,28 @@ const Homepage = () => {
                   'Professional packaging',
                   'Manufacturing defect guarantee'
                 ].map((item, index) => (
-                  <motion.div 
-                    key={index}
-                    className="include-item"
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.6 + (index * 0.1) }}
-                    whileHover={{ x: 5, scale: 1.02 }}
-                  >
-                    <motion.svg 
-                      width="16" 
-                      height="16" 
-                      viewBox="0 0 16 16" 
-                      fill="none"
-                      animate={{ rotate: [0, 360] }}
-                      transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                    >
+                  <div key={index} className="include-item">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                       <path d="M13.5 4.5L6 12L2.5 8.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </motion.svg>
+                    </svg>
                     <span>{item}</span>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
             </div>
 
-            <motion.div 
-              className="delivery-info"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 1 }}
-            >
+            <div className="delivery-info">
               <h4>Delivery</h4>
               <p><strong>₱200-400 via Lalamove</strong> (paid directly to rider)</p>
               <p>Secure packaging with damage protection guarantee.</p>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
       </RaycastSection>
 
-      {/* Continue in next message due to length... */}
-      
       {/* ===== FAQ SECTION ===== */}
       <RaycastSection id="faq" className="faq-section">
-        <motion.h2 
-          className="section-title"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          Frequently Asked Questions
-        </motion.h2>
+        <h2 className="section-title">Frequently Asked Questions</h2>
         
         <div className="faq-container">
           {[
@@ -1160,17 +720,15 @@ const Homepage = () => {
           ].map((faq, index) => (
             <motion.div
               key={index}
-              className={`faq-item enhanced-card ${openFAQ === index ? 'open' : ''}`}
+              className={`faq-item ${openFAQ === index ? 'open' : ''}`}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              whileHover={{ scale: 1.01 }}
+              transition={{ delay: index * 0.05 }}
             >
-              <motion.button
+              <button
                 className="faq-question"
                 onClick={() => toggleFAQ(index)}
-                whileHover={{ backgroundColor: 'rgba(0, 122, 255, 0.03)' }}
               >
                 <span>{faq.question}</span>
                 <motion.svg 
@@ -1180,54 +738,30 @@ const Homepage = () => {
                   fill="none" 
                   className="faq-icon"
                   animate={{ rotate: openFAQ === index ? 180 : 0 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.2 }}
                 >
                   <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </motion.svg>
-              </motion.button>
-              <motion.div 
-                className="faq-answer"
-                initial={false}
-                animate={{
-                  height: openFAQ === index ? 'auto' : 0,
-                  opacity: openFAQ === index ? 1 : 0
-                }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-              >
-                <div style={{ padding: openFAQ === index ? '0 24px 20px' : '0 24px 0' }}>
-                  <p>{faq.answer}</p>
-                </div>
-              </motion.div>
+              </button>
+              <div className="faq-answer">
+                <p>{faq.answer}</p>
+              </div>
             </motion.div>
           ))}
         </div>
       </RaycastSection>
 
-      {/* ===== ENHANCED CTA SECTION ===== */}
+      {/* ===== CTA SECTION ===== */}
       <RaycastSection id="start" className="start-section">
         <div className="start-container">
           <motion.div 
             className="start-content"
-            initial={{ opacity: 0, x: -40 }}
+            initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-            >
-              Ready to Start Printing?
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-            >
-              Upload your 3D file, get instant pricing, and place your order. Professional quality with service guarantee.
-            </motion.p>
+            <h2>Ready to Start Printing?</h2>
+            <p>Upload your 3D file, get instant pricing, and place your order. Professional quality with service guarantee.</p>
             
             <div className="start-features">
               {[
@@ -1269,63 +803,25 @@ const Homepage = () => {
                   text: 'Secure delivery' 
                 }
               ].map((feature, index) => (
-                <motion.div 
-                  key={index}
-                  className="start-feature"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.4 + (index * 0.1) }}
-                  whileHover={{ scale: 1.05, y: -2 }}
-                >
-                  <motion.div 
-                    className="feature-icon-wrapper"
-                    whileHover={{ rotate: 360 }}
-                    transition={{ duration: 0.6 }}
-                  >
-                    {feature.icon}
-                  </motion.div>
+                <div key={index} className="start-feature">
+                  <div className="feature-icon-wrapper">{feature.icon}</div>
                   <span>{feature.text}</span>
-                </motion.div>
+                </div>
               ))}
             </div>
 
             <motion.button
-              className="primary-button xl glow-button"
+              className="primary-button xl"
               onClick={() => navigate('/configure')}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.8 }}
-              whileHover={{ 
-                scale: 1.05,
-                boxShadow: '0 0 30px rgba(255,255,255,0.5)'
-              }}
-              whileTap={{ scale: 0.95 }}
-              animate={{ 
-                boxShadow: [
-                  '0 0 0px rgba(255,255,255,0)',
-                  '0 0 25px rgba(255,255,255,0.3)',
-                  '0 0 0px rgba(255,255,255,0)'
-                ]
-              }}
-              transition={{
-                boxShadow: { duration: 3, repeat: Infinity, ease: "easeInOut" }
-              }}
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.98 }}
             >
               <span>Upload Your 3D File</span>
-              <motion.svg 
-                width="20" 
-                height="20" 
-                viewBox="0 0 20 20" 
-                fill="none"
-                animate={{ y: [0, -2, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-              >
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                 <path d="M10 1V14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 <path d="M5 9L10 14L15 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 <path d="M3 17H17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </motion.svg>
+              </svg>
             </motion.button>
 
             <div className="contact-info">
@@ -1349,128 +845,60 @@ const Homepage = () => {
                   text: 'GCash & Bank Transfer'
                 }
               ].map((item, index) => (
-                <motion.div 
-                  key={index}
-                  className="contact-item"
-                  initial={{ opacity: 0, x: -10 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 1 + (index * 0.1) }}
-                  whileHover={{ x: 5 }}
-                >
+                <div key={index} className="contact-item">
                   {item.icon}
                   <span>{item.text}</span>
-                </motion.div>
+                </div>
               ))}
             </div>
           </motion.div>
 
           <motion.div 
             className="start-visual"
-            initial={{ opacity: 0, scale: 0.8 }}
+            initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
           >
-            <motion.div 
-              className="guarantee-badge"
-              animate={{ 
-                y: [0, -10, 0],
-                rotateY: [0, 5, -5, 0]
-              }}
-              transition={{ 
-                duration: 4, 
-                repeat: Infinity, 
-                ease: "easeInOut" 
-              }}
-            >
-              <motion.div 
-                className="badge-icon"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-              >
+            <div className="guarantee-badge">
+              <div className="badge-icon">
                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
                   <path d="M16 2L28 8V16C28 22 22 26 16 28C10 26 4 22 4 16V8L16 2Z" stroke="currentColor" strokeWidth="2"/>
                   <path d="M12 16L16 20L24 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
-              </motion.div>
+              </div>
               <div className="badge-content">
                 <h4>Service Guarantee</h4>
                 <p>Quality prints or your money back</p>
                 <div className="guarantee-stats">
-                  {[
-                    { number: '99.8%', text: 'Success Rate' },
-                    { number: '24h', text: 'Avg Delivery' }
-                  ].map((stat, index) => (
-                    <motion.div 
-                      key={index}
-                      className="guarantee-stat"
-                      whileHover={{ scale: 1.1 }}
-                    >
-                      <motion.span 
-                        className="stat-number"
-                        animate={{ 
-                          textShadow: [
-                            '0 0 5px rgba(255,255,255,0.8)',
-                            '0 0 15px rgba(255,255,255,0.5)',
-                            '0 0 5px rgba(255,255,255,0.8)'
-                          ]
-                        }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                      >
-                        {stat.number}
-                      </motion.span>
-                      <span className="stat-text">{stat.text}</span>
-                    </motion.div>
-                  ))}
+                  <div className="guarantee-stat">
+                    <span className="stat-number">99.8%</span>
+                    <span className="stat-text">Success Rate</span>
+                  </div>
+                  <div className="guarantee-stat">
+                    <span className="stat-number">24h</span>
+                    <span className="stat-text">Avg Delivery</span>
+                  </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </motion.div>
         </div>
       </RaycastSection>
 
-      {/* ===== ENHANCED FOOTER ===== */}
-      <motion.footer 
-        className="site-footer"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-      >
+      {/* ===== FOOTER ===== */}
+      <footer className="site-footer">
         <div className="footer-container">
           <div className="footer-content">
-            <motion.div 
-              className="footer-brand"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-            >
+            <div className="footer-brand">
               <div className="footer-logo">
-                <div className="logo-icon">
-                  <div className="cube-3d rotating-cube">
-                    <div className="cube-face front"></div>
-                    <div className="cube-face back"></div>
-                    <div className="cube-face right"></div>
-                    <div className="cube-face left"></div>
-                    <div className="cube-face top"></div>
-                    <div className="cube-face bottom"></div>
-                  </div>
-                </div>
+                <PrismLogo size={32} />
                 <span>Prism Box 3D</span>
               </div>
               <p>Professional 3D printing service in San Jose del Monte, Bulacan. Quality prints with transparent pricing and service guarantee.</p>
-            </motion.div>
+            </div>
 
             <div className="footer-links">
-              <motion.div 
-                className="footer-section"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-              >
+              <div className="footer-section">
                 <h4>Service</h4>
                 <ul>
                   {[
@@ -1479,81 +907,40 @@ const Homepage = () => {
                     { label: 'FAQ', target: 'faq' },
                     { label: 'About Us', target: 'about' }
                   ].map((item, index) => (
-                    <motion.li 
-                      key={index}
-                      whileHover={{ x: 5 }}
-                    >
+                    <li key={index}>
                       <button onClick={() => smoothScrollTo(item.target)}>
                         {item.label}
                       </button>
-                    </motion.li>
+                    </li>
                   ))}
                 </ul>
-              </motion.div>
+              </div>
 
-              <motion.div 
-                className="footer-section"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.3 }}
-              >
+              <div className="footer-section">
                 <h4>Contact</h4>
                 <ul>
-                  {[
-                    'San Jose del Monte, Bulacan',
-                    'GCash & Bank Transfer',
-                    'Quality Guaranteed',
-                    'BETA Service'
-                  ].map((item, index) => (
-                    <motion.li 
-                      key={index}
-                      initial={{ opacity: 0, x: -10 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: 0.4 + (index * 0.1) }}
-                    >
-                      {item}
-                    </motion.li>
-                  ))}
+                  <li>San Jose del Monte, Bulacan</li>
+                  <li>GCash & Bank Transfer</li>
+                  <li>Quality Guaranteed</li>
+                  <li>BETA Service</li>
                 </ul>
-              </motion.div>
+              </div>
             </div>
           </div>
 
-          <motion.div 
-            className="footer-bottom"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.5 }}
-          >
+          <div className="footer-bottom">
             <div className="footer-bottom-content">
               <p>&copy; 2025 Prism Box 3D. All rights reserved.</p>
               <div className="footer-status">
-                <motion.span 
-                  className="status-badge"
-                  animate={{ 
-                    boxShadow: [
-                      '0 0 5px rgba(255, 149, 0, 0.3)',
-                      '0 0 15px rgba(255, 149, 0, 0.5)',
-                      '0 0 5px rgba(255, 149, 0, 0.3)'
-                    ]
-                  }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                >
-                  <motion.div 
-                    className="status-dot"
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
+                <span className="status-badge">
+                  <div className="status-dot"></div>
                   BETA Launch
-                </motion.span>
+                </span>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
-      </motion.footer>
+      </footer>
     </div>
   );
 };
@@ -1562,16 +949,10 @@ const RaycastSection = ({ children, className, id }) => (
   <motion.section
     id={id}
     className={className}
-    initial="hidden"
-    whileInView="visible"
+    initial={{ opacity: 0 }}
+    whileInView={{ opacity: 1 }}
     viewport={{ once: true, margin: "-100px" }}
-    variants={{
-      hidden: { opacity: 0 },
-      visible: {
-        opacity: 1,
-        transition: { staggerChildren: 0.1 }
-      }
-    }}
+    transition={{ duration: 0.6 }}
   >
     {children}
   </motion.section>
