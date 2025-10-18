@@ -92,7 +92,10 @@ const Homepage = () => {
               </div>
             </div>
             <div className="logo-content">
-              <h1 className="logo-title">Prism Box 3D</h1>
+              <div className="logo-title-row">
+                <h1 className="logo-title">Prism Box 3D</h1>
+                <span className="beta-badge">BETA</span>
+              </div>
               <span className="logo-subtitle">3D Printing Service</span>
             </div>
           </div>
