@@ -1,16 +1,13 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import ReCAPTCHA from "react-google-recaptcha";
 import "./Payment.css";
 
-// --- API KEYS ---
-const RECAPTCHA_SITE_KEY = "6Lfnbu4rAAAAADQBQ9H_snq5x_g4UWfGGFSDKVuZ";
+const RECAPTCHA_SITE_KEY = "6Lclce4rAAAAAA7qN-JArX1mRhzhvN2K7A2ik7Hn";
 const MAILBOXLAYER_KEY = "9f85e9a8f8f649c7c13b1ebbdd612967";
 const NUMVERIFY_KEY = "9d19023e000f6d6077c08a7f15fd7d5a";
 
-// --- Constants for Your Business ---
 const TRUE_FILAMENT_COST_PER_GRAM = 0.40;
 const TRUE_LABOR_COST = 50;
 const TRUE_KWH_RATE = 12;
@@ -19,8 +16,6 @@ const PRINTER_WATT = 200;
 const Payment = ({ isAdmin }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const recaptchaRef = useRef();
-
   const [customerInfo, setCustomerInfo] = useState({
     name: "", email: "", phone: "", address: "", studentId: "",
   });
@@ -28,11 +23,8 @@ const Payment = ({ isAdmin }) => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showProfit, setShowProfit] = useState(false);
-  const [captchaVerified, setCaptchaVerified] = useState(false);
 
   const orderData = location.state?.orderData;
-
-  // A default order to prevent the page from crashing if accessed directly
   const defaultOrder = {
     config: {
       file: { name: "test-model.stl" },
@@ -44,10 +36,8 @@ const Payment = ({ isAdmin }) => {
       serviceFees: { cleaning: 120 }, subtotal: 539.2, discountAmount: 0, total: 539.2,
     },
   };
-
   const order = orderData || defaultOrder;
 
-  // --- Profit Calculation Logic ---
   const grams = Number(order.config.grams);
   const printHours = Number(order.config.printTime);
   const subtotal = order.priceBreakdown.subtotal;
@@ -57,16 +47,15 @@ const Payment = ({ isAdmin }) => {
   const profitAmount = subtotal - yourTotalCost;
   const profitPercent = yourTotalCost > 0 ? (profitAmount / yourTotalCost) * 100 : 0;
 
-  // --- API Validation Functions ---
   async function validateEmailAPI(email) {
     if (!MAILBOXLAYER_KEY.includes("YOUR_")) {
       const url = `https://apilayer.net/api/check?access_key=${MAILBOXLAYER_KEY}&email=${email}&smtp=1&format=1`;
       try {
         const res = await axios.get(url);
         return res.data.format_valid && res.data.mx_found && res.data.smtp_check && !res.data.disposable;
-      } catch { return false; } // Fail safely
+      } catch { return false; }
     }
-    return /\S+@\S+\.\S+/.test(email); // Fallback to basic check if no key
+    return /\S+@\S+\.\S+/.test(email);
   }
 
   async function validatePhoneAPI(phone) {
@@ -75,12 +64,11 @@ const Payment = ({ isAdmin }) => {
       try {
         const res = await axios.get(url);
         return res.data.valid && (res.data.line_type === "mobile" || res.data.line_type === "cellular");
-      } catch { return false; } // Fail safely
+      } catch { return false; }
     }
-    return /^(09|\+639)\d{9}$/.test(phone.replace(/\s/g, "")); // Fallback if no key
+    return /^(09|\+639)\d{9}$/.test(phone.replace(/\s/g, ""));
   }
 
-  // --- Form Handling ---
   const handleInputChange = (field, value) => {
     setCustomerInfo((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) setErrors((prev) => ({ ...prev, [field]: "" }));
@@ -90,14 +78,13 @@ const Payment = ({ isAdmin }) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // 1. Basic Form Validation
     const formErrors = {};
     if (!customerInfo.name.trim()) formErrors.name = "Full name is required";
     if (!customerInfo.email.trim()) formErrors.email = "Email is required";
     if (!customerInfo.phone.trim()) formErrors.phone = "Mobile number is required";
     if (!customerInfo.address.trim()) formErrors.address = "Address is required";
     if (order.config.studentDiscount && !customerInfo.studentId.trim()) {
-        formErrors.studentId = "Student ID is required";
+      formErrors.studentId = "Student ID is required";
     }
     setErrors(formErrors);
     if (Object.keys(formErrors).length > 0) {
@@ -105,14 +92,12 @@ const Payment = ({ isAdmin }) => {
       return;
     }
 
-    // 2. reCAPTCHA Validation
-    if (!captchaVerified) {
+    if (!window.recaptchaVerified) {
       alert("Please complete the reCAPTCHA verification.");
       setIsSubmitting(false);
       return;
     }
 
-    // 3. API-based Email and Phone Validation
     const emailIsValid = await validateEmailAPI(customerInfo.email);
     if (!emailIsValid) {
       alert("The email address provided is not valid or deliverable. Please check it and try again.");
@@ -127,7 +112,6 @@ const Payment = ({ isAdmin }) => {
       return;
     }
     
-    // All checks passed!
     alert(`🎉 Order Submitted Successfully!\n\nThank you, ${customerInfo.name}! We will email payment instructions and order updates to ${customerInfo.email}.`);
     navigate("/");
   };
@@ -147,7 +131,6 @@ const Payment = ({ isAdmin }) => {
 
         <form onSubmit={handleSubmit}>
           <div className="main-layout">
-            {/* --- Left Column: Forms --- */}
             <div className="form-column">
               <div className="info-card">
                 <h2>📞 Contact Information</h2>
@@ -195,7 +178,7 @@ const Payment = ({ isAdmin }) => {
                 </div>
                 <div className="delivery-terms">
                   <h4>Delivery Terms</h4>
-                  <ul><li>The Lalamove delivery fee is **not included** in the total and must be paid directly to the rider.</li></ul>
+                  <ul><li>The Lalamove delivery fee is not included in the total and must be paid directly to the rider.</li></ul>
                 </div>
               </div>
 
@@ -214,16 +197,14 @@ const Payment = ({ isAdmin }) => {
               </div>
 
               <div className="info-card" style={{ display: 'flex', justifyContent: 'center' }}>
-                <ReCAPTCHA ref={recaptchaRef} sitekey={RECAPTCHA_SITE_KEY} onChange={() => setCaptchaVerified(true)}/>
+                <div className="g-recaptcha" data-sitekey="6Lclce4rAAAAAA7qN-JArX1mRhzhvN2K7A2ik7Hn" data-callback="onRecaptchaSuccess"></div>
               </div>
             </div>
 
-            {/* --- Right Column: Order Summary --- */}
             <div className="summary-sidebar">
               <div className="summary-card">
                 <h3>📋 Order Summary</h3>
                 <div className="order-details">
-                  {/* Order details rows */}
                   <div className="detail-item"><span>File:</span><strong>{order.config.file?.name}</strong></div>
                   <div className="detail-item"><span>Material:</span><strong>{order.config.material}</strong></div>
                   <div className="detail-item"><span>Weight:</span><strong>{order.config.grams}g</strong></div>
@@ -235,7 +216,7 @@ const Payment = ({ isAdmin }) => {
                     <div className="price-row"><span>Labor & Setup</span><span>₱{order.priceBreakdown.laborFee.toFixed(2)}</span></div>
                     <div className="price-row"><span>Electricity</span><span>₱{order.priceBreakdown.electricityCharge.toFixed(2)}</span></div>
                     {Object.entries(order.priceBreakdown.serviceFees || {}).map(([key, value]) => (
-                        <div className="price-row" key={key}><span>{key}</span><span>₱{value.toFixed(2)}</span></div>
+                      <div className="price-row" key={key}><span>{key}</span><span>₱{value.toFixed(2)}</span></div>
                     ))}
                     <div className="price-divider"></div>
                     {order.priceBreakdown.discountAmount > 0 && (
@@ -245,7 +226,6 @@ const Payment = ({ isAdmin }) => {
                   </div>
                 </div>
                 
-                {/* --- Admin Only Section --- */}
                 {isAdmin && (
                   <>
                     <button type="button" className="show-profit-btn" onClick={() => setShowProfit(v => !v)}>
