@@ -7,7 +7,7 @@ import "./Payment.css";
 
 // --- IMPORTANT: REPLACE WITH YOUR REAL KEYS ---
 // You will get these in Step 3 after deploying the site. For now, you can leave them as is, but validation will fail.
-const RECAPTCHA_SITE_KEY = "6Ld8g-0rAAAAAGsQ3LxD6dSbZt7_N6ul3CLjjwTx";
+const RECAPTCHA_SITE_KEY = "6LeRZ-4rAAAAAL0iWYxP3FS6Y4D3mwOSO4khUzpd";
 const MAILBOXLAYER_KEY = "9f85e9a8f8f649c7c13b1ebbdd612967";
 const NUMVERIFY_KEY = "Y9d19023e000f6d6077c08a7f15fd7d5a";
 
