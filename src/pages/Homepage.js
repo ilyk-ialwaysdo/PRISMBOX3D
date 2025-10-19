@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import PrismBackground from '../components/PrismBackground';
 import './Homepage.css';
 
@@ -53,13 +53,13 @@ const Homepage = () => {
       visible: {
         opacity: 1,
         transition: {
-          staggerChildren: 0.1,
-          delayChildren: 0.2
+          staggerChildren: 0.15,
+          delayChildren: 0.3
         }
       }
     },
     item: {
-      hidden: { opacity: 0, y: 20 },
+      hidden: { opacity: 0, y: 30 },
       visible: {
         opacity: 1,
         y: 0,
@@ -68,50 +68,32 @@ const Homepage = () => {
           ease: [0.25, 0.46, 0.45, 0.94]
         }
       }
+    },
+    cardHover: {
+      rest: { scale: 1, y: 0 },
+      hover: {
+        scale: 1.02,
+        y: -4,
+        transition: {
+          duration: 0.2,
+          ease: "easeOut"
+        }
+      }
     }
   }), []);
 
-  // SIMPLIFIED LOGO COMPONENT - Subtle animation
-  const PrismLogo = ({ size = 24 }) => (
-    <motion.div
-      className="prism-logo"
-      style={{ width: size, height: size }}
-      animate={{ 
-        rotateY: [0, 360]
-      }}
-      transition={{
-        duration: 8,
-        repeat: Infinity,
-        ease: "linear"
-      }}
-    >
-      <svg
-        width={size}
-        height={size}
-        viewBox="0 0 24 24"
-        fill="none"
-        className="prism-svg"
-      >
-        <path
-          d="M4 8L12 4L20 8V16L12 20L4 16V8Z"
-          stroke="url(#prismGradient)"
-          strokeWidth="2"
-          fill="rgba(0, 122, 255, 0.1)"
-        />
-        <path
-          d="M12 4V20M4 8L20 16M4 16L20 8"
-          stroke="url(#prismGradient)"
-          strokeWidth="1"
-          opacity="0.6"
-        />
-        <defs>
-          <linearGradient id="prismGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#007AFF" />
-            <stop offset="100%" stopColor="#34C759" />
-          </linearGradient>
-        </defs>
-      </svg>
-    </motion.div>
+  // FIXED Logo Component - no rotation
+  const PrismLogo = ({ size = 32 }) => (
+    <div className="logo-icon" style={{ width: size, height: size }}>
+      <div className="cube-3d">
+        <div className="cube-face front"></div>
+        <div className="cube-face back"></div>
+        <div className="cube-face right"></div>
+        <div className="cube-face left"></div>
+        <div className="cube-face top"></div>
+        <div className="cube-face bottom"></div>
+      </div>
+    </div>
   );
 
   if (!isLoaded) {
@@ -129,6 +111,7 @@ const Homepage = () => {
     <div className="homepage raycast-theme">
       <PrismBackground />
       
+      {/* FIXED Header with Working Navigation */}
       <motion.header 
         className={`raycast-header ${isScrolled ? 'scrolled' : ''}`}
         initial={{ opacity: 0, y: -20 }}
@@ -136,8 +119,8 @@ const Homepage = () => {
         transition={{ duration: 0.6 }}
       >
         <div className="header-container">
-          <div className="logo-group">
-            <PrismLogo size={24} />
+          <div className="logo-group" onClick={() => smoothScrollTo('hero')}>
+            <PrismLogo size={32} />
             <div className="logo-content">
               <div className="logo-title-row">
                 <h1 className="logo-title">Prism Box 3D</h1>
@@ -147,36 +130,55 @@ const Homepage = () => {
             </div>
           </div>
 
+          {/* FIXED Navigation - Mixed scroll and routing */}
           <nav className="nav-links">
             {[
-              { label: 'Process', target: 'process' },
-              { label: 'About', target: 'about' },
-              { label: 'Materials', target: 'materials' },
-              { label: 'FAQ', target: 'faq' },
-              { label: 'Start', target: 'start' }
+              { label: 'How It Works', target: 'process', type: 'scroll' },
+              { label: 'About Us', target: 'about', type: 'scroll' },
+              { label: 'Materials Catalog', target: '/filaments', type: 'navigate' },
+              { label: 'FAQ', target: 'faq', type: 'scroll' }
             ].map((item, index) => (
               <motion.button
                 key={item.target}
                 className="nav-link"
-                onClick={() => smoothScrollTo(item.target)}
-                whileHover={{ scale: 1.02 }}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.1 + (index * 0.05) }}
+                onClick={() => {
+                  if (item.type === 'navigate') {
+                    navigate(item.target);
+                  } else {
+                    smoothScrollTo(item.target);
+                  }
+                }}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 + (index * 0.1) }}
+                whileHover={{ scale: 1.02, y: -1 }}
+                whileTap={{ scale: 0.98 }}
               >
                 {item.label}
               </motion.button>
             ))}
+            
+            <motion.button
+              className="nav-link primary-button"
+              onClick={() => navigate('/configuration')}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.5 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Get Started
+            </motion.button>
           </nav>
         </div>
       </motion.header>
 
-      {/* ===== HERO SECTION ===== */}
-      <motion.section 
-        className="hero-section"
-        style={{ y: yHero }}
-      >
-        <div className="hero-container">
+      {/* Hero Section */}
+      <section className="hero-section">
+        <motion.div 
+          className="hero-container"
+          style={{ y: yHero }}
+        >
           <motion.div 
             className="hero-content"
             variants={variants.container}
@@ -185,45 +187,52 @@ const Homepage = () => {
           >
             <motion.div className="status-badge" variants={variants.item}>
               <div className="status-dot"></div>
-              <span>Quality Guaranteed</span>
+              <span>Now Live in Bulacan - BETA Launch</span>
             </motion.div>
 
             <motion.h1 className="hero-title" variants={variants.item}>
-              Your 3D files, 
-              <span className="highlight-text">printed & delivered</span>
+              Quality <span className="highlight-text">3D Printing</span><br />
+              Made Accessible
             </motion.h1>
 
             <motion.p className="hero-description" variants={variants.item}>
-              Upload your STL file, choose materials and colors, get instant pricing. 
-              Professional 3D printing service with quality guarantee and local delivery in San Jose del Monte, Bulacan.
+              From concept to reality in days, not weeks. Upload your design, 
+              choose materials, and get high-quality prints delivered to your door.
             </motion.p>
 
             <motion.div className="feature-list" variants={variants.item}>
               {[
-                'Instant file analysis & weight calculation',
-                'Real-time pricing with material selection',
-                'Professional quality with service guarantee',
-                'Fast local delivery with damage protection'
+                'Student discounts available with valid ID',
+                'Multiple materials and finishes available',
+                '24-hour rush service for urgent projects',
+                'Quality guarantee or your money back'
               ].map((feature, index) => (
-                <div key={index} className="feature-item">
+                <motion.div 
+                  key={index} 
+                  className="feature-item"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.8 + (index * 0.1) }}
+                  whileHover={{ x: 4, scale: 1.02 }}
+                >
                   <div className="feature-icon">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                       <path d="M10 3L4.5 8.5L2 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
                   <span>{feature}</span>
-                </div>
+                </motion.div>
               ))}
             </motion.div>
 
             <motion.div className="hero-actions" variants={variants.item}>
               <motion.button
-                className="primary-button large"
-                onClick={() => navigate('/configure')}
-                whileHover={{ scale: 1.02, y: -2 }}
-                whileTap={{ scale: 0.98 }}
+                className="primary-button large glow-button"
+                onClick={() => navigate('/configuration')}
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
               >
-                <span>Upload File & Get Quote</span>
+                <span>Start Your Print</span>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
@@ -233,7 +242,7 @@ const Homepage = () => {
 
           <motion.div 
             className="hero-visual"
-            initial={{ opacity: 0, x: 40 }}
+            initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
@@ -250,7 +259,7 @@ const Homepage = () => {
               
               <div className="card-content">
                 <h3>Professional 3D Printing Service</h3>
-                <p>Modern startup focused on quality prints with competitive rates, reliable delivery, and comprehensive service guarantee.</p>
+                <p>Modern startup focused on quality prints with competitive rates, reliable delivery, and comprehensive service guarantee. Student-friendly pricing available.</p>
                 
                 <div className="stats-grid">
                   <div className="stat">
@@ -264,7 +273,7 @@ const Homepage = () => {
                 </div>
                 
                 <div className="features-list">
-                  {['Quality guarantee', 'Modern equipment', 'Fair pricing'].map((item, index) => (
+                  {['Student discounts', 'Quality guarantee', 'Fair pricing'].map((item, index) => (
                     <div key={index} className="feature-tag">
                       <span>{item}</span>
                     </div>
@@ -273,109 +282,26 @@ const Homepage = () => {
               </div>
             </div>
           </motion.div>
-        </div>
-      </motion.section>
+        </motion.div>
+      </section>
 
-      {/* ===== VISUAL BREAK 1 ===== */}
-      <div className="section-divider">
-        <div className="divider-content">
-          <div className="divider-line"></div>
-          <div className="divider-icon">
-            <PrismLogo size={24} />
-          </div>
-          <div className="divider-line"></div>
-        </div>
-      </div>
-
-      {/* ===== PROCESS SECTION ===== */}
-      <RaycastSection id="process" className="process-section">
-        <h2 className="section-title">Simple 4-Step Process</h2>
-        
-        <div className="process-grid">
-          {[
-            {
-              step: '01',
-              title: 'Upload Your File',
-              description: 'Upload STL, OBJ, or 3MF files. Automatic weight calculation and material analysis.',
-              icon: (
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2Z" stroke="currentColor" strokeWidth="2"/>
-                  <path d="M14 2V8H20" stroke="currentColor" strokeWidth="2"/>
-                </svg>
-              )
-            },
-            {
-              step: '02',
-              title: 'Choose Material & Color',
-              description: 'Select from PLA, PETG, ABS filaments in various colors. Real-time price updates.',
-              icon: (
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="2"/>
-                  <circle cx="12" cy="12" r="1" fill="currentColor"/>
-                  <path d="M21 12c0 1.66-4.03 3-9 3s-9-1.34-9-3" stroke="currentColor" strokeWidth="2"/>
-                </svg>
-              )
-            },
-            {
-              step: '03',
-              title: 'Payment & Order',
-              description: 'Secure payment via GCash or bank transfer. Order confirmation and tracking.',
-              icon: (
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <rect x="1" y="4" width="22" height="16" rx="2" ry="2" stroke="currentColor" strokeWidth="2"/>
-                  <line x1="1" y1="10" x2="23" y2="10" stroke="currentColor" strokeWidth="2"/>
-                </svg>
-              )
-            },
-            {
-              step: '04',
-              title: 'Print & Delivery',
-              description: 'Professional printing with progress updates. Secure packaging and delivery via Lalamove.',
-              icon: (
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <rect x="1" y="3" width="15" height="13" stroke="currentColor" strokeWidth="2"/>
-                  <polygon points="16,3 19,7 19,13 16,13" stroke="currentColor" strokeWidth="2" fill="none"/>
-                  <circle cx="5.5" cy="18.5" r="2.5" stroke="currentColor" strokeWidth="2"/>
-                  <circle cx="18.5" cy="18.5" r="2.5" stroke="currentColor" strokeWidth="2"/>
-                </svg>
-              )
-            }
-          ].map((item, index) => (
-            <motion.div
-              key={item.step}
-              className="process-card"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              whileHover={{ y: -4 }}
-            >
-              <div className="card-step">{item.step}</div>
-              <div className="card-icon">{item.icon}</div>
-              <h3>{item.title}</h3>
-              <p>{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </RaycastSection>
-
-      {/* ===== STATS BREAK ===== */}
+      {/* Stats Break */}
       <div className="stats-break">
         <div className="stats-container">
           {[
             { value: '99.8%', label: 'Print Success Rate' },
-            { value: '24h', label: 'Average Turnaround' },
-            { value: '₱5/g', label: 'Material Cost' },
-            { value: '3', label: 'Premium Materials' }
+            { value: '24hr', label: 'Rush Available' },
+            { value: '30%', label: 'Student Savings' },
+            { value: '₱345', label: 'Starting From' }
           ].map((stat, index) => (
             <motion.div
               key={index}
               className="stat-item"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              whileHover={{ y: -3 }}
+              whileHover={{ y: -4, scale: 1.05 }}
             >
               <div className="stat-value">{stat.value}</div>
               <div className="stat-label">{stat.label}</div>
@@ -384,62 +310,145 @@ const Homepage = () => {
         </div>
       </div>
 
-      {/* ===== ABOUT & SERVICES SECTION ===== */}
-      <RaycastSection id="about" className="about-services-section">
+      {/* Process Section */}
+      <section id="process" className="process-section">
+        <motion.h2 
+          className="section-title"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          How It Works
+        </motion.h2>
+        
+        <div className="process-grid">
+          {[
+            {
+              step: 1,
+              title: 'Upload Your Design',
+              description: 'Drag and drop your 3D files (STL, OBJ, 3MF). Our system automatically validates and estimates print time and material usage.',
+              icon: (
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                </svg>
+              )
+            },
+            {
+              step: 2,
+              title: 'Configure & Price',
+              description: 'Select materials, colors, and services. See real-time pricing with student discounts automatically applied with valid ID.',
+              icon: (
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              )
+            },
+            {
+              step: 3,
+              title: 'Print & Deliver',
+              description: 'We print with quality monitoring and deliver via Lalamove. Track your order status through our system.',
+              icon: (
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                </svg>
+              )
+            }
+          ].map((item, index) => (
+            <motion.div
+              key={index}
+              className="process-card enhanced-card"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.2 }}
+              whileHover="hover"
+              variants={variants.cardHover}
+            >
+              <div className="card-step">{item.step}</div>
+              <div className="card-icon">{item.icon}</div>
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* About & Services Section */}
+      <section id="about" className="about-services-section">
         <div className="about-services-container">
           <motion.div 
             className="about-content"
-            initial={{ opacity: 0, x: -40 }}
+            initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
             <h2>About Prism Box 3D</h2>
             <div className="about-story">
-              <p>We're a modern 3D printing startup based in San Jose del Monte, Bulacan. Our mission is simple: make professional 3D printing accessible to everyone - from students working on thesis projects to entrepreneurs creating prototypes.</p>
+              <p>
+                We're a modern 3D printing startup based in San Jose del Monte, Bulacan. 
+                Our mission is simple: make quality 3D printing accessible to everyone - 
+                from students working on thesis projects to entrepreneurs creating prototypes.
+              </p>
               
               <div className="about-values">
                 {[
-                  {
+                  { 
                     icon: (
-                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <path d="M9 12L11 14L15 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                        <circle cx="10" cy="10" r="9" stroke="currentColor" strokeWidth="2"/>
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
-                    ),
-                    text: 'Quality First'
+                    ), 
+                    text: 'Quality guarantee' 
                   },
-                  {
+                  { 
                     icon: (
-                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <path d="M10 1L12.5 6.5L19 7L14.5 11L16 18L10 15L4 18L5.5 11L1 7L7.5 6.5L10 1Z" stroke="currentColor" strokeWidth="2"/>
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                       </svg>
-                    ),
-                    text: 'Fair Pricing'
+                    ), 
+                    text: '24-hour rush service' 
                   },
-                  {
+                  { 
                     icon: (
-                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
                       </svg>
-                    ),
-                    text: 'Fast Service'
+                    ), 
+                    text: 'Student-friendly pricing' 
+                  },
+                  { 
+                    icon: (
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                      </svg>
+                    ), 
+                    text: 'Transparent pricing' 
                   }
-                ].map((value, index) => (
-                  <div key={index} className="value-item">
-                    <div className="value-icon">{value.icon}</div>
-                    <span>{value.text}</span>
-                  </div>
+                ].map((item, index) => (
+                  <motion.div 
+                    key={index}
+                    className="value-item"
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    whileHover={{ x: 8 }}
+                  >
+                    <div className="value-icon">{item.icon}</div>
+                    <span>{item.text}</span>
+                  </motion.div>
                 ))}
               </div>
-
+              
               <div className="beta-callout">
                 <div className="beta-icon">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 2L13.09 8.26L22 9L17 14L18.18 22L12 18.77L5.82 22L7 14L2 9L10.91 8.26L12 2Z" stroke="currentColor" strokeWidth="2"/>
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                 </div>
                 <div className="beta-content">
-                  <h4>Join Our BETA Launch!</h4>
+                  <h4>BETA Launch Benefits</h4>
                   <p>Early customers get special pricing and direct input on our service improvements.</p>
                 </div>
               </div>
@@ -448,85 +457,59 @@ const Homepage = () => {
 
           <motion.div 
             className="services-content"
-            initial={{ opacity: 0, x: 40 }}
+            initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            <h2>What We Print</h2>
+            <h2>Our Services</h2>
             <div className="services-grid">
               {[
                 {
+                  icon: (
+                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                  ),
                   title: 'Student Projects',
-                  description: 'Educational models, thesis projects, assignments. Special student pricing available.',
-                  icon: (
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                      <path d="M22 10V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v4" stroke="currentColor" strokeWidth="2"/>
-                      <path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-2" stroke="currentColor" strokeWidth="2"/>
-                      <rect x="6" y="10" width="12" height="4" stroke="currentColor" strokeWidth="2"/>
-                    </svg>
-                  )
+                  description: 'Thesis models, prototypes, and academic projects with special student pricing and fast turnaround.'
                 },
                 {
-                  title: 'Personal Items',
-                  description: 'Home organizers, replacement parts, hobby projects, custom designs.',
                   icon: (
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                      <path d="M3 9L12 2L21 9V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z" stroke="currentColor" strokeWidth="2"/>
-                      <polyline points="9,22 9,12 15,12 15,22" stroke="currentColor" strokeWidth="2"/>
+                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                     </svg>
-                  )
-                },
-                {
+                  ),
                   title: 'Business Prototypes',
-                  description: 'Product samples, marketing materials, professional prototypes.',
-                  icon: (
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                      <rect x="2" y="3" width="20" height="14" rx="2" ry="2" stroke="currentColor" strokeWidth="2"/>
-                      <line x1="8" y1="21" x2="16" y2="21" stroke="currentColor" strokeWidth="2"/>
-                      <line x1="12" y1="17" x2="12" y2="21" stroke="currentColor" strokeWidth="2"/>
-                    </svg>
-                  )
+                  description: 'Professional prototypes and small-batch production for entrepreneurs and startups.'
                 },
                 {
-                  title: 'Creative Projects',
-                  description: 'Art pieces, miniatures, decorative items, unique designs.',
                   icon: (
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="2" fill="none"/>
+                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h4" />
                     </svg>
-                  )
+                  ),
+                  title: 'Personal Items',
+                  description: 'Custom designs, replacement parts, and creative projects for hobbyists and makers.'
                 },
                 {
-                  title: 'Gaming & Hobbies',
-                  description: 'Gaming accessories, board game pieces, model parts, drone components.',
                   icon: (
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                      <rect x="2" y="3" width="20" height="11" rx="2" ry="2" stroke="currentColor" strokeWidth="2"/>
-                      <circle cx="8" cy="9" r="1" stroke="currentColor" strokeWidth="2"/>
-                      <path d="M16 8L18 10L16 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <line x1="12" y1="17" x2="12" y2="22" stroke="currentColor" strokeWidth="2"/>
-                      <line x1="8" y1="22" x2="16" y2="22" stroke="currentColor" strokeWidth="2"/>
+                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
-                  )
-                },
-                {
-                  title: 'Replacement Parts',
-                  description: 'Appliance parts, tool components, toy parts, household items.',
-                  icon: (
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                      <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" stroke="currentColor" strokeWidth="2"/>
-                    </svg>
-                  )
+                  ),
+                  title: 'Rush Service',
+                  description: '24-hour turnaround available for urgent projects and last-minute deadlines.'
                 }
               ].map((service, index) => (
                 <motion.div
                   key={index}
                   className="service-card"
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  whileHover={{ y: -3 }}
+                  whileHover="hover"
+                  variants={variants.cardHover}
                 >
                   <div className="service-icon">{service.icon}</div>
                   <h4>{service.title}</h4>
@@ -535,13 +518,8 @@ const Homepage = () => {
               ))}
             </div>
 
-            <motion.div 
-              className="newsletter-signup"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <h4>Stay Updated</h4>
+            <div className="newsletter-signup">
+              <h4>Join Our BETA Community</h4>
               <p>Be the first to know about new materials and special BETA offers.</p>
               <form className="signup-form" onSubmit={handleNewsletterSubmit}>
                 <input
@@ -555,56 +533,88 @@ const Homepage = () => {
                 <motion.button
                   type="submit"
                   className="signup-button"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   Join BETA
                 </motion.button>
               </form>
-            </motion.div>
+            </div>
           </motion.div>
         </div>
-      </RaycastSection>
+      </section>
 
-      {/* ===== MATERIALS & PRICING SECTION ===== */}
-      <RaycastSection id="materials" className="materials-pricing-section">
-        <h2 className="section-title">Materials & Pricing</h2>
+      {/* Materials & Pricing Section */}
+      <section id="materials" className="materials-pricing-section">
+        <motion.h2 
+          className="section-title"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          Materials & Pricing
+        </motion.h2>
         
         <div className="materials-pricing-container">
           <div className="materials-content">
-            <h3>Premium Materials</h3>
+            <h3>Available Materials</h3>
             <div className="materials-grid">
               {[
                 {
-                  name: 'PLA',
-                  description: 'Easy to print, biodegradable, perfect for beginners and decorative items.',
-                  properties: ['Eco-friendly', 'Low odor', 'Good surface finish'],
-                  colors: ['White', 'Black', 'Red', 'Blue', 'Green', 'Yellow', 'Orange', 'Purple']
+                  name: 'PLA Matte',
+                  description: 'Non-reflective matte finish perfect for professional applications',
+                  properties: ['Matte finish', 'No fingerprints', 'Professional appearance'],
+                  colors: ['Beige', 'Red', 'Dark Blue'],
+                  studentPrice: '₱3.50/g',
+                  regularPrice: '₱5.00/g'
                 },
                 {
-                  name: 'PETG',
-                  description: 'Strong, chemical resistant, crystal clear. Great for functional parts.',
-                  properties: ['Chemical resistant', 'Impact resistant', 'Crystal clear'],
-                  colors: ['Clear', 'White', 'Black', 'Red', 'Blue', 'Green']
+                  name: 'PLA+',
+                  description: 'Enhanced PLA with improved strength and temperature resistance',
+                  properties: ['Higher strength', 'Better heat resistance', 'Enhanced durability'],
+                  colors: ['Beige'],
+                  studentPrice: '₱3.75/g',
+                  regularPrice: '₱5.50/g'
                 },
                 {
                   name: 'ABS',
-                  description: 'Durable, heat resistant, perfect for mechanical parts.',
-                  properties: ['Heat resistant', 'Strong & durable', 'Post-processable'],
-                  colors: ['White', 'Black', 'Red', 'Blue', 'Gray']
+                  description: 'Industrial-grade material with excellent heat and impact resistance',
+                  properties: ['Heat resistant', 'Impact resistant', 'Chemical resistance'],
+                  colors: ['Silver'],
+                  studentPrice: '₱4.00/g',
+                  regularPrice: '₱6.00/g'
+                },
+                {
+                  name: 'PETG',
+                  description: 'Crystal clear with excellent chemical resistance and strength',
+                  properties: ['Chemical resistant', 'Crystal clear', 'Food safe'],
+                  colors: ['Silver'],
+                  studentPrice: '₱4.00/g',
+                  regularPrice: '₱6.00/g'
                 }
               ].map((material, index) => (
                 <motion.div
                   key={index}
                   className="material-card"
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 40 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  whileHover={{ y: -3 }}
+                  whileHover="hover"
+                  variants={variants.cardHover}
                 >
                   <h4>{material.name}</h4>
                   <p>{material.description}</p>
+                  <div className="pricing-display">
+                    <div className="price-tier student">
+                      <span className="tier-label">🎓 Student</span>
+                      <span className="price">{material.studentPrice}</span>
+                    </div>
+                    <div className="price-tier regular">
+                      <span className="tier-label">💼 Regular</span>
+                      <span className="price">{material.regularPrice}</span>
+                    </div>
+                  </div>
                   <div className="properties">
                     {material.properties.map((prop, idx) => (
                       <span key={idx} className="property-tag">{prop}</span>
@@ -617,54 +627,150 @@ const Homepage = () => {
               ))}
             </div>
 
-            <div className="file-requirements">
-              <h4>File Requirements</h4>
-              <div className="requirements-grid">
-                {[
-                  { label: 'Formats:', value: 'STL, OBJ, 3MF, PLY' },
-                  { label: 'Max Size:', value: '100MB per file' },
-                  { label: 'Units:', value: 'Millimeters (mm)' },
-                  { label: 'Model:', value: 'Watertight & manifold' }
-                ].map((req, index) => (
-                  <div key={index} className="req-item">
-                    <span className="req-label">{req.label}</span>
-                    <span>{req.value}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+            {/* View Full Catalog Button */}
+            <motion.div 
+              className="catalog-cta"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <motion.button
+                className="catalog-button"
+                onClick={() => navigate('/filaments')}
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <span>View Complete Materials Catalog</span>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </motion.button>
+            </motion.div>
           </div>
 
           <div className="pricing-content">
             <h3>Transparent Pricing</h3>
+            
             <div className="pricing-formula">
-              {[
-                { label: 'Material', value: '₱5.00/gram' },
-                { label: 'Setup & Labor', value: '₱150.00' },
-                { label: 'Service Fee', value: '₱50.00' }
-              ].map((part, index) => (
-                <React.Fragment key={index}>
-                  <div className="formula-part">
-                    <span className="label">{part.label}</span>
-                    <span className="value">{part.value}</span>
+              <div className="formula-header">
+                <h4>How We Calculate Your Total</h4>
+                <p>No hidden fees, everything is clearly broken down:</p>
+              </div>
+              
+              <div className="formula-breakdown">
+                <div className="formula-part">
+                  <div className="part-icon">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M10 2L3 7V18H8V13H12V18H17V7L10 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
                   </div>
-                  {index < 2 && <span className="plus">+</span>}
-                </React.Fragment>
-              ))}
-              <span className="equals">=</span>
+                  <div className="part-content">
+                    <span className="label">Material Cost</span>
+                    <div className="price-range">
+                      <span className="student-price">₱3.50-4.00/g</span>
+                      <span className="regular-price">₱5.00-6.00/g</span>
+                    </div>
+                    <small>Student vs Regular pricing</small>
+                  </div>
+                </div>
+                
+                <div className="plus-symbol">+</div>
+                
+                <div className="formula-part">
+                  <div className="part-icon">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M10 2C14.4183 2 18 5.58172 18 10C18 14.4183 14.4183 18 10 18C5.58172 18 2 14.4183 2 10C2 5.58172 5.58172 2 10 2Z" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M10 6V14M6 10H14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                    </svg>
+                  </div>
+                  <div className="part-content">
+                    <span className="label">Setup & Labor</span>
+                    <div className="price-range">
+                      <span className="student-price">₱150</span>
+                      <span className="regular-price">₱220</span>
+                    </div>
+                    <small>Setup, monitoring, post-processing</small>
+                  </div>
+                </div>
+                
+                <div className="plus-symbol">+</div>
+                
+                <div className="formula-part">
+                  <div className="part-icon">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M3 3H17C17.5523 3 18 3.44772 18 4V16C18 16.5523 17.5523 17 17 17H3C2.44772 17 2 16.5523 2 16V4C2 3.44772 2.44772 3 3 3Z" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M7 7H13M7 11H13M7 15H10" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                    </svg>
+                  </div>
+                  <div className="part-content">
+                    <span className="label">Packaging</span>
+                    <div className="price-range">
+                      <span className="student-price">₱20</span>
+                      <span className="regular-price">₱26</span>
+                    </div>
+                    <small>Box, bubble wrap, protection</small>
+                  </div>
+                </div>
+              </div>
+              
               <div className="formula-result">
-                <span className="label">Total Price</span>
-                <span className="example">50g print = ₱450</span>
+                <div className="equals-symbol">=</div>
+                <div className="result-content">
+                  <span className="label">Your Total Price</span>
+                  <div className="example-pricing">
+                    <div className="example">
+                      <span className="tier">🎓 Student Example (50g PLA Matte):</span>
+                      <span className="calculation">₱175 + ₱150 + ₱20 = <strong>₱345</strong></span>
+                    </div>
+                    <div className="example">
+                      <span className="tier">💼 Regular Example (50g PLA Matte):</span>
+                      <span className="calculation">₱250 + ₱220 + ₱26 = <strong>₱496</strong></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="additional-services">
+              <h4>Optional Add-on Services</h4>
+              <div className="services-list">
+                {[
+                  { name: 'Rush Service (24hr)', student: '+ ₱100', regular: '+ ₱150' },
+                  { name: 'Assembly/Gluing', student: '+ ₱75', regular: '+ ₱100' },
+                  { name: 'Multiple Color Changes', student: '+ ₱50', regular: '+ ₱75' }
+                ].map((service, index) => (
+                  <div key={index} className="service-item">
+                    <span className="service-name">{service.name}</span>
+                    <div className="service-pricing">
+                      <span className="student-add-on">{service.student}</span>
+                      <span className="regular-add-on">{service.regular}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="student-discount-info">
+              <div className="discount-badge">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 2L13.09 8.26L22 9L17 14L18.18 22L12 18.77L5.82 22L7 14L2 9L10.91 8.26L12 2Z" stroke="currentColor" strokeWidth="2"/>
+                </svg>
+                <div className="badge-content">
+                  <h4>🎓 Student Discount Available</h4>
+                  <p>Save up to 30% with valid student ID verification</p>
+                </div>
               </div>
             </div>
 
             <div className="pricing-includes">
-              <h4>What's Included</h4>
+              <h4>What's Included in Every Order</h4>
               <div className="includes-list">
                 {[
                   'Premium filament materials',
-                  'File processing & printer setup',
-                  'Quality checks & testing',
+                  'File processing & validation',
+                  'Professional printer setup',
+                  'Quality monitoring during print',
+                  'Post-processing (if needed)',
                   'Professional packaging',
                   'Manufacturing defect guarantee'
                 ].map((item, index) => (
@@ -679,283 +785,158 @@ const Homepage = () => {
             </div>
 
             <div className="delivery-info">
-              <h4>Delivery</h4>
+              <h4>Delivery Information</h4>
               <p><strong>₱200-400 via Lalamove</strong> (paid directly to rider)</p>
               <p>Secure packaging with damage protection guarantee.</p>
             </div>
           </div>
         </div>
-      </RaycastSection>
+      </section>
 
-      {/* ===== FAQ SECTION ===== */}
-      <RaycastSection id="faq" className="faq-section">
-        <h2 className="section-title">Frequently Asked Questions</h2>
+      {/* FAQ Section */}
+      <section id="faq" className="faq-section">
+        <motion.h2 
+          className="section-title"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          Frequently Asked Questions
+        </motion.h2>
         
         <div className="faq-container">
           {[
             {
-              question: 'What file formats do you accept?',
-              answer: 'We accept STL, OBJ, 3MF, and PLY files. STL is the most common format. Make sure files are under 100MB and models are watertight.'
-            },
-            {
-              question: 'How do you calculate pricing?',
-              answer: 'Simple formula: ₱5/gram material + ₱150 setup/labor + ₱50 service fee. Upload your file for instant weight calculation and exact pricing.'
-            },
-            {
-              question: 'What is your turnaround time?',
-              answer: 'Small items (under 50g): 1-2 days. Medium (50-200g): 2-3 days. Large (200g+): 3-5 days. We provide exact timing after file analysis.'
-            },
-            {
               question: 'Do you offer student discounts?',
-              answer: 'Yes! Students get special pricing for educational projects. Contact us with your student ID and project details for a custom quote.'
+              answer: 'Yes! Students get up to 30% off with a valid student ID. The discount applies to materials, services, and add-ons.'
             },
             {
-              question: 'What if something goes wrong?',
-              answer: 'We offer comprehensive guarantee. Print failures due to our equipment get free reprint or 60% refund. Delivery damage with video proof gets same coverage.'
+              question: 'What file formats do you accept?',
+              answer: 'We accept STL, OBJ, 3MF, and PLY files up to 100MB each. Our system automatically validates and estimates costs.'
             },
             {
-              question: 'Can you print multiple colors?',
-              answer: 'Each print is single-color, but we offer wide color selection. For multi-color designs, split your model into separate files for each color.'
+              question: 'How long does printing take?',
+              answer: 'Standard orders take 2-3 days. Rush service (24-hour turnaround) is available for urgent projects.'
+            },
+            {
+              question: 'What materials do you offer?',
+              answer: 'We offer PLA Matte, PLA+, ABS, and PETG in multiple colors. Each material has different properties for different applications.'
+            },
+            {
+              question: 'How does delivery work?',
+              answer: 'We use Lalamove for delivery throughout Bulacan and NCR. Costs ₱200-400 paid directly to rider. All prints are professionally packaged.'
+            },
+            {
+              question: 'What if my print has defects?',
+              answer: 'We guarantee quality or your money back. Manufacturing defects get free reprints or 60% refunds with quality photos.'
             }
           ].map((faq, index) => (
             <motion.div
               key={index}
-              className={`faq-item ${openFAQ === index ? 'open' : ''}`}
+              className="faq-item"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.05 }}
+              transition={{ delay: index * 0.1 }}
             >
               <button
                 className="faq-question"
                 onClick={() => toggleFAQ(index)}
               >
                 <span>{faq.question}</span>
-                <motion.svg 
+                <svg 
+                  className={`faq-chevron ${openFAQ === index ? 'open' : ''}`}
                   width="20" 
                   height="20" 
                   viewBox="0 0 20 20" 
-                  fill="none" 
-                  className="faq-icon"
-                  animate={{ rotate: openFAQ === index ? 180 : 0 }}
-                  transition={{ duration: 0.2 }}
+                  fill="none"
                 >
-                  <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </motion.svg>
+                  <path d="M6 8L10 12L14 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
               </button>
-              <div className="faq-answer">
-                <p>{faq.answer}</p>
-              </div>
+              <AnimatePresence>
+                {openFAQ === index && (
+                  <motion.div
+                    className="faq-answer"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <p>{faq.answer}</p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
           ))}
         </div>
-      </RaycastSection>
+      </section>
 
-      {/* ===== CTA SECTION ===== */}
-      <RaycastSection id="start" className="start-section">
+      {/* Start Section */}
+      <section className="start-section">
         <div className="start-container">
-          <motion.div 
+          <motion.div
             className="start-content"
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
             <h2>Ready to Start Printing?</h2>
-            <p>Upload your 3D file, get instant pricing, and place your order. Professional quality with service guarantee.</p>
-            
-            <div className="start-features">
-              {[
-                { 
-                  icon: (
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                      <path d="M10 1L12.5 6.5L19 7L14.5 11L16 18L10 15L4 18L5.5 11L1 7L7.5 6.5L10 1Z" stroke="currentColor" strokeWidth="2"/>
-                    </svg>
-                  ), 
-                  text: 'Instant file analysis' 
-                },
-                { 
-                  icon: (
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                      <rect x="1" y="3" width="18" height="12" rx="2" ry="2" stroke="currentColor" strokeWidth="1.5"/>
-                      <line x1="1" y1="7" x2="19" y2="7" stroke="currentColor" strokeWidth="1.5"/>
-                    </svg>
-                  ), 
-                  text: 'Transparent pricing' 
-                },
-                { 
-                  icon: (
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                      <path d="M10 1L18 5V10C18 14 14 16 10 17C6 16 2 14 2 10V5L10 1Z" stroke="currentColor" strokeWidth="1.5"/>
-                      <path d="M7 10L9 12L13 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  ), 
-                  text: 'Quality guarantee' 
-                },
-                { 
-                  icon: (
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                      <rect x="1" y="3" width="13" height="10" rx="1" stroke="currentColor" strokeWidth="1.5"/>
-                      <path d="M14 5L17 7V11L14 13" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-                      <circle cx="4" cy="14.5" r="1.5" stroke="currentColor" strokeWidth="1.5"/>
-                      <circle cx="14" cy="14.5" r="1.5" stroke="currentColor" strokeWidth="1.5"/>
-                    </svg>
-                  ), 
-                  text: 'Secure delivery' 
-                }
-              ].map((feature, index) => (
-                <div key={index} className="start-feature">
-                  <div className="feature-icon-wrapper">{feature.icon}</div>
-                  <span>{feature.text}</span>
-                </div>
-              ))}
-            </div>
-
-            <motion.button
-              className="primary-button xl"
-              onClick={() => navigate('/configure')}
-              whileHover={{ scale: 1.02, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <span>Upload Your 3D File</span>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M10 1V14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M5 9L10 14L15 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M3 17H17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </motion.button>
-
-            <div className="contact-info">
-              {[
-                {
-                  icon: (
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                      <path d="M14 6.66667C14 11.3333 8 15.3333 8 15.3333C8 15.3333 2 11.3333 2 6.66667C2 5.07536 2.63214 3.54925 3.75736 2.42403C4.88258 1.29881 6.40869 0.666672 8 0.666672C9.59131 0.666672 11.1174 1.29881 12.2426 2.42403C13.3679 3.54925 14 5.07536 14 6.66667Z" stroke="currentColor" strokeWidth="1.5"/>
-                      <path d="M8 8.66667C9.10457 8.66667 10 7.77124 10 6.66667C10 5.5621 9.10457 4.66667 8 4.66667C6.89543 4.66667 6 5.5621 6 6.66667C6 7.77124 6.89543 8.66667 8 8.66667Z" stroke="currentColor" strokeWidth="1.5"/>
-                    </svg>
-                  ),
-                  text: 'San Jose del Monte, Bulacan'
-                },
-                {
-                  icon: (
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                      <rect x="1" y="3" width="14" height="10" rx="2" stroke="currentColor" strokeWidth="1.5"/>
-                      <line x1="1" y1="7" x2="15" y2="7" stroke="currentColor" strokeWidth="1.5"/>
-                    </svg>
-                  ),
-                  text: 'GCash & Bank Transfer'
-                }
-              ].map((item, index) => (
-                <div key={index} className="contact-item">
-                  {item.icon}
-                  <span>{item.text}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
-          <motion.div 
-            className="start-visual"
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-          >
-            <div className="guarantee-badge">
-              <div className="badge-icon">
-                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                  <path d="M16 2L28 8V16C28 22 22 26 16 28C10 26 4 22 4 16V8L16 2Z" stroke="currentColor" strokeWidth="2"/>
-                  <path d="M12 16L16 20L24 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <p>Upload your 3D file, get instant pricing, and place your order. Quality guaranteed.</p>
+            <div className="start-actions">
+              <motion.button 
+                className="primary-button large glow-button"
+                onClick={() => navigate('/configuration')}
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <span>Get Started Now</span>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
-              </div>
-              <div className="badge-content">
-                <h4>Service Guarantee</h4>
-                <p>Quality prints or your money back</p>
-                <div className="guarantee-stats">
-                  <div className="guarantee-stat">
-                    <span className="stat-number">99.8%</span>
-                    <span className="stat-text">Success Rate</span>
-                  </div>
-                  <div className="guarantee-stat">
-                    <span className="stat-number">24h</span>
-                    <span className="stat-text">Avg Delivery</span>
-                  </div>
-                </div>
-              </div>
+              </motion.button>
+              <motion.button 
+                className="secondary-button" 
+                onClick={() => navigate('/filaments')}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                View Materials
+              </motion.button>
             </div>
           </motion.div>
         </div>
-      </RaycastSection>
+      </section>
 
-      {/* ===== FOOTER ===== */}
-      <footer className="site-footer">
+      {/* Footer */}
+      <footer className="raycast-footer">
         <div className="footer-container">
           <div className="footer-content">
-            <div className="footer-brand">
-              <div className="footer-logo">
-                <PrismLogo size={32} />
-                <span>Prism Box 3D</span>
+            <div className="footer-logo">
+              <PrismLogo size={32} />
+              <div className="logo-content">
+                <h3 className="footer-title">Prism Box 3D</h3>
+                <p className="footer-subtitle">Quality prints or your money back</p>
               </div>
-              <p>Professional 3D printing service in San Jose del Monte, Bulacan. Quality prints with transparent pricing and service guarantee.</p>
             </div>
-
-            <div className="footer-links">
-              <div className="footer-section">
-                <h4>Service</h4>
-                <ul>
-                  {[
-                    { label: 'How It Works', target: 'process' },
-                    { label: 'Materials & Pricing', target: 'materials' },
-                    { label: 'FAQ', target: 'faq' },
-                    { label: 'About Us', target: 'about' }
-                  ].map((item, index) => (
-                    <li key={index}>
-                      <button onClick={() => smoothScrollTo(item.target)}>
-                        {item.label}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="footer-section">
-                <h4>Contact</h4>
-                <ul>
-                  <li>San Jose del Monte, Bulacan</li>
-                  <li>GCash & Bank Transfer</li>
-                  <li>Quality Guaranteed</li>
-                  <li>BETA Service</li>
-                </ul>
+            
+            <div className="footer-info">
+              <h4>Contact Information</h4>
+              <p>San Jose del Monte, Bulacan</p>
+              <p>🚀 BETA Launch - Limited Time Offers</p>
+              <div className="footer-social">
+                <span className="social-badge">Join our BETA community</span>
               </div>
             </div>
           </div>
-
+          
           <div className="footer-bottom">
-            <div className="footer-bottom-content">
-              <p>&copy; 2025 Prism Box 3D. All rights reserved.</p>
-              <div className="footer-status">
-                <span className="status-badge">
-                  <div className="status-dot"></div>
-                  BETA Launch
-                </span>
-              </div>
-            </div>
+            <p>&copy; 2024 Prism Box 3D. All rights reserved. | BETA Launch</p>
           </div>
         </div>
       </footer>
     </div>
   );
 };
-
-const RaycastSection = ({ children, className, id }) => (
-  <motion.section
-    id={id}
-    className={className}
-    initial={{ opacity: 0 }}
-    whileInView={{ opacity: 1 }}
-    viewport={{ once: true, margin: "-100px" }}
-    transition={{ duration: 0.6 }}
-  >
-    {children}
-  </motion.section>
-);
 
 export default Homepage;
