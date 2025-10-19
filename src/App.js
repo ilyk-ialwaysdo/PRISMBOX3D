@@ -1,24 +1,24 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Layout from './components/Layout';
 import Homepage from './pages/Homepage';
 import Filaments from './pages/Filaments';
-import Configuration from './pages/Configuration';
-import Payment from './pages/Payment';
+import FAQ from './pages/FAQ'; // Import the new FAQ page
 import './App.css';
 
 function App() {
   return (
-    <div className="app">
-      <Router>
+    <Router>
+      <div className="App">
         <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/filaments" element={<Filaments />} />
-          <Route path="/configuration" element={<Configuration />} />
-          <Route path="/payment" element={<Payment />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route element={<Layout />}>
+            <Route path="/" element={<Homepage />} />
+            <Route path="/filaments" element={<Filaments />} />
+            <Route path="/faq" element={<FAQ />} /> {/* Add the route for the FAQ page */}
+          </Route>
         </Routes>
-      </Router>
-    </div>
+      </div>
+    </Router>
   );
 }
 
