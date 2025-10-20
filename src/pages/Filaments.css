@@ -1,36 +1,30 @@
-/* General Page Layout */
+/* --- General Page & Filter Styles --- */
 .filaments-page {
     background-color: #f8f9fa;
     min-height: 100vh;
 }
-
 .page-intro-section {
     background-color: #ffffff;
     text-align: center;
     padding: 3rem 2rem;
     border-bottom: 1px solid #dee2e6;
 }
-
 .page-title {
     font-size: 2.8rem;
     font-weight: 800;
     color: #212529;
     margin: 0 0 0.5rem 0;
 }
-
 .page-subtitle {
     font-size: 1.1rem;
     color: #6c757d;
     max-width: 600px;
     margin: 0 auto;
 }
-
-/* Filter Sections */
 .application-filter-section, .filters-section {
     background-color: #ffffff;
     border-bottom: 1px solid #dee2e6;
 }
-
 .filters-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -41,20 +35,17 @@
     justify-content: space-between;
     gap: 1rem;
 }
-
 .filter-label {
     font-size: 0.9rem;
     font-weight: 600;
     color: #495057;
     margin-right: 1rem;
 }
-
 .application-filters, .category-filters {
     display: flex;
     gap: 0.5rem;
     flex-wrap: wrap;
 }
-
 .application-btn, .category-btn {
     background-color: #f8f9fa;
     border: 1px solid #ced4da;
@@ -66,18 +57,15 @@
     font-size: 0.8rem;
     font-weight: 500;
 }
-
 .application-btn:hover, .category-btn:hover {
     background-color: #e9ecef;
     border-color: #adb5bd;
 }
-
 .application-btn.active, .category-btn.active {
     background-color: #007bff;
     color: #ffffff;
     border-color: #007bff;
 }
-
 .search-box {
     display: flex;
     align-items: center;
@@ -88,12 +76,6 @@
     flex-grow: 1;
     max-width: 400px;
 }
-
-.search-box svg {
-    color: #6c757d;
-    margin-right: 0.5rem;
-}
-
 .search-input {
     border: none;
     background: none;
@@ -103,11 +85,10 @@
     outline: none;
 }
 
-/* Corrected List View Styles */
+/* --- Materials List View Styles --- */
 .materials-section {
     padding: 2rem;
 }
-
 .materials-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -115,12 +96,10 @@
     border-radius: 12px;
     border: 1px solid #e0e0e0;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
-
 .materials-list-header {
     display: grid;
-    grid-template-columns: 2fr 2fr 1fr;
+    grid-template-columns: 2fr 1.5fr 1fr;
     padding: 0.75rem 1.5rem;
     background-color: #f8f9fa;
     border-bottom: 1px solid #e0e0e0;
@@ -130,32 +109,23 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
-
 .material-item-row {
     display: grid;
-    grid-template-columns: 2fr 2fr 1fr;
+    grid-template-columns: 2fr 1.5fr 1fr;
     align-items: center;
-    padding: 1.25rem 1.5rem;
+    padding: 1rem 1.5rem;
     border-bottom: 1px solid #e9ecef;
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
-
 .material-item-row:last-child {
     border-bottom: none;
 }
-
-.material-item-row:hover {
-    background-color: #f8f9fa;
-}
-
 .material-info-col {
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding-right: 1rem;
 }
-
 .color-swatch-small {
     width: 36px;
     height: 36px;
@@ -163,25 +133,20 @@
     flex-shrink: 0;
     border: 1px solid rgba(0,0,0,0.1);
 }
-
 .material-name {
     font-size: 1rem;
     font-weight: 600;
     color: #212529;
 }
-
 .material-brand {
     font-size: 0.85rem;
     color: #6c757d;
 }
-
 .material-properties-col {
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem;
-    padding-right: 1rem;
 }
-
 .property-tag-small {
     font-size: 0.75rem;
     background-color: #e9ecef;
@@ -189,99 +154,88 @@
     padding: 0.25rem 0.6rem;
     border-radius: 12px;
 }
-
 .material-price-col {
     text-align: right;
 }
-
 .material-price-col .price {
     font-size: 1.1rem;
     font-weight: 600;
     color: #212529;
     margin: 0 0 0.2rem 0;
 }
-
 .material-price-col .price-unit {
     font-size: 0.8rem;
     font-weight: 500;
     color: #6c757d;
 }
-
 .stock-status {
     font-size: 0.8rem;
     font-weight: 600;
 }
+.stock-status.in-stock { color: #28a745; }
+.stock-status.out-of-stock { color: #dc3545; }
 
-.stock-status.in-stock {
-    color: #28a745;
+/* --- Modal ("View Details") Styles --- */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
-
-.stock-status.out-of-stock {
-    color: #dc3545;
+.modal-content {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
 }
-
-/* No Results */
-.no-results {
-    text-align: center;
-    padding: 4rem 2rem;
-}
-.no-results-icon {
-    font-size: 3rem;
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 1rem;
     margin-bottom: 1rem;
 }
+.modal-header h2 { font-size: 1.8rem; margin: 0; }
+.close-btn { background: none; border: none; font-size: 2rem; cursor: pointer; }
+.modal-description { font-size: 1rem; color: #6c757d; line-height: 1.6; margin-bottom: 1.5rem; }
+.info-section { margin-bottom: 1.5rem; }
+.info-section h4 { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; border-bottom: 1px solid #e9ecef; padding-bottom: 0.5rem; }
+.specs-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.spec-item { display: flex; justify-content: space-between; font-size: 0.9rem; }
+.spec-item span:first-child { color: #6c757d; }
+.spec-item span:last-child { font-weight: 500; }
+.modal-colors-list { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.color-option { display: flex; align-items: center; gap: 0.5rem; }
+.color-name { font-size: 0.9rem; }
+.modal-actions { margin-top: 2rem; }
+.select-btn, .notify-btn { width: 100%; padding: 0.8rem; font-size: 1rem; font-weight: 600; border-radius: 8px; border: none; cursor: pointer; }
+.select-btn { background-color: #007bff; color: white; }
+.notify-btn { background-color: #ffc107; color: #212529; }
+.select-btn:disabled { background-color: #6c757d; color: #ced4da; cursor: not-allowed; }
+.future-feature-modal-text { font-size: 0.8rem; color: #6c757d; text-align: center; margin-top: 0.75rem; }
+.notify-form { display: flex; gap: 0.5rem; }
+.notify-form input { flex-grow: 1; padding: 0.8rem; border: 1px solid #ced4da; border-radius: 8px; }
+
+/* --- No Results --- */
+.no-results {
+    text-align: center;
+    padding: 3rem;
+    color: #6c757d;
+}
 .reset-btn {
-    margin-top: 1.5rem;
     background-color: #007bff;
     color: white;
     border: none;
     padding: 0.6rem 1.2rem;
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
-    font-weight: 600;
+    margin-top: 1rem;
 }
-
-/* Modal Styles */
-.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 1rem; }
-.modal-content { background: #ffffff; padding: 2rem; border-radius: 16px; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-.modal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
-.modal-title-section { display: flex; align-items: center; gap: 1rem; }
-.color-swatch-large { width: 50px; height: 50px; border-radius: 8px; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.1); }
-.modal-header-h2 { font-size: 1.8rem; margin: 0; color: #212529; }
-.modal-brand { font-size: 1rem; color: #6c757d; margin: 0; }
-.close-btn { background: none; border: none; font-size: 2rem; cursor: pointer; color: #6c757d; padding: 0; line-height: 1; }
-.modal-description { font-size: 1rem; color: #495057; margin-bottom: 1.5rem; line-height: 1.6; }
-.out-of-stock-banner { background-color: #f8d7da; color: #721c24; padding: 0.75rem 1.25rem; margin-bottom: 1rem; border: 1px solid #f5c6cb; border-radius: 8px; text-align: center; }
-.info-sections { display: grid; gap: 1.5rem; margin-top: 1.5rem; }
-.info-section h4 { font-size: 1.1rem; font-weight: 700; color: #343a40; margin: 0 0 0.75rem 0; padding-bottom: 0.25rem; border-bottom: 2px solid #007bff; display: inline-block; }
-.properties-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-.property-badge { background-color: #e9ecef; color: #495057; padding: 0.3rem 0.6rem; border-radius: 16px; font-size: 0.8rem; font-weight: 500; }
-.modal-colors-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-.color-option { position: relative; width: 28px; height: 28px; border-radius: 50%; border: 2px solid #e0e0e0; cursor: pointer; }
-.color-name-tooltip { visibility: hidden; width: 120px; background-color: #333; color: #fff; text-align: center; border-radius: 6px; padding: 5px 0; position: absolute; z-index: 1; bottom: 125%; left: 50%; margin-left: -60px; opacity: 0; transition: opacity 0.3s; }
-.color-option:hover .color-name-tooltip { visibility: visible; opacity: 1; }
-
-/* Out of stock color style with red slash */
-.color-option.out-of-stock {
-    opacity: 0.5;
-    cursor: default;
-}
-.color-option.out-of-stock::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 10%;
-    width: 80%;
-    height: 2px;
-    background-color: #dc3545;
-    transform: translateY(-50%) rotate(45deg);
-    transform-origin: center center;
-}
-
-.modal-actions { margin-top: 2rem; }
-.select-btn { width: 100%; padding: 0.8rem; font-size: 1rem; font-weight: 600; border-radius: 8px; border: none; cursor: pointer; background-color: #28a745; color: white; transition: all 0.2s ease; }
-.select-btn:hover:not(:disabled) { background-color: #218838; }
-.select-btn:disabled { background-color: #6c757d !important; cursor: not-allowed; opacity: 0.8; }
-.notify-form { display: flex; gap: 0.5rem; width: 100%; }
-.notify-form input { flex-grow: 1; border: 1px solid #ced4da; padding: 0.75rem; border-radius: 8px; font-size: 0.9rem; }
-.notify-form button { background-color: #ffc107; color: #212529; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background-color 0.2s ease; }
-.notify-form button:hover { background-color: #e0a800; }

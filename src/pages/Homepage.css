@@ -1,4 +1,5 @@
 /* Customer-Focused 3D Printing Homepage */
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 /* Professional CSS Variables */
@@ -11,7 +12,7 @@
   --accent: #FF9500;
   --gradient-primary: linear-gradient(135deg, #007AFF, #34C759);
   --gradient-secondary: linear-gradient(135deg, #FF9500, #FF6B35);
-
+  
   /* Neutral Palette */
   --gray-50: #FAFAFA;
   --gray-100: #F5F5F7;
@@ -23,18 +24,18 @@
   --gray-700: #3A3A3C;
   --gray-800: #2C2C2E;
   --gray-900: #1C1C1E;
-
+  
   /* Background Colors */
   --bg-primary: #FFFFFF;
   --bg-secondary: #FAFAFA;
   --bg-card: rgba(255, 255, 255, 0.85);
   --bg-glass: rgba(255, 255, 255, 0.1);
-
+  
   /* Text Colors */
   --text-primary: #1C1C1E;
   --text-secondary: #6E6E73;
   --text-tertiary: #A1A1AA;
-
+  
   /* Professional Shadows */
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -42,10 +43,10 @@
   --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.15);
   --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.1);
   --shadow-glow: 0 0 20px rgba(0, 122, 255, 0.25);
-
+  
   /* Typography */
   --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-
+  
   /* Spacing Scale */
   --space-1: 0.25rem;
   --space-2: 0.5rem;
@@ -60,7 +61,7 @@
   --space-20: 5rem;
   --space-24: 6rem;
   --space-32: 8rem;
-
+  
   /* Border Radius */
   --radius-sm: 6px;
   --radius-md: 8px;
@@ -69,7 +70,7 @@
   --radius-2xl: 20px;
   --radius-3xl: 24px;
   --radius-full: 50%;
-
+  
   /* Professional Transitions */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -81,15 +82,26 @@
   font-family: var(--font-primary);
   background-color: var(--bg-primary);
   color: var(--text-primary);
+  overflow-x: hidden;
 }
 
 /* Hero Section */
 .hero-section {
   text-align: center;
   padding: var(--space-24) var(--space-6);
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background:
     radial-gradient(circle at 15% 25%, rgba(0, 122, 255, 0.05), transparent 40%),
     radial-gradient(circle at 85% 75%, rgba(52, 199, 89, 0.05), transparent 40%);
+  position: relative;
+}
+
+.hero-content {
+  max-width: 800px;
+  z-index: 1;
 }
 
 .hero-content h1 {
@@ -98,6 +110,10 @@
   line-height: 1.2;
   margin-bottom: var(--space-5);
   letter-spacing: -0.02em;
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .hero-content p {
@@ -112,6 +128,7 @@
   display: flex;
   justify-content: center;
   gap: var(--space-4);
+  flex-wrap: wrap;
 }
 
 .cta-button {
@@ -120,7 +137,11 @@
   font-size: 1rem;
   font-weight: 600;
   border: none;
+  cursor: pointer;
   transition: all var(--transition-base);
+  font-family: inherit;
+  position: relative;
+  overflow: hidden;
 }
 
 .cta-button.primary {
@@ -135,25 +156,35 @@
   transform: translateY(-2px);
 }
 
+.cta-button.primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
 .cta-button.secondary {
   background: var(--bg-primary);
   color: var(--text-primary);
   border: 1px solid var(--gray-300);
+  box-shadow: var(--shadow-sm);
 }
 
-.cta-button.secondary:hover {
+.cta-button.secondary:hover:not(:disabled) {
   background: var(--bg-secondary);
   border-color: var(--gray-400);
+  box-shadow: var(--shadow-md);
 }
 
 .cta-button:disabled {
   background-color: var(--gray-100) !important;
   color: var(--gray-400) !important;
   cursor: not-allowed;
-  box-shadow: none;
-  transform: none;
+  box-shadow: none !important;
+  transform: none !important;
 }
 
+.cta-button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
 
 /* How It Works Section */
 .how-it-works-section {
@@ -161,11 +192,14 @@
   background-color: var(--bg-secondary);
 }
 
-.how-it-works-section h2, .featured-filaments-section h2, .faq-section h2 {
+.how-it-works-section h2, 
+.featured-filaments-section h2, 
+.faq-section h2 {
   text-align: center;
   font-size: clamp(1.8rem, 4vw, 2.5rem);
   font-weight: 700;
   margin-bottom: var(--space-12);
+  color: var(--text-primary);
 }
 
 .steps-container {
@@ -178,6 +212,7 @@
 
 .step {
   text-align: center;
+  padding: var(--space-6);
 }
 
 .step-icon {
@@ -194,20 +229,23 @@
 }
 
 .step:hover .step-icon {
-    background: var(--primary);
-    color: white;
-    transform: translateY(-4px) scale(1.05);
-    box-shadow: var(--shadow-glow);
+  background: var(--primary);
+  color: white;
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: var(--shadow-glow);
 }
 
 .step h3 {
   font-size: 1.25rem;
+  font-weight: 600;
   margin-bottom: var(--space-3);
+  color: var(--text-primary);
 }
 
 .step p {
   color: var(--text-secondary);
   line-height: 1.6;
+  font-size: 0.95rem;
 }
 
 /* Featured Filaments Section */
@@ -221,8 +259,7 @@
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: var(--space-6);
   max-width: 1200px;
-  margin: 0 auto;
-  margin-bottom: var(--space-10);
+  margin: 0 auto var(--space-10);
 }
 
 .filament-card {
@@ -230,6 +267,9 @@
   border-radius: var(--radius-xl);
   padding: var(--space-6);
   transition: all var(--transition-base);
+  background: var(--bg-primary);
+  position: relative;
+  overflow: hidden;
 }
 
 .filament-card:hover {
@@ -244,26 +284,32 @@
   margin-bottom: var(--space-5);
   background-size: cover;
   background-position: center;
+  position: relative;
 }
 
 .filament-card-image.pla {
-    background-image: url('https://images.unsplash.com/photo-1629857326203-5a1a16b8d44e?q=80&w=2070&auto=format&fit=crop');
+  background: linear-gradient(135deg, #FF6B6B, #4ECDC4);
 }
+
 .filament-card-image.petg {
-    background-image: url('https://images.unsplash.com/photo-1625902263417-848487396695?q=80&w=2070&auto=format&fit=crop');
+  background: linear-gradient(135deg, #74B9FF, #0984E3);
 }
+
 .filament-card-image.abs {
-    background-image: url('https://images.unsplash.com/photo-1630349699671-11a84b28cc42?q=80&w=2070&auto=format&fit=crop');
+  background: linear-gradient(135deg, #FDCB6E, #E17055);
 }
 
 .filament-card h3 {
   font-size: 1.15rem;
+  font-weight: 600;
   margin-bottom: var(--space-2);
+  color: var(--text-primary);
 }
 
 .filament-card p {
   font-size: 0.9rem;
   color: var(--text-secondary);
+  line-height: 1.5;
 }
 
 .cta-button-center {
@@ -272,9 +318,10 @@
   background: transparent;
   color: var(--text-primary);
   border: 1px solid var(--gray-300);
+  max-width: 300px;
 }
 
-.cta-button-center:hover {
+.cta-button-center:hover:not(:disabled) {
   background: var(--bg-secondary);
   border-color: var(--gray-400);
 }
@@ -292,10 +339,14 @@
 
 .faq-item {
   border-bottom: 1px solid var(--gray-200);
+  background: var(--bg-primary);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-4);
+  overflow: hidden;
 }
 
 .faq-item:first-child {
-    border-top: 1px solid var(--gray-200);
+  border-top: none;
 }
 
 .faq-question {
@@ -305,17 +356,30 @@
   align-items: center;
   background: none;
   border: none;
-  padding: var(--space-5) 0;
+  padding: var(--space-5) var(--space-6);
   font-size: 1.1rem;
   font-weight: 500;
   text-align: left;
   cursor: pointer;
   color: var(--text-primary);
+  font-family: inherit;
+  transition: background-color var(--transition-fast);
+}
+
+.faq-question:hover {
+  background-color: var(--gray-50);
+}
+
+.faq-question:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
 }
 
 .faq-icon {
   color: var(--primary);
   font-size: 1rem;
+  flex-shrink: 0;
+  margin-left: var(--space-4);
 }
 
 .faq-answer {
@@ -324,6 +388,87 @@
 
 .faq-answer p {
   color: var(--text-secondary);
-  padding-bottom: var(--space-5);
+  padding: 0 var(--space-6) var(--space-5);
   margin: 0;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .cta-button {
+    min-width: 200px;
+  }
+  
+  .steps-container {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  
+  .filaments-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .hero-section {
+    padding: var(--space-16) var(--space-4);
+    min-height: 60vh;
+  }
+  
+  .how-it-works-section,
+  .featured-filaments-section,
+  .faq-section {
+    padding: var(--space-16) var(--space-4);
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+  
+  .hero-content p {
+    font-size: 1rem;
+  }
+  
+  .faq-question {
+    padding: var(--space-4) var(--space-5);
+    font-size: 1rem;
+  }
+  
+  .faq-answer p {
+    padding: 0 var(--space-5) var(--space-4);
+    font-size: 0.9rem;
+  }
+}
+
+/* Accessibility Enhancements */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .homepage {
+    background: white;
+    color: black;
+  }
+  
+  .hero-section {
+    background: none;
+  }
+  
+  .cta-button {
+    border: 1px solid black;
+    background: white;
+    color: black;
+  }
 }
