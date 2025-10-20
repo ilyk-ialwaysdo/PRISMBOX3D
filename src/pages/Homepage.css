@@ -1,149 +1,288 @@
+/* Customer-Focused 3D Printing Homepage */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+/* Professional CSS Variables */
 :root {
-  --slate-900: #1a202c;
-  --slate-700: #4a5568;
-  --slate-200: #e2e8f0;
-  --slate-100: #f7fafc;
-  --blue-500: #3b82f6;
-  --blue-600: #2563eb;
+  /* Colors - Trust & Reliability */
+  --primary: #007AFF;
+  --primary-hover: #0056D6;
+  --primary-light: rgba(0, 122, 255, 0.1);
+  --secondary: #34C759;
+  --accent: #FF9500;
+  --gradient-primary: linear-gradient(135deg, #007AFF, #34C759);
+  --gradient-secondary: linear-gradient(135deg, #FF9500, #FF6B35);
+
+  /* Neutral Palette */
+  --gray-50: #FAFAFA;
+  --gray-100: #F5F5F7;
+  --gray-200: #E5E5EA;
+  --gray-300: #D2D2D7;
+  --gray-400: #A1A1AA;
+  --gray-500: #6E6E73;
+  --gray-600: #515151;
+  --gray-700: #3A3A3C;
+  --gray-800: #2C2C2E;
+  --gray-900: #1C1C1E;
+
+  /* Background Colors */
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #FAFAFA;
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --bg-glass: rgba(255, 255, 255, 0.1);
+
+  /* Text Colors */
+  --text-primary: #1C1C1E;
+  --text-secondary: #6E6E73;
+  --text-tertiary: #A1A1AA;
+
+  /* Professional Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.15);
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 0 20px rgba(0, 122, 255, 0.25);
+
+  /* Typography */
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Spacing Scale */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-3xl: 24px;
+  --radius-full: 50%;
+
+  /* Professional Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 350ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
+/* Base Styles */
 .homepage {
-  width: 100%;
-  overflow-x: hidden;
-  background-color: var(--slate-100);
-  color: var(--slate-900);
+  font-family: var(--font-primary);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 /* Hero Section */
 .hero-section {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   text-align: center;
-  padding: 8rem 2rem;
-  min-height: 85vh;
-  background-color: #ffffff;
+  padding: var(--space-24) var(--space-6);
+  background:
+    radial-gradient(circle at 15% 25%, rgba(0, 122, 255, 0.05), transparent 40%),
+    radial-gradient(circle at 85% 75%, rgba(52, 199, 89, 0.05), transparent 40%);
 }
 
-.hero-content {
-  max-width: 900px;
-}
-
-.hero-quote {
-  font-size: 3.5rem;
-  font-weight: 700;
+.hero-content h1 {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 800;
   line-height: 1.2;
-  margin-bottom: 3rem;
-  color: var(--slate-900);
-  letter-spacing: -0.025em;
+  margin-bottom: var(--space-5);
+  letter-spacing: -0.02em;
 }
 
-.hero-cta-group {
+.hero-content p {
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  max-width: 650px;
+  margin: 0 auto var(--space-8);
+  line-height: 1.6;
+}
+
+.hero-buttons {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  gap: 1rem;
+  gap: var(--space-4);
 }
 
 .cta-button {
-  padding: 0.8rem 1.8rem;
-  border-radius: 8px;
+  padding: var(--space-4) var(--space-8);
+  border-radius: var(--radius-lg);
   font-size: 1rem;
   font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
   border: none;
+  transition: all var(--transition-base);
 }
 
 .cta-button.primary {
-  background-color: var(--blue-500);
-  color: #ffffff;
-  box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.39);
+  background: var(--primary);
+  color: white;
+  box-shadow: var(--shadow-md);
 }
 
 .cta-button.primary:hover:not(:disabled) {
-  background-color: var(--blue-600);
-  box-shadow: 0 6px 20px 0 rgba(59, 130, 246, 0.23);
-  transform: translateY(-1px);
+  background: var(--primary-hover);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
 }
 
 .cta-button.secondary {
-  background-color: transparent;
-  color: var(--slate-700);
-  border: 2px solid var(--slate-200);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--gray-300);
 }
 
 .cta-button.secondary:hover {
-  background-color: var(--slate-200);
-  border-color: var(--slate-200);
+  background: var(--bg-secondary);
+  border-color: var(--gray-400);
 }
 
 .cta-button:disabled {
-  background-color: #e2e8f0 !important;
-  color: #a0aec0 !important;
+  background-color: var(--gray-100) !important;
+  color: var(--gray-400) !important;
   cursor: not-allowed;
   box-shadow: none;
+  transform: none;
 }
 
-.future-feature-text {
-  font-size: 0.8rem;
-  color: var(--slate-700);
-  margin-top: 0.6rem;
-}
-
-/* General Section Styles */
-.section-title {
-  text-align: center;
-  font-size: 2.25rem;
-  font-weight: 700;
-  margin-bottom: 3.5rem;
-  color: var(--slate-900);
-}
 
 /* How It Works Section */
 .how-it-works-section {
-  background-color: var(--slate-100);
-  padding: 6rem 2rem;
+  padding: var(--space-20) var(--space-6);
+  background-color: var(--bg-secondary);
 }
 
-.steps-grid {
+.how-it-works-section h2, .featured-filaments-section h2, .faq-section h2 {
+  text-align: center;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 700;
+  margin-bottom: var(--space-12);
+}
+
+.steps-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-8);
   max-width: 1200px;
   margin: 0 auto;
 }
 
-.step-card {
-  background-color: #ffffff;
-  padding: 2.5rem 2rem;
-  border-radius: 12px;
+.step {
   text-align: center;
-  border: 1px solid var(--slate-200);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  transition: all 0.3s ease;
 }
 
 .step-icon {
-  color: var(--blue-500);
-  margin-bottom: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  background-color: var(--primary-light);
+  color: var(--primary);
+  border-radius: var(--radius-xl);
+  margin-bottom: var(--space-5);
+  transition: all var(--transition-base);
 }
 
-.step-card h3 {
+.step:hover .step-icon {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: var(--shadow-glow);
+}
+
+.step h3 {
   font-size: 1.25rem;
-  margin-bottom: 0.75rem;
-  color: var(--slate-900);
+  margin-bottom: var(--space-3);
 }
 
-.step-card p {
-  color: var(--slate-700);
+.step p {
+  color: var(--text-secondary);
   line-height: 1.6;
+}
+
+/* Featured Filaments Section */
+.featured-filaments-section {
+  padding: var(--space-20) var(--space-6);
+  background-color: var(--bg-primary);
+}
+
+.filaments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-6);
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-bottom: var(--space-10);
+}
+
+.filament-card {
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  transition: all var(--transition-base);
+}
+
+.filament-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--gray-300);
+}
+
+.filament-card-image {
+  height: 150px;
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-5);
+  background-size: cover;
+  background-position: center;
+}
+
+.filament-card-image.pla {
+    background-image: url('https://images.unsplash.com/photo-1629857326203-5a1a16b8d44e?q=80&w=2070&auto=format&fit=crop');
+}
+.filament-card-image.petg {
+    background-image: url('https://images.unsplash.com/photo-1625902263417-848487396695?q=80&w=2070&auto=format&fit=crop');
+}
+.filament-card-image.abs {
+    background-image: url('https://images.unsplash.com/photo-1630349699671-11a84b28cc42?q=80&w=2070&auto=format&fit=crop');
+}
+
+.filament-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: var(--space-2);
+}
+
+.filament-card p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.cta-button-center {
+  display: block;
+  margin: var(--space-8) auto 0;
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--gray-300);
+}
+
+.cta-button-center:hover {
+  background: var(--bg-secondary);
+  border-color: var(--gray-400);
 }
 
 /* FAQ Section */
 .faq-section {
-  background-color: #ffffff;
-  padding: 6rem 2rem;
+  padding: var(--space-20) var(--space-6);
+  background-color: var(--bg-secondary);
 }
 
 .faq-container {
@@ -152,10 +291,11 @@
 }
 
 .faq-item {
-  border-bottom: 1px solid var(--slate-200);
+  border-bottom: 1px solid var(--gray-200);
 }
+
 .faq-item:first-child {
-  border-top: 1px solid var(--slate-200);
+    border-top: 1px solid var(--gray-200);
 }
 
 .faq-question {
@@ -165,19 +305,17 @@
   align-items: center;
   background: none;
   border: none;
-  padding: 1.5rem 0;
+  padding: var(--space-5) 0;
   font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--slate-900);
+  font-weight: 500;
   text-align: left;
   cursor: pointer;
+  color: var(--text-primary);
 }
 
-.faq-arrow {
-  transition: transform 0.3s ease;
-  color: var(--blue-500);
-  font-size: 1.5rem;
-  font-weight: 300;
+.faq-icon {
+  color: var(--primary);
+  font-size: 1rem;
 }
 
 .faq-answer {
@@ -185,34 +323,7 @@
 }
 
 .faq-answer p {
-  color: var(--slate-700);
-  line-height: 1.6;
-  padding: 0 0 1.5rem 0;
+  color: var(--text-secondary);
+  padding-bottom: var(--space-5);
   margin: 0;
-}
-
-.cta-button-center {
-  display: block;
-  margin: 3rem auto 0 auto;
-  padding: 0.8rem 2rem;
-  background-color: transparent;
-  color: var(--slate-700);
-  border: 2px solid var(--slate-200);
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.cta-button-center:hover {
-  background-color: var(--slate-200);
-}
-
-/* Footer */
-.footer {
-  padding: 3rem 2rem;
-  background-color: var(--slate-100);
-  color: var(--slate-700);
-  text-align: center;
-  font-size: 0.9rem;
-  border-top: 1px solid var(--slate-200);
 }
