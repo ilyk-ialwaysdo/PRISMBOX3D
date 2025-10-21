@@ -1,0 +1,238 @@
+/* Terms of Service Page */
+
+.terms-page {
+  min-height: 100vh;
+  background-color: #f9fafb;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  color: #1f2937;
+}
+
+.terms-page .container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+/* Page Header */
+.page-header {
+  margin-bottom: 3rem;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  color: #6b7280;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  margin-bottom: 2rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.back-btn:hover {
+  background: #f9fafb;
+  color: #1f2937;
+  border-color: #d1d5db;
+}
+
+.header-content {
+  text-align: center;
+  padding: 2rem;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+}
+
+.header-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  background: linear-gradient(135deg, #1e40af, #3b82f6);
+  color: white;
+  border-radius: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.header-content h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 0.75rem;
+  color: #1f2937;
+}
+
+.header-content > p {
+  font-size: 1.125rem;
+  color: #6b7280;
+  margin-bottom: 1.5rem;
+}
+
+.last-updated {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  color: #0369a1;
+  font-weight: 500;
+}
+
+/* Terms Content */
+.terms-content {
+  background: white;
+  border-radius: 1rem;
+  padding: 3rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+}
+
+.terms-section {
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.terms-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.terms-section h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #1e40af;
+  display: inline-block;
+}
+
+.terms-section h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 1.5rem 0 0.75rem 0;
+}
+
+.terms-section p {
+  color: #4b5563;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.terms-section ul {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.terms-section li {
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.terms-section li::marker {
+  color: #1e40af;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .terms-page .container {
+    padding: 1rem;
+  }
+
+  .terms-content {
+    padding: 2rem 1.5rem;
+    border-radius: 0.75rem;
+  }
+
+  .header-content {
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+  }
+
+  .header-content h1 {
+    font-size: 2rem;
+  }
+
+  .terms-section h2 {
+    font-size: 1.25rem;
+  }
+
+  .terms-section h3 {
+    font-size: 1.125rem;
+  }
+
+  .back-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-content h1 {
+    font-size: 1.75rem;
+  }
+
+  .header-content > p {
+    font-size: 1rem;
+  }
+
+  .terms-content {
+    padding: 1.5rem 1rem;
+  }
+
+  .terms-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .terms-page {
+    background: white;
+  }
+
+  .back-btn {
+    display: none;
+  }
+
+  .terms-content {
+    box-shadow: none;
+    border: none;
+    padding: 0;
+  }
+
+  .header-content {
+    box-shadow: none;
+    border: none;
+  }
+}
+
+/* Focus and Accessibility */
+.back-btn:focus-visible {
+  outline: 2px solid #1e40af;
+  outline-offset: 2px;
+}
+
+/* Selection */
+::selection {
+  background: #1e40af;
+  color: white;
+}

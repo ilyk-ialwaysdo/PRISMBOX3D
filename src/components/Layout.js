@@ -4,13 +4,12 @@ import Header from './Header';
 
 const Layout = () => {
   return (
-    <>
+    <div className="app-layout">
       <Header />
-      <main className="page-content">
-        <Outlet /> {/* This will render the specific page content (Homepage, Filaments, etc.) */}
+      <main className="main-content">
+        <Outlet />
       </main>
-      {/* You could add a <Footer /> here in the future */}
-    </>
+    </div>
   );
 };
 
