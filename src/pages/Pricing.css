@@ -1,0 +1,338 @@
+/* Pricing Page Styles */
+.pricing-page {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #FFFFFF;
+  min-height: 100vh;
+}
+
+/* Hero Section */
+.pricing-hero {
+  padding: 6rem 1.5rem 4rem;
+  text-align: center;
+  background: 
+    radial-gradient(circle at 25% 25%, rgba(0, 122, 255, 0.05), transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(255, 149, 0, 0.05), transparent 50%);
+}
+
+.pricing-hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.pricing-hero h1 {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  color: #1C1C1E;
+  line-height: 1.2;
+}
+
+.pricing-hero p {
+  font-size: 1.125rem;
+  color: #6E6E73;
+  line-height: 1.6;
+}
+
+/* Calculator Preview */
+.calculator-preview {
+  padding: 2rem 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.calculator-card {
+  background: linear-gradient(135deg, #007AFF, #34C759);
+  color: white;
+  padding: 2rem;
+  border-radius: 20px;
+  text-align: center;
+  max-width: 400px;
+  box-shadow: 0 8px 32px rgba(0, 122, 255, 0.25);
+}
+
+.calculator-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  margin-bottom: 1rem;
+}
+
+.calculator-card h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.calculator-card p {
+  margin-bottom: 1.5rem;
+  opacity: 0.9;
+}
+
+.calculator-card .cta-button {
+  background: white;
+  color: #007AFF;
+}
+
+.calculator-card .cta-button:hover {
+  background: #F5F5F7;
+  transform: translateY(-2px);
+}
+
+/* Pricing Content */
+.pricing-content {
+  padding: 2rem 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Pricing Tabs */
+.pricing-tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3rem;
+  background: #F5F5F7;
+  border-radius: 12px;
+  padding: 0.5rem;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 3rem;
+}
+
+.tab {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: inherit;
+  color: #6E6E73;
+}
+
+.tab.active {
+  background: white;
+  color: #007AFF;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Pricing Grid */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.pricing-card {
+  background: white;
+  border: 1px solid #E5E5EA;
+  border-radius: 16px;
+  padding: 2rem;
+  transition: all 0.25s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.pricing-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--accent-color, #007AFF);
+}
+
+.pricing-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.pricing-header {
+  margin-bottom: 1rem;
+}
+
+.pricing-header h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #1C1C1E;
+}
+
+.price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.price .amount {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--accent-color, #007AFF);
+}
+
+.price .unit {
+  font-size: 0.9rem;
+  color: #6E6E73;
+}
+
+.pricing-description {
+  color: #6E6E73;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.pricing-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pricing-features li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: #6E6E73;
+}
+
+.pricing-features svg {
+  color: #34C759;
+  flex-shrink: 0;
+}
+
+/* Pricing Example */
+.pricing-example {
+  background: #F5F5F7;
+  padding: 2rem;
+  border-radius: 16px;
+  margin: 2rem 1.5rem;
+  text-align: center;
+}
+
+.pricing-example h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #1C1C1E;
+}
+
+.example-breakdown {
+  max-width: 400px;
+  margin: 0 auto 1rem;
+}
+
+.example-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #E5E5EA;
+}
+
+.example-item:last-child {
+  border-bottom: none;
+}
+
+.example-item.total {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #007AFF;
+  border-top: 2px solid #007AFF;
+  padding-top: 1rem;
+  margin-top: 0.5rem;
+}
+
+.example-note {
+  font-size: 0.85rem;
+  color: #6E6E73;
+  font-style: italic;
+  margin-top: 1rem;
+}
+
+/* CTA Section */
+.pricing-cta {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  background: 
+    radial-gradient(circle at 50% 50%, rgba(52, 199, 89, 0.05), transparent 70%);
+}
+
+.pricing-cta h3 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #1C1C1E;
+}
+
+.pricing-cta p {
+  color: #6E6E73;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+.cta-button {
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: inherit;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+}
+
+.cta-button.primary {
+  background: #007AFF;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.cta-button.primary:hover {
+  background: #0056D6;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .pricing-hero {
+    padding: 4rem 1rem 3rem;
+  }
+
+  .pricing-content {
+    padding: 1.5rem 1rem;
+  }
+
+  .pricing-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pricing-tabs {
+    margin: 0 0 2rem 0;
+  }
+
+  .pricing-example {
+    margin: 2rem 0;
+    padding: 1.5rem;
+  }
+
+  .pricing-cta {
+    padding: 2rem 1rem;
+  }
+}

@@ -1,65 +1,192 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import './FAQ.css';
+
+const ChevronDownIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <polyline points="6,9 12,15 18,9" />
+  </svg>
+);
+
+const SearchIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <circle cx="11" cy="11" r="8" />
+    <path d="m21 21-4.35-4.35" />
+  </svg>
+);
+
+const MessengerIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 2C6.36 2 2 6.13 2 11.7c0 2.93 1.17 5.56 3 7.26V22l2.91-1.61c1.25.35 2.6.54 4.09.54 5.64 0 10.2-4.13 10.2-9.23S17.64 2 12 2zm1.13 12.44l-2.61-2.78-5.09 2.78L8.5 9.89l2.61 2.78 5.09-2.78-3.07 4.55z" />
+  </svg>
+);
+
+const EmailIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+    <polyline points="22,6 12,13 2,6" />
+  </svg>
+);
 
 const FAQ = () => {
-  // You can easily expand this list with more questions and answers in the future
+  const [activeIndex, setActiveIndex] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+
   const allFaqs = [
-    { 
-      question: "What is the average cost of a print?", 
-      answer: "Our pricing is based on material weight, print time, and complexity. A typical palm-sized model might range from ₱300-₱800. We are currently developing an instant online price calculator for precise quotes." 
-    },
-    { 
-      question: "How long does it take to get my order?", 
-      answer: "Standard orders are typically printed and ready for dispatch within 2-4 business days. Complex or large volume orders may take longer. We'll give you a time estimate when you place your order." 
-    },
-    { 
-      question: "What file formats do you accept?", 
-      answer: "We primarily work with .STL and .3MF files, which are the most common formats for 3D printing. If you have another file type, such as .OBJ or .STEP, please contact us and we will see if we can convert it for you." 
-    },
-    { 
-      question: "Do you offer shipping?", 
-      answer: "Yes! We ship nationwide. For Metro Manila and nearby areas, we use Lalamove for same-day delivery once the print is complete. Provincial shipping is also available through our courier partners." 
-    },
-    { 
-      question: "Can you help me design a 3D model?", 
-      answer: "Currently, our service is focused on printing customer-provided files. We do not offer 3D modeling or design services at this time. However, we can recommend freelance designers if needed." 
-    },
-    { 
-      question: "What is the maximum size you can print?", 
-      answer: "Our printers have a build volume of 256 x 256 x 256 mm. If your model is larger, we may be able to print it in separate parts that can be assembled." 
+    {
+      question: "How do I get a quote for my 3D print?",
+      answer: "Send us your .STL or .3MF file through Messenger (@tedtapiador) or email (prismbox3dservice@gmail.com). We'll review your model and send you a detailed quote within 24 hours.",
+      category: "Ordering"
     },
     {
-      question: "What materials can I choose from?",
-      answer: "We offer a wide range of materials from standard PLA+ and durable PETG/ABS to advanced engineering resins for high-performance applications. You can view our full, up-to-date catalog on the Filaments page."
+      question: "What file formats do you accept?",
+      answer: "We accept .STL and .3MF files, which are the standard formats for 3D printing. If you have other formats, send them to us and we'll see if we can work with them.",
+      category: "Technical"
     },
     {
-      question: "Where are you located?",
-      answer: "Our workshop is based in Bulacan, Philippines. While we don't currently have a physical storefront, we proudly serve and ship to the entire country."
+      question: "How much does 3D printing cost?",
+      answer: "Pricing depends on your model's size, material choice, and complexity. Small items start around ₱150-300, medium pieces ₱300-800, and larger items ₱800+.",
+      category: "Pricing"
+    },
+    {
+      question: "How long does printing and delivery take?",
+      answer: "Printing takes 2-4 business days depending on complexity. Metro Manila delivery via Lalamove is same-day once printing is complete. Provincial shipping takes 1-3 additional days.",
+      category: "Timeline"
+    },
+    {
+      question: "What materials and colors do you offer?",
+      answer: "We have PLA+ (15+ colors), PETG (clear, white, black, colored), and ABS (standard colors). Check our Materials page for current color samples.",
+      category: "Materials"
+    },
+    {
+      question: "How do I pay for my order?",
+      answer: "We accept GCash, PayMaya, and bank transfers. Payment is required before we start printing. Metro Manila orders can also use cash-on-delivery.",
+      category: "Payment"
     }
   ];
 
+  const filteredFaqs = allFaqs.filter(faq =>
+    faq.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    faq.answer.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    faq.category.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleToggle = (index) => {
+    setActiveIndex(activeIndex === index ? null : index);
+  };
+
+  const handleContactMessenger = () => {
+    window.open('https://m.me/tedtapiador', '_blank');
+  };
+
+  const handleContactEmail = () => {
+    window.location.href = 'mailto:prismbox3dservice@gmail.com';
+  };
+
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+  };
+
+  const stagger = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+  };
+
+  const iconRotate = {
+    closed: { rotate: 0 },
+    open: { rotate: 180 }
+  };
+
   return (
-    <div style={{ padding: '2rem', maxWidth: '900px', margin: '4rem auto' }}>
-      <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-        <h1 style={{ textAlign: 'center', marginBottom: '1rem', fontSize: '3rem', fontWeight: '800' }}>Frequently Asked Questions</h1>
-        <p style={{ textAlign: 'center', color: '#6c757d', fontSize: '1.1rem', marginBottom: '4rem', maxWidth: '600px', margin: '0 auto 4rem auto' }}>
-          Have questions? We’ve got answers. If you can’t find what you’re looking for, feel free to contact us directly.
-        </p>
-      </motion.div>
-      <div>
-        {allFaqs.map((faq, index) => (
-          <motion.div 
-            key={index} 
-            style={{ marginBottom: '1.5rem', borderBottom: '1px solid #e0e0e0', paddingBottom: '1.5rem' }}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-          >
-            <h3 style={{ marginBottom: '0.5rem', fontSize: '1.2rem', fontWeight: '600' }}>{faq.question}</h3>
-            <p style={{ lineHeight: '1.6', color: '#495057', margin: 0 }}>{faq.answer}</p>
-          </motion.div>
-        ))}
-      </div>
+    <div className="faq-page">
+      {/* Hero Section */}
+      <motion.section 
+        className="faq-hero"
+        initial="hidden"
+        animate="visible"
+        variants={fadeInUp}
+      >
+        <div className="faq-hero-content">
+          <h1>Frequently Asked Questions</h1>
+          <p>Everything you need to know about our 3D printing services. Can't find your answer? Message us directly!</p>
+          
+          <div className="faq-search">
+            <SearchIcon />
+            <input
+              type="text"
+              placeholder="Search FAQs..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        </div>
+      </motion.section>
+
+      {/* FAQ Content */}
+      <motion.section 
+        className="faq-content"
+        initial="hidden"
+        animate="visible"
+        variants={stagger}
+      >
+        <div className="faq-container">
+          {filteredFaqs.length > 0 ? (
+            filteredFaqs.map((faq, index) => (
+              <motion.div key={index} className="faq-item" variants={fadeInUp}>
+                <div className="faq-category">{faq.category}</div>
+                <button
+                  className="faq-question"
+                  onClick={() => handleToggle(index)}
+                >
+                  <span>{faq.question}</span>
+                  <motion.div
+                    className="faq-icon"
+                    variants={iconRotate}
+                    animate={activeIndex === index ? "open" : "closed"}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <ChevronDownIcon />
+                  </motion.div>
+                </button>
+                <AnimatePresence>
+                  {activeIndex === index && (
+                    <motion.div
+                      className="faq-answer"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <p>{faq.answer}</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))
+          ) : (
+            <motion.div className="no-results" variants={fadeInUp}>
+              <p>No FAQs found matching your search. Message us directly for help!</p>
+            </motion.div>
+          )}
+        </div>
+
+        {/* CTA Section */}
+        <motion.div className="faq-cta" variants={fadeInUp}>
+          <h3>Still have questions?</h3>
+          <p>We're here to help! Contact us and we'll get back to you quickly.</p>
+          <div className="faq-cta-buttons">
+            <button className="cta-button primary" onClick={handleContactMessenger}>
+              <MessengerIcon />
+              <span>Messenger</span>
+            </button>
+            <button className="cta-button secondary" onClick={handleContactEmail}>
+              <EmailIcon />
+              <span>Email Us</span>
+            </button>
+          </div>
+        </motion.div>
+      </motion.section>
     </div>
   );
 };
