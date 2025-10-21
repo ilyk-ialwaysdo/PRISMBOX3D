@@ -35,7 +35,7 @@
 
 /* Hero Section */
 .pricing-hero {
-  padding: 6rem 1.5rem 4rem;
+  padding: 6rem 2rem 4rem;
   text-align: center;
   background:
     radial-gradient(circle at 25% 25%, rgba(0, 122, 255, 0.05), transparent 50%),
@@ -56,16 +56,16 @@
 }
 
 .pricing-hero p {
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   color: var(--pricing-text-secondary);
   line-height: 1.6;
-  max-width: 600px;
+  max-width: 500px;
   margin: 0 auto;
 }
 
 /* Calculator Preview */
 .calculator-preview {
-  padding: 2rem 1.5rem;
+  padding: 3rem 2rem;
   display: flex;
   justify-content: center;
 }
@@ -73,10 +73,10 @@
 .calculator-card {
   background: linear-gradient(135deg, var(--pricing-primary), var(--pricing-secondary));
   color: white;
-  padding: 2rem;
+  padding: 3rem 2rem;
   border-radius: 20px;
   text-align: center;
-  max-width: 400px;
+  max-width: 450px;
   box-shadow: 0 8px 32px rgba(0, 122, 255, 0.25);
   width: 100%;
 }
@@ -89,20 +89,27 @@
   height: 64px;
   background: rgba(255, 255, 255, 0.2);
   border-radius: var(--pricing-radius-lg);
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .calculator-card h3 {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 700;
   margin-bottom: 1rem;
 }
 
 .formula {
-  font-size: 1rem;
-  margin-bottom: 1.5rem;
-  opacity: 0.9;
-  line-height: 1.5;
+  font-size: 1.125rem;
+  margin-bottom: 0.75rem;
+  opacity: 0.95;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.formula-note {
+  font-size: 0.9rem;
+  margin-bottom: 2rem;
+  opacity: 0.8;
 }
 
 .calculator-btn {
@@ -112,10 +119,10 @@
   background: rgba(255, 255, 255, 0.2);
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 0.875rem 1.5rem;
+  padding: 1rem 1.5rem;
   border-radius: var(--pricing-radius-lg);
   font-family: inherit;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: var(--pricing-transition-base);
@@ -131,7 +138,7 @@
 .section-header {
   text-align: center;
   margin-bottom: 3rem;
-  padding: 0 1.5rem;
+  padding: 0 2rem;
 }
 
 .section-header h2 {
@@ -144,13 +151,13 @@
 .section-header p {
   font-size: 1.125rem;
   color: var(--pricing-text-secondary);
-  max-width: 600px;
+  max-width: 500px;
   margin: 0 auto;
 }
 
 /* Material Pricing Section */
 .material-pricing {
-  padding: 4rem 1.5rem;
+  padding: 4rem 2rem;
   background: var(--pricing-bg-secondary);
 }
 
@@ -168,7 +175,7 @@
   border-radius: var(--pricing-radius-xl);
   box-shadow: var(--pricing-shadow-sm);
   border: 1px solid var(--pricing-gray-200);
-  text-align: center;
+  text-align: left;
   transition: var(--pricing-transition-base);
 }
 
@@ -177,35 +184,66 @@
   box-shadow: var(--pricing-shadow-md);
 }
 
+.material-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
 .pricing-card h3 {
-  font-size: 1.5rem;
+  font-size: 1.375rem;
   font-weight: 700;
-  margin-bottom: 1rem;
   color: var(--pricing-primary);
+  margin: 0;
+}
+
+.brand-label {
+  font-size: 0.8rem;
+  background: var(--pricing-gray-100);
+  color: var(--pricing-text-secondary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-weight: 500;
 }
 
 .price {
-  font-size: 2rem;
+  font-size: 2.25rem;
   font-weight: 800;
   color: var(--pricing-text-primary);
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
 
-.pricing-card p {
+.material-description {
   color: var(--pricing-text-secondary);
   line-height: 1.6;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.stock-indicator {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.stock-indicator.in-stock {
+  background: rgba(52, 199, 89, 0.1);
+  color: var(--pricing-secondary);
 }
 
 /* Service Fees Section */
 .service-fees {
-  padding: 4rem 1.5rem;
+  padding: 4rem 2rem;
 }
 
 .fees-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
-  max-width: 1200px;
+  max-width: 800px;
   margin: 0 auto;
 }
 
@@ -232,7 +270,7 @@
 }
 
 .fee-amount {
-  font-size: 1.75rem;
+  font-size: 2rem;
   font-weight: 700;
   color: var(--pricing-secondary);
   margin-bottom: 1rem;
@@ -241,20 +279,20 @@
 .fee-item p {
   color: var(--pricing-text-secondary);
   line-height: 1.6;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 }
 
 /* Pricing Examples Section */
 .pricing-examples {
-  padding: 4rem 1.5rem;
+  padding: 4rem 2rem;
   background: var(--pricing-bg-secondary);
 }
 
-.examples-grid {
+.examples-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 2rem;
-  max-width: 1200px;
+  max-width: 900px;
   margin: 0 auto;
 }
 
@@ -272,44 +310,121 @@
   box-shadow: var(--pricing-shadow-md);
 }
 
-.example-card h4 {
-  font-size: 1.25rem;
+.example-header {
+  margin-bottom: 1.5rem;
+}
+
+.example-header h4 {
+  font-size: 1.375rem;
   font-weight: 600;
-  margin-bottom: 1rem;
   color: var(--pricing-text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.example-note {
+  font-size: 0.9rem;
+  color: var(--pricing-text-secondary);
+  font-style: italic;
 }
 
 .example-details {
+  margin-bottom: 1.5rem;
+}
+
+.detail-row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.detail-row span:first-child {
   color: var(--pricing-text-secondary);
+}
+
+.detail-row span:last-child {
+  font-weight: 500;
+  color: var(--pricing-text-primary);
 }
 
 .calculation {
   font-family: 'Courier New', monospace;
   background: var(--pricing-gray-100);
-  padding: 0.75rem;
+  padding: 1rem;
   border-radius: var(--pricing-radius-lg);
   margin-bottom: 1rem;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--pricing-text-primary);
+  text-align: center;
 }
 
 .total {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 700;
   color: var(--pricing-primary);
   text-align: center;
-  padding: 0.75rem;
+  padding: 1rem;
   background: var(--pricing-primary-light);
   border-radius: var(--pricing-radius-lg);
 }
 
+/* Pricing Info Section */
+.pricing-info {
+  padding: 4rem 2rem;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.info-content h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 3rem;
+  color: var(--pricing-text-primary);
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.info-item {
+  background: var(--pricing-bg-primary);
+  padding: 2rem;
+  border-radius: var(--pricing-radius-xl);
+  box-shadow: var(--pricing-shadow-sm);
+  border: 1px solid var(--pricing-gray-200);
+  text-align: center;
+  transition: var(--pricing-transition-base);
+}
+
+.info-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--pricing-shadow-md);
+}
+
+.info-item h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--pricing-text-primary);
+}
+
+.info-item p {
+  color: var(--pricing-text-secondary);
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
 /* CTA Section */
 .pricing-cta {
-  padding: 4rem 1.5rem;
+  padding: 6rem 2rem;
+  background: linear-gradient(135deg, var(--pricing-primary), var(--pricing-secondary));
+  color: white;
   text-align: center;
 }
 
@@ -322,14 +437,13 @@
   font-size: clamp(2rem, 4vw, 2.5rem);
   font-weight: 700;
   margin-bottom: 1rem;
-  color: var(--pricing-text-primary);
 }
 
 .cta-content p {
   font-size: 1.125rem;
-  color: var(--pricing-text-secondary);
   margin-bottom: 2rem;
-  line-height: 1.6;
+  opacity: 0.9;
+  line-height: 1.5;
 }
 
 .cta-buttons {
@@ -357,27 +471,25 @@
 }
 
 .btn-primary {
-  background: var(--pricing-primary);
+  background: rgba(255, 255, 255, 0.2);
   color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
 }
 
 .btn-primary:hover {
-  background: var(--pricing-primary-hover);
+  background: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 122, 255, 0.3);
 }
 
 .btn-secondary {
   background: white;
   color: var(--pricing-primary);
-  border: 2px solid var(--pricing-primary);
 }
 
 .btn-secondary:hover {
-  background: var(--pricing-primary);
-  color: white;
+  background: var(--pricing-gray-100);
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 122, 255, 0.3);
 }
 
 /* Responsive Design */
@@ -393,6 +505,7 @@
   .material-pricing,
   .service-fees,
   .pricing-examples,
+  .pricing-info,
   .pricing-cta {
     padding: 3rem 1rem;
   }
@@ -405,7 +518,11 @@
     grid-template-columns: 1fr;
   }
   
-  .examples-grid {
+  .examples-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .info-grid {
     grid-template-columns: 1fr;
   }
   
@@ -419,21 +536,73 @@
     max-width: 280px;
     justify-content: center;
   }
+  
+  .material-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
 }
 
 @media (max-width: 480px) {
   .calculator-card {
-    padding: 1.5rem;
+    padding: 2rem 1.5rem;
   }
   
   .pricing-card,
   .fee-item,
-  .example-card {
+  .example-card,
+  .info-item {
     padding: 1.5rem;
   }
   
-  .example-details {
-    flex-direction: column;
-    gap: 0.5rem;
+  .examples-container {
+    gap: 1.5rem;
   }
+}
+/* Add this to your existing Pricing.css file */
+
+/* Info Icon Styles */
+.info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: var(--pricing-primary-light);
+  color: var(--pricing-primary);
+  border-radius: var(--pricing-radius-lg);
+  margin-bottom: 1rem;
+}
+
+/* Update the info-item to include the icon */
+.info-item {
+  background: var(--pricing-bg-primary);
+  padding: 2rem;
+  border-radius: var(--pricing-radius-xl);
+  box-shadow: var(--pricing-shadow-sm);
+  border: 1px solid var(--pricing-gray-200);
+  text-align: center;
+  transition: var(--pricing-transition-base);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.info-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--pricing-shadow-md);
+}
+
+.info-item h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--pricing-text-primary);
+}
+
+.info-item p {
+  color: var(--pricing-text-secondary);
+  line-height: 1.5;
+  font-size: 0.95rem;
 }

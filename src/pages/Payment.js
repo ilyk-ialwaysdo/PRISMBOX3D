@@ -1,302 +1,267 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import './Payment.css';
+import './Pricing.css';
 
-// Business costs for profit analysis
-const BUSINESS_COSTS = {
-  TRUE_FILAMENT_COST_PER_GRAM: 0.40,
-  TRUE_LABOR_COST: 50,
-  TRUE_KWH_RATE: 12,
-  PRINTER_WATT: 160,
-};
+const CalculatorIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <rect x="4" y="2" width="16" height="20" rx="2"/>
+    <line x1="8" y1="6" x2="16" y2="6"/>
+    <line x1="8" y1="10" x2="16" y2="10"/>
+    <line x1="8" y1="14" x2="16" y2="14"/>
+    <line x1="8" y1="18" x2="12" y2="18"/>
+  </svg>
+);
 
-const Payment = ({ isAdmin }) => {
+const MessengerIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 2C6.36 2 2 6.13 2 11.7c0 2.93 1.17 5.56 3 7.26V22l2.91-1.61c1.25.35 2.6.54 4.09.54 5.64 0 10.2-4.13 10.2-9.23S17.64 2 12 2zm1.13 12.44l-2.61-2.78-5.09 2.78L8.5 9.89l2.61 2.78 5.09-2.78-3.07 4.55z"/>
+  </svg>
+);
+
+const Pricing = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  
-  const [customerInfo, setCustomerInfo] = useState({ 
-    name: '', email: '', phone: '', address: '', studentId: '' 
-  });
-  const [paymentMethod, setPaymentMethod] = useState('gcash');
-  const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showProfit, setShowProfit] = useState(false);
 
-  // Use order data from location state
-  const orderData = location.state?.orderData;
-  const defaultOrder = {
-    config: { 
-      file: { name: 'test-model.stl' }, 
-      material: 'PLA+', 
-      color: 'Black', 
-      grams: 50, 
-      printTime: 4, 
-      services: { cleaning: true }, 
-      studentDiscount: false 
-    },
-    priceBreakdown: { 
-      filamentCost: 275, 
-      laborFee: 150, 
-      electricityCharge: 15.56, 
-      serviceFees: { cleaning: 120 }, 
-      subtotal: 560.56, 
-      discountAmount: 0, 
-      total: 560.56 
-    }
+  const handleContactMessenger = () => {
+    window.open('https://m.me/tedtapiador', '_blank');
   };
 
-  const order = orderData || defaultOrder;
-
-  // Profit Calculation
-  const calculateProfit = () => {
-    if (!order || !order.config || !order.priceBreakdown) {
-      return { trueFilamentCost: 0, yourTotalCost: 0, profitAmount: 0, profitPercent: 0 };
-    }
-
-    const grams = Number(order.config.grams);
-    const printHours = Number(order.config.printTime);
-    const customerTotal = order.priceBreakdown.total;
-    
-    const trueFilamentCost = grams * BUSINESS_COSTS.TRUE_FILAMENT_COST_PER_GRAM;
-    const trueElectricityCost = (printHours * BUSINESS_COSTS.PRINTER_WATT / 1000) * BUSINESS_COSTS.TRUE_KWH_RATE;
-    const serviceCosts = Object.keys(order.priceBreakdown.serviceFees).length * 20;
-    
-    const yourTotalCost = trueFilamentCost + BUSINESS_COSTS.TRUE_LABOR_COST + trueElectricityCost + serviceCosts;
-    const profitAmount = customerTotal - yourTotalCost;
-    const profitPercent = customerTotal > 0 ? (profitAmount / customerTotal) * 100 : 0;
-
-    return { trueFilamentCost, yourTotalCost, profitAmount, profitPercent };
+  const handleViewMaterials = () => {
+    navigate('/filaments');
   };
 
-  const profitAnalysis = calculateProfit();
+  // Updated material pricing data from your Filaments page
+  const materialPrices = [
+    { name: 'PLA Matte', brand: 'Polymaker', price: '₱3.50', description: 'Professional matte finish, hides layer lines', inStock: true },
+    { name: 'PLA+', brand: 'eSUN', price: '₱3.75', description: 'Enhanced strength, low warping', inStock: true },
+    { name: 'ABS', brand: 'Bambu Lab', price: '₱4.00', description: 'Heat resistant, high impact strength', inStock: true },
+    { name: 'PETG', brand: 'Overture', price: '₱4.00', description: 'Chemical resistant, durable', inStock: true },
+    { name: 'PLA Pro', brand: 'Polymaker', price: '₱4.10', description: 'Exceptional toughness, ABS-like strength', inStock: false },
+    { name: 'PLA Basic', brand: 'Bambu Lab', price: '₱5.20', description: 'High-speed optimized, RFID enabled', inStock: false },
+    { name: 'ASA', brand: 'Bambu Lab', price: '₱6.00', description: 'UV resistant, weatherproof', inStock: false },
+    { name: 'PETG-CF', brand: 'Bambu Lab', price: '₱7.70', description: 'Carbon fiber reinforced, premium finish', inStock: false }
+  ];
 
-  useEffect(() => {
-    if (!orderData) {
-      console.warn("Navigating to payment page without order data. Using default data for testing.");
-    }
-  }, [orderData, navigate]);
+  // Updated example calculations with real prices
+  const examples = [
+    { item: 'Small figurine (PLA Matte)', weight: '20g', material: 'PLA Matte', calculation: '20g × ₱3.50 + ₱50', total: '₱120' },
+    { item: 'Phone case (PETG)', weight: '35g', material: 'PETG', calculation: '35g × ₱4.00 + ₱50', total: '₱190' },
+    { item: 'Tool holder (ABS)', weight: '80g', material: 'ABS', calculation: '80g × ₱4.00 + ₱50', total: '₱370' },
+    { item: 'Large model (PLA+)', weight: '150g', material: 'PLA+', calculation: '150g × ₱3.75 + ₱50', total: '₱612.50' }
+  ];
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Fake submission delay
-    await new Promise(res => setTimeout(res, 1500));
-    
-    setIsSubmitting(false);
-    alert('Order Submitted Successfully! (This is a demo)');
-    navigate('/');
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setCustomerInfo(prev => ({ ...prev, [name]: value }));
+  const stagger = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
   };
 
   return (
     <>
       <Header />
-      <div className="payment-page">
-        <div className="container">
-          <div className="payment-grid">
-            {/* Form Column */}
-            <div className="form-column">
-              <div className="page-header">
-                <h1>Complete Your Order</h1>
-                <p>Fill in your details to finalize your 3D printing order</p>
-              </div>
-
-              <form onSubmit={handleSubmit} className="payment-form">
-                {/* Customer Info Section */}
-                <div className="form-section">
-                  <h3>Customer Information</h3>
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label htmlFor="name">Full Name</label>
-                      <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        value={customerInfo.name}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="email">Email</label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={customerInfo.email}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label htmlFor="phone">Phone Number</label>
-                      <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        value={customerInfo.phone}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="address">Address</label>
-                      <input
-                        type="text"
-                        id="address"
-                        name="address"
-                        value={customerInfo.address}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Payment Method Section */}
-                <div className="form-section">
-                  <h3>Payment Method</h3>
-                  <div className="payment-options">
-                    <label className={`payment-option ${paymentMethod === 'gcash' ? 'selected' : ''}`}>
-                      <input
-                        type="radio"
-                        name="paymentMethod"
-                        value="gcash"
-                        checked={paymentMethod === 'gcash'}
-                        onChange={(e) => setPaymentMethod(e.target.value)}
-                      />
-                      <span>GCash</span>
-                    </label>
-                    
-                    <label className={`payment-option ${paymentMethod === 'bank' ? 'selected' : ''}`}>
-                      <input
-                        type="radio"
-                        name="paymentMethod"
-                        value="bank"
-                        checked={paymentMethod === 'bank'}
-                        onChange={(e) => setPaymentMethod(e.target.value)}
-                      />
-                      <span>Bank Transfer</span>
-                    </label>
-                  </div>
-                </div>
-
-                <button type="submit" className="submit-btn" disabled={isSubmitting}>
-                  {isSubmitting ? 'Verifying...' : `Place Order - ₱${order.priceBreakdown.total.toFixed(2)}`}
-                </button>
-              </form>
-            </div>
-
-            {/* Summary Sidebar */}
-            <div className="summary-column">
-              <div className="order-summary">
-                <h3>Order Summary</h3>
-                
-                <div className="order-details">
-                  <div className="detail-item">
-                    <span>File:</span>
-                    <span>{order.config.file.name}</span>
-                  </div>
-                  <div className="detail-item">
-                    <span>Material:</span>
-                    <span>{order.config.material}</span>
-                  </div>
-                  <div className="detail-item">
-                    <span>Color:</span>
-                    <span>{order.config.color}</span>
-                  </div>
-                  <div className="detail-item">
-                    <span>Weight:</span>
-                    <span>{order.config.grams}g</span>
-                  </div>
-                </div>
-
-                <div className="price-breakdown">
-                  <h4>Price Breakdown</h4>
-                  <div className="breakdown-item">
-                    <span>Material Cost</span>
-                    <span>₱{order.priceBreakdown.filamentCost.toFixed(2)}</span>
-                  </div>
-                  <div className="breakdown-item">
-                    <span>Labor & Setup</span>
-                    <span>₱{order.priceBreakdown.laborFee.toFixed(2)}</span>
-                  </div>
-                  
-                  {Object.entries(order.priceBreakdown.serviceFees).map(([key, val]) => (
-                    <div key={key} className="breakdown-item">
-                      <span>{key.charAt(0).toUpperCase() + key.slice(1)}</span>
-                      <span>₱{val.toFixed(2)}</span>
-                    </div>
-                  ))}
-                  
-                  <div className="breakdown-item">
-                    <span>Energy & Service</span>
-                    <span>₱{(order.priceBreakdown.electricityCharge + (order.priceBreakdown.serviceFee || 0)).toFixed(2)}</span>
-                  </div>
-                  
-                  {order.priceBreakdown.discountAmount > 0 && (
-                    <div className="breakdown-item discount">
-                      <span>Student Discount</span>
-                      <span>- ₱{order.priceBreakdown.discountAmount.toFixed(2)}</span>
-                    </div>
-                  )}
-                  
-                  <div className="breakdown-total">
-                    <span>TOTAL</span>
-                    <span>₱{order.priceBreakdown.total.toFixed(2)}</span>
-                  </div>
-                </div>
-
-                {isAdmin && (
-                  <>
-                    <button 
-                      type="button" 
-                      className="profit-toggle"
-                      onClick={() => setShowProfit(v => !v)}
-                    >
-                      {showProfit ? 'Hide' : 'Show'} Profit Analysis
-                    </button>
-                    
-                    {showProfit && (
-                      <div className="profit-analysis">
-                        <h4>Profit Analysis (Admin View)</h4>
-                        <div className="profit-item">
-                          <span>Real Filament Cost:</span>
-                          <span>₱{profitAnalysis.trueFilamentCost.toFixed(2)}</span>
-                        </div>
-                        <div className="profit-item">
-                          <span>Total Business Cost:</span>
-                          <span>₱{profitAnalysis.yourTotalCost.toFixed(2)}</span>
-                        </div>
-                        <div className="profit-total">
-                          <span>Net Profit:</span>
-                          <span>
-                            ₱{profitAnalysis.profitAmount.toFixed(2)} ({profitAnalysis.profitPercent.toFixed(0)}%)
-                          </span>
-                        </div>
-                      </div>
-                    )}
-                  </>
-                )}
-              </div>
-            </div>
+      <div className="pricing-page">
+        {/* Hero Section */}
+        <section className="pricing-hero">
+          <div className="pricing-hero-content">
+            <motion.h1 
+              initial="hidden" 
+              animate="visible" 
+              variants={fadeInUp}
+            >
+              Transparent Pricing
+            </motion.h1>
+            <motion.p 
+              initial="hidden" 
+              animate="visible" 
+              variants={fadeInUp}
+              transition={{ delay: 0.1 }}
+            >
+              Simple, honest pricing with no hidden fees. Know exactly what you'll pay before you order.
+            </motion.p>
           </div>
-        </div>
+        </section>
+
+        {/* Calculator Preview */}
+        <section className="calculator-preview">
+          <motion.div 
+            className="calculator-card"
+            initial="hidden"
+            animate="visible"
+            variants={fadeInUp}
+            transition={{ delay: 0.2 }}
+          >
+            <div className="calculator-icon">
+              <CalculatorIcon />
+            </div>
+            <h3>Pricing Formula</h3>
+            <div className="formula">
+              Material Weight × Price per gram + ₱50 Service Fee
+            </div>
+            <button className="calculator-btn" onClick={handleContactMessenger}>
+              <MessengerIcon />
+              Get Quote Now
+            </button>
+          </motion.div>
+        </section>
+
+        {/* Material Pricing */}
+        <section className="material-pricing">
+          <div className="section-header">
+            <h2>Material Pricing</h2>
+            <p>Per gram pricing for different filament types and brands</p>
+          </div>
+          
+          <motion.div 
+            className="pricing-grid"
+            initial="hidden"
+            whileInView="visible"
+            variants={stagger}
+          >
+            {materialPrices.map((material, index) => (
+              <motion.div key={index} className={`pricing-card ${!material.inStock ? 'out-of-stock' : ''}`} variants={fadeInUp}>
+                <div className="material-header">
+                  <h3>{material.name}</h3>
+                  <span className="brand-label">{material.brand}</span>
+                </div>
+                <div className="price">{material.price}/gram</div>
+                <p>{material.description}</p>
+                <div className={`stock-indicator ${material.inStock ? 'in-stock' : 'out-of-stock'}`}>
+                  {material.inStock ? '✓ In Stock' : '⏳ Coming Soon'}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </section>
+
+        {/* Service Fees */}
+        <section className="service-fees">
+          <div className="section-header">
+            <h2>Service Fees</h2>
+            <p>Additional costs for premium services</p>
+          </div>
+          
+          <motion.div 
+            className="fees-grid"
+            initial="hidden"
+            whileInView="visible"
+            variants={stagger}
+          >
+            <motion.div className="fee-item" variants={fadeInUp}>
+              <h4>Setup & Processing</h4>
+              <div className="fee-amount">₱50</div>
+              <p>Covers printing setup, quality check, and basic packaging for all orders</p>
+            </motion.div>
+            
+            <motion.div className="fee-item" variants={fadeInUp}>
+              <h4>Premium Packaging</h4>
+              <div className="fee-amount">₱20</div>
+              <p>Secure packaging with bubble wrap and protective materials for safe delivery</p>
+            </motion.div>
+            
+            <motion.div className="fee-item" variants={fadeInUp}>
+              <h4>Rush Processing</h4>
+              <div className="fee-amount">+50%</div>
+              <p>Priority printing for urgent orders with same-day or next-day completion</p>
+            </motion.div>
+
+            <motion.div className="fee-item" variants={fadeInUp}>
+              <h4>Express Delivery</h4>
+              <div className="fee-amount">₱150-250</div>
+              <p>Same-day delivery via Lalamove for Metro Manila orders</p>
+            </motion.div>
+          </motion.div>
+        </section>
+
+        {/* Examples */}
+        <section className="pricing-examples">
+          <div className="section-header">
+            <h2>Pricing Examples</h2>
+            <p>Real examples with updated material prices</p>
+          </div>
+          
+          <motion.div 
+            className="examples-grid"
+            initial="hidden"
+            whileInView="visible"
+            variants={stagger}
+          >
+            {examples.map((example, index) => (
+              <motion.div key={index} className="example-card" variants={fadeInUp}>
+                <h4>{example.item}</h4>
+                <div className="example-details">
+                  <span>Weight: {example.weight}</span>
+                  <span>Material: {example.material}</span>
+                </div>
+                <div className="calculation">{example.calculation}</div>
+                <div className="total">{example.total}</div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </section>
+
+        {/* Pricing Notes */}
+        <section className="pricing-notes">
+          <div className="container">
+            <motion.div 
+              className="notes-content"
+              initial="hidden"
+              whileInView="visible"
+              variants={fadeInUp}
+            >
+              <h3>Important Pricing Notes</h3>
+              <div className="notes-grid">
+                <div className="note-item">
+                  <h4>📏 Weight Calculation</h4>
+                  <p>Material weight is calculated automatically from your 3D file. We use industry-standard slicing software for accurate estimates.</p>
+                </div>
+                <div className="note-item">
+                  <h4>🎓 Student Discount</h4>
+                  <p>Students with valid ID get 10% off on all orders. Just mention you're a student when requesting a quote.</p>
+                </div>
+                <div className="note-item">
+                  <h4>📦 Bulk Orders</h4>
+                  <p>Orders over 500g of material may qualify for volume discounts. Contact us for custom pricing on large projects.</p>
+                </div>
+                <div className="note-item">
+                  <h4>🔄 Reprints</h4>
+                  <p>If we make an error during printing, we'll reprint your item for free. Quality guarantee on all our work.</p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section className="pricing-cta">
+          <motion.div 
+            className="cta-content"
+            initial="hidden"
+            whileInView="visible"
+            variants={fadeInUp}
+          >
+            <h2>Ready to Get Your Quote?</h2>
+            <p>Send us your 3D model and get an exact quote based on this transparent pricing.</p>
+            <div className="cta-buttons">
+              <button className="btn btn-primary" onClick={handleContactMessenger}>
+                <MessengerIcon />
+                Get Quote via Messenger
+              </button>
+              <button className="btn btn-secondary" onClick={handleViewMaterials}>
+                View All Materials & Details
+              </button>
+            </div>
+          </motion.div>
+        </section>
       </div>
       <Footer />
     </>
   );
 };
 
-export default Payment;
+export default Pricing;

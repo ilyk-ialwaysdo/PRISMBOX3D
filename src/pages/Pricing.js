@@ -21,6 +21,29 @@ const MessengerIcon = () => (
   </svg>
 );
 
+// SVG Icons for info section
+const StudentIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+    <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+  </svg>
+);
+
+const PackageIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/>
+    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+    <polyline points="3.27,6.96 12,12.01 20.73,6.96"/>
+    <line x1="12" y1="22.08" x2="12" y2="12"/>
+  </svg>
+);
+
+const ShieldIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+  </svg>
+);
+
 const Pricing = () => {
   const navigate = useNavigate();
 
@@ -32,18 +55,32 @@ const Pricing = () => {
     navigate('/filaments');
   };
 
-  // Material pricing data
+  // Simplified material pricing data - only in stock materials
   const materialPrices = [
-    { name: 'PLA+', price: '₱8', description: 'Standard, easy to print' },
-    { name: 'PETG', price: '₱12', description: 'Chemical resistant, durable' },
-    { name: 'ABS', price: '₱10', description: 'Strong, heat resistant' },
+    { name: 'PLA Matte', brand: 'Polymaker', price: '₱3.50', description: 'Easy to print with beautiful matte finish' },
+    { name: 'PLA+', brand: 'eSUN', price: '₱3.75', description: 'Stronger than regular PLA, great for functional parts' },
+    { name: 'ABS', brand: 'Bambu Lab', price: '₱4.00', description: 'Heat resistant and durable for mechanical parts' },
+    { name: 'PETG', brand: 'Overture', price: '₱4.00', description: 'Chemical resistant with excellent durability' }
   ];
 
-  // Example calculations
+  // Updated examples with correct pricing (₱150 + ₱20)
   const examples = [
-    { item: 'Small figurine', weight: '20g', material: 'PLA+', calculation: '20g × ₱8 + ₱50', total: '₱210' },
-    { item: 'Phone case', weight: '35g', material: 'PETG', calculation: '35g × ₱12 + ₱50', total: '₱470' },
-    { item: 'Tool holder', weight: '80g', material: 'ABS', calculation: '80g × ₱10 + ₱50', total: '₱850' },
+    { 
+      item: 'Small Item', 
+      example: 'Phone case, small figurine', 
+      weight: '30g', 
+      material: 'PLA+', 
+      calculation: '30g × ₱3.75 + ₱150 + ₱20', 
+      total: '₱282.50' 
+    },
+    { 
+      item: 'Large Item', 
+      example: 'Tool holder, large prototype', 
+      weight: '100g', 
+      material: 'ABS', 
+      calculation: '100g × ₱4.00 + ₱150 + ₱20', 
+      total: '₱570' 
+    }
   ];
 
   const fadeInUp = {
@@ -68,7 +105,7 @@ const Pricing = () => {
               animate="visible" 
               variants={fadeInUp}
             >
-              Transparent Pricing
+              Simple Pricing
             </motion.h1>
             <motion.p 
               initial="hidden" 
@@ -76,7 +113,7 @@ const Pricing = () => {
               variants={fadeInUp}
               transition={{ delay: 0.1 }}
             >
-              Simple, honest pricing with no hidden fees. Know exactly what you'll pay before you order.
+              No hidden fees. Just material cost plus our service fees.
             </motion.p>
           </div>
         </section>
@@ -93,13 +130,14 @@ const Pricing = () => {
             <div className="calculator-icon">
               <CalculatorIcon />
             </div>
-            <h3>Pricing Formula</h3>
+            <h3>How We Calculate</h3>
             <div className="formula">
-              Material Weight × Price per gram + ₱50 Service Fee
+              Material Weight × Price per gram + ₱150 + ₱20
             </div>
+            <p className="formula-note">Simple formula, exact pricing</p>
             <button className="calculator-btn" onClick={handleContactMessenger}>
               <MessengerIcon />
-              Get Quote Now
+              Get Your Quote
             </button>
           </motion.div>
         </section>
@@ -107,8 +145,8 @@ const Pricing = () => {
         {/* Material Pricing */}
         <section className="material-pricing">
           <div className="section-header">
-            <h2>Material Pricing</h2>
-            <p>Per gram pricing for different filament types</p>
+            <h2>Material Prices</h2>
+            <p>Per gram pricing for available materials</p>
           </div>
           
           <motion.div 
@@ -119,9 +157,13 @@ const Pricing = () => {
           >
             {materialPrices.map((material, index) => (
               <motion.div key={index} className="pricing-card" variants={fadeInUp}>
-                <h3>{material.name}</h3>
-                <div className="price">{material.price}/gram</div>
-                <p>{material.description}</p>
+                <div className="material-header">
+                  <h3>{material.name}</h3>
+                  <span className="brand-label">{material.brand}</span>
+                </div>
+                <div className="price">{material.price}/g</div>
+                <p className="material-description">{material.description}</p>
+                <div className="stock-indicator in-stock">✓ Available</div>
               </motion.div>
             ))}
           </motion.div>
@@ -131,6 +173,7 @@ const Pricing = () => {
         <section className="service-fees">
           <div className="section-header">
             <h2>Service Fees</h2>
+            <p>Additional fees for every order</p>
           </div>
           
           <motion.div 
@@ -140,50 +183,96 @@ const Pricing = () => {
             variants={stagger}
           >
             <motion.div className="fee-item" variants={fadeInUp}>
-              <h4>Setup & Processing</h4>
-              <div className="fee-amount">₱50</div>
-              <p>Covers printing setup, quality check, and basic packaging</p>
-            </motion.div>
-            
-            <motion.div className="fee-item" variants={fadeInUp}>
-              <h4>Rush Delivery</h4>
+              <h4>Setup & Quality Check</h4>
               <div className="fee-amount">₱150</div>
-              <p>Same-day delivery via Lalamove once printing is complete</p>
+              <p>Includes printing setup, quality inspection, and processing</p>
             </motion.div>
             
             <motion.div className="fee-item" variants={fadeInUp}>
-              <h4>Standard Shipping</h4>
-              <div className="fee-amount">₱100-200</div>
-              <p>1-3 days via LBC/2GO/J&T based on location and size</p>
+              <h4>Packaging & Handling</h4>
+              <div className="fee-amount">₱20</div>
+              <p>Secure packaging with protective materials for safe delivery</p>
+            </motion.div>
+            
+            <motion.div className="fee-item" variants={fadeInUp}>
+              <h4>Rush Order</h4>
+              <div className="fee-amount">+50%</div>
+              <p>Priority printing for urgent projects with faster delivery</p>
             </motion.div>
           </motion.div>
         </section>
 
-        {/* Examples */}
+        {/* Examples - Only 2 */}
         <section className="pricing-examples">
           <div className="section-header">
-            <h2>Pricing Examples</h2>
-            <p>Real examples to help you estimate costs</p>
+            <h2>Price Examples</h2>
+            <p>See how our pricing works</p>
           </div>
           
           <motion.div 
-            className="examples-grid"
+            className="examples-container"
             initial="hidden"
             whileInView="visible"
             variants={stagger}
           >
             {examples.map((example, index) => (
               <motion.div key={index} className="example-card" variants={fadeInUp}>
-                <h4>{example.item}</h4>
+                <div className="example-header">
+                  <h4>{example.item}</h4>
+                  <span className="example-note">({example.example})</span>
+                </div>
                 <div className="example-details">
-                  <span>Weight: {example.weight}</span>
-                  <span>Material: {example.material}</span>
+                  <div className="detail-row">
+                    <span>Weight:</span>
+                    <span>{example.weight}</span>
+                  </div>
+                  <div className="detail-row">
+                    <span>Material:</span>
+                    <span>{example.material}</span>
+                  </div>
                 </div>
                 <div className="calculation">{example.calculation}</div>
                 <div className="total">{example.total}</div>
               </motion.div>
             ))}
           </motion.div>
+        </section>
+
+        {/* Simple Info */}
+        <section className="pricing-info">
+          <div className="container">
+            <motion.div 
+              className="info-content"
+              initial="hidden"
+              whileInView="visible"
+              variants={fadeInUp}
+            >
+              <h3>Good to Know</h3>
+              <div className="info-grid">
+                <div className="info-item">
+                  <div className="info-icon">
+                    <StudentIcon />
+                  </div>
+                  <h4>Student Discount</h4>
+                  <p>10% off with valid student ID</p>
+                </div>
+                <div className="info-item">
+                  <div className="info-icon">
+                    <PackageIcon />
+                  </div>
+                  <h4>Secure Packaging</h4>
+                  <p>All orders include protective packaging</p>
+                </div>
+                <div className="info-item">
+                  <div className="info-icon">
+                    <ShieldIcon />
+                  </div>
+                  <h4>Quality Guarantee</h4>
+                  <p>Free reprint if we make an error</p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </section>
 
         {/* CTA */}
@@ -194,15 +283,15 @@ const Pricing = () => {
             whileInView="visible"
             variants={fadeInUp}
           >
-            <h2>Ready to Get Your Quote?</h2>
-            <p>Send us your 3D model and get an exact quote based on this transparent pricing.</p>
+            <h2>Ready for Your Quote?</h2>
+            <p>Send us your file and get exact pricing in 24 hours</p>
             <div className="cta-buttons">
               <button className="btn btn-primary" onClick={handleContactMessenger}>
                 <MessengerIcon />
-                Get Quote via Messenger
+                Get Quote Now
               </button>
               <button className="btn btn-secondary" onClick={handleViewMaterials}>
-                View All Materials
+                View Materials
               </button>
             </div>
           </motion.div>
