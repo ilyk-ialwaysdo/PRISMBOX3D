@@ -1,304 +1,700 @@
-/* Terms of Service Page - Fixed CSS */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-
+/* Terms of Service - Complete Legal Document Style */
 .terms-page {
-  min-height: 100vh;
-  background-color: #f9fafb;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  line-height: 1.6;
-  color: #1f2937;
+    background-color: #ffffff;
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    color: #333333;
 }
 
-.terms-page .container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem;
+.terms-page * {
+    box-sizing: border-box;
 }
 
-/* Page Header */
-.terms-page .page-header {
-  margin-bottom: 3rem;
+/* CONTAINER - LEGAL DOCUMENT STYLE */
+.terms-page .terms-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem 1.5rem;
+    background: #ffffff;
 }
 
-.terms-page .back-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  color: #6b7280;
-  text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  margin-bottom: 2rem;
-  cursor: pointer;
-  font-family: inherit;
+/* HEADER - FORMAL LEGAL DOCUMENT */
+.terms-page .terms-header {
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 2rem;
+    margin-bottom: 3rem;
 }
 
-.terms-page .back-btn:hover {
-  background: #f9fafb;
-  color: #1f2937;
-  border-color: #d1d5db;
+.terms-page .back-button {
+    background: none;
+    color: #1a73e8;
+    border: none;
+    padding: 0;
+    font-size: 14px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    text-decoration: none;
+}
+
+.terms-page .back-button:hover {
+    text-decoration: underline;
 }
 
 .terms-page .header-content {
-  text-align: center;
-  padding: 2rem;
-  background: white;
-  border-radius: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e5e7eb;
-}
-
-.terms-page .header-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 4rem;
-  height: 4rem;
-  background: linear-gradient(135deg, #1e40af, #3b82f6);
-  color: white;
-  border-radius: 1rem;
-  margin-bottom: 1.5rem;
+    text-align: left;
 }
 
 .terms-page .header-content h1 {
-  font-size: 2.5rem;
-  font-weight: 800;
-  margin-bottom: 0.75rem;
-  color: #1f2937;
-}
-
-.terms-page .header-content > p {
-  font-size: 1.125rem;
-  color: #6b7280;
-  margin-bottom: 1.5rem;
+    font-size: 2.25rem;
+    font-weight: 500;
+    color: #333333;
+    margin: 0 0 1.5rem 0;
+    letter-spacing: -0.01em;
+    text-align: center;
 }
 
 .terms-page .last-updated {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.5rem 1rem;
-  background: #f0f9ff;
-  border: 1px solid #bae6fd;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
-  color: #0369a1;
-  font-weight: 500;
+    font-size: 14px;
+    color: #666666;
+    margin-bottom: 2rem;
+    font-weight: 400;
+    text-align: center;
+    line-height: 1.4;
 }
 
-/* Terms Content */
+.terms-page .terms-intro {
+    background: #f9f9f9;
+    border: 2px solid #e0e0e0;
+    border-left: 4px solid #d32f2f;
+    padding: 1.5rem;
+    margin: 0 0 2rem 0;
+    font-size: 15px;
+    color: #333333;
+    text-align: left;
+    line-height: 1.6;
+    border-radius: 0;
+}
+
+/* CONTENT SECTIONS - COMPREHENSIVE LEGAL STYLE */
 .terms-page .terms-content {
-  background: white;
-  border-radius: 1rem;
-  padding: 3rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e5e7eb;
+    line-height: 1.6;
 }
 
 .terms-page .terms-section {
-  margin-bottom: 2.5rem;
-  padding-bottom: 2rem;
-  border-bottom: 1px solid #f3f4f6;
+    margin-bottom: 4rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #f0f0f0;
 }
 
 .terms-page .terms-section:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
-  padding-bottom: 0;
+    border-bottom: none;
+    margin-bottom: 2rem;
 }
 
 .terms-page .terms-section h2 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #1f2937;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid #1e40af;
-  display: inline-block;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #333333;
+    margin: 0 0 1.5rem 0;
+    padding: 0.75rem 0;
+    border-bottom: 2px solid #1a73e8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
 }
 
-.terms-page .terms-section h3 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #374151;
-  margin: 1.5rem 0 0.75rem 0;
+.terms-page .section-content {
+    color: #333333;
+    font-size: 15px;
+    line-height: 1.6;
 }
 
-.terms-page .terms-section p {
-  color: #4b5563;
-  margin-bottom: 1rem;
-  font-size: 1rem;
-  line-height: 1.7;
+.terms-page .section-content p {
+    margin-bottom: 1.25rem;
+    text-align: left;
+    line-height: 1.6;
 }
 
-.terms-page .terms-section ul {
-  margin: 1rem 0;
-  padding-left: 1.5rem;
+.terms-page .section-content h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #333333;
+    margin: 2rem 0 1rem 0;
+    text-transform: none;
+    letter-spacing: 0;
 }
 
-.terms-page .terms-section li {
-  color: #4b5563;
-  margin-bottom: 0.5rem;
-  font-size: 1rem;
-  line-height: 1.6;
+/* LISTS - LEGAL DOCUMENT FORMATTING */
+.terms-page .section-content ul {
+    padding-left: 1.5rem;
+    margin-bottom: 1.5rem;
 }
 
-.terms-page .terms-section li::marker {
-  color: #1e40af;
+.terms-page .section-content ol {
+    padding-left: 1.5rem;
+    margin-bottom: 1.5rem;
 }
 
-/* Special Sections */
-.terms-page .prohibited-list {
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-  margin: 1rem 0;
+.terms-page .section-content li {
+    margin-bottom: 0.5rem;
+    color: #333333;
+    line-height: 1.6;
 }
 
-.terms-page .prohibited-list h3 {
-  font-size: 1.125rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  color: #dc2626;
+.terms-page .section-content li strong {
+    color: #333333;
+    font-weight: 600;
 }
 
-.terms-page .prohibited-list ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+/* LEGAL HIGHLIGHT BOXES - DIFFERENT CATEGORIES */
+.terms-page .legal-compliance {
+    background: #e3f2fd;
+    border: 1px solid #bbdefb;
+    border-left: 4px solid #2196f3;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+    font-size: 14px;
+    color: #1565c0;
+    border-radius: 0;
 }
 
-.terms-page .prohibited-list li {
-  padding: 0.5rem 0;
-  color: #7f1d1d;
-  position: relative;
-  padding-left: 1.5rem;
+.terms-page .consumer-protection-notice {
+    background: #ffebee;
+    border: 1px solid #ffcdd2;
+    border-left: 4px solid #f44336;
+    padding: 1.25rem;
+    margin: 2rem 0;
+    font-size: 14px;
+    color: #c62828;
+    border-radius: 0;
+    font-weight: 500;
 }
 
-.terms-page .prohibited-list li::before {
-  content: '✕';
-  position: absolute;
-  left: 0;
-  color: #dc2626;
-  font-weight: bold;
+.terms-page .liability-notice {
+    background: #fff3e0;
+    border: 1px solid #ffcc02;
+    border-left: 4px solid #ff9800;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+    font-size: 14px;
+    color: #ef6c00;
+    border-radius: 0;
 }
 
-.terms-page .highlight {
-  background: #fef3c7;
-  padding: 0.125rem 0.375rem;
-  border-radius: 0.25rem;
-  font-weight: 500;
-  color: #92400e;
+.terms-page .force-majeure {
+    background: #f3e5f5;
+    border: 1px solid #e1bee7;
+    border-left: 4px solid #9c27b0;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+    font-size: 14px;
+    color: #7b1fa2;
+    border-radius: 0;
 }
 
-.terms-page .contact-info {
-  background: #f0f9ff;
-  border: 1px solid #bae6fd;
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-  margin-top: 1rem;
+.terms-page .consumer-rights {
+    background: #e8f5e8;
+    border: 1px solid #c8e6c9;
+    border-left: 4px solid #4caf50;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+    font-size: 14px;
+    color: #2e7d32;
+    border-radius: 0;
 }
 
-.terms-page .contact-info h3 {
-  font-size: 1.125rem;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-  color: #0369a1;
+.terms-page .legal-warning {
+    background: #fff8e1;
+    border: 1px solid #ffecb3;
+    border-left: 4px solid #ffc107;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+    font-size: 14px;
+    color: #f57c00;
+    border-radius: 0;
 }
 
-.terms-page .contact-info p {
-  margin: 0.5rem 0;
-  color: #075985;
+/* SPECIAL SECTIONS */
+.terms-page .contact-information {
+    background: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    padding: 2rem;
+    margin: 2rem 0;
+    border-radius: 0;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .terms-page .container {
-    padding: 1rem;
-  }
-  
-  .terms-page .terms-content {
-    padding: 2rem 1.5rem;
-    border-radius: 0.75rem;
-  }
-  
-  .terms-page .header-content {
-    padding: 1.5rem;
-    border-radius: 0.75rem;
-  }
-  
-  .terms-page .header-content h1 {
-    font-size: 2rem;
-  }
-  
-  .terms-page .terms-section h2 {
-    font-size: 1.25rem;
-  }
-  
-  .terms-page .terms-section h3 {
-    font-size: 1.125rem;
-  }
-  
-  .terms-page .back-btn {
-    width: 100%;
+.terms-page .contact-information h3 {
+    color: #333333;
+    margin-top: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+.terms-page .contact-information p {
+    margin-bottom: 0.5rem;
+    color: #333333;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+.terms-page .final-acknowledgment {
+    background: #f0f7ff;
+    border: 2px solid #1976d2;
+    padding: 2rem;
+    margin: 3rem 0;
+    border-radius: 0;
+}
+
+.terms-page .final-acknowledgment h3 {
+    color: #1565c0;
+    margin-top: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.terms-page .final-acknowledgment p {
+    color: #1976d2;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    text-align: justify;
+}
+
+.terms-page .final-acknowledgment p:last-child {
+    margin-bottom: 0;
+}
+
+.terms-page .signature-block {
+    background: #fafafa;
+    border: 1px solid #e0e0e0;
+    padding: 2rem;
+    margin: 2rem 0;
+    text-align: center;
+    border-radius: 0;
+}
+
+.terms-page .signature-block p {
+    color: #555555;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+}
+
+.terms-page .signature-block em {
+    color: #777777;
+    font-size: 13px;
+    font-style: italic;
+}
+
+/* FOOTER - COMPREHENSIVE DOCUMENT */
+.terms-page .terms-footer {
+    text-align: center;
+    padding: 3rem 0 0 0;
+    border-top: 2px solid #e0e0e0;
+    margin-top: 3rem;
+}
+
+.terms-page .terms-footer p {
+    color: #666666;
+    font-size: 13px;
+    margin-bottom: 2rem;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.terms-page .footer-actions {
+    display: flex;
+    gap: 2rem;
     justify-content: center;
-  }
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+}
+
+.terms-page .privacy-link,
+.terms-page .home-link {
+    background: none;
+    color: #1a73e8;
+    border: none;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 400;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.terms-page .privacy-link:hover,
+.terms-page .home-link:hover {
+    color: #1557b0;
+}
+
+/* ARTICLE AND SECTION NUMBERING */
+.terms-page .terms-section h2::after {
+    content: "";
+    display: block;
+    height: 1px;
+    background: #e0e0e0;
+    margin-top: 0.5rem;
+}
+
+/* SUBSECTION STYLING */
+.terms-page .section-content h3 {
+    color: #444444;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 0.5rem;
+}
+
+/* PARAGRAPH INDENTATION FOR LEGAL STYLE */
+.terms-page .section-content p {
+    text-indent: 0;
+    margin-left: 0;
+}
+
+.terms-page .section-content p strong {
+    font-weight: 600;
+    color: #333333;
+}
+
+/* LEGAL FORMATTING FOR DEFINITIONS */
+.terms-page .definition-term {
+    font-weight: 600;
+    color: #333333;
+    font-style: italic;
+}
+
+/* TABLE STYLING FOR LEGAL DOCUMENTS */
+.terms-page table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 14px;
+    border: 1px solid #e0e0e0;
+}
+
+.terms-page th,
+.terms-page td {
+    border: 1px solid #e0e0e0;
+    padding: 0.75rem;
+    text-align: left;
+    vertical-align: top;
+    line-height: 1.4;
+}
+
+.terms-page th {
+    background-color: #f5f5f5;
+    font-weight: 600;
+    color: #333333;
+}
+
+.terms-page tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+/* DEFINITION LIST STYLING */
+.terms-page dl {
+    margin: 1.5rem 0;
+}
+
+.terms-page dt {
+    font-weight: 600;
+    color: #333333;
+    margin-top: 1rem;
+    margin-bottom: 0.25rem;
+    font-size: 15px;
+}
+
+.terms-page dd {
+    margin-left: 2rem;
+    margin-bottom: 0.75rem;
+    color: #333333;
+    line-height: 1.6;
+}
+
+/* BLOCKQUOTE STYLING FOR LEGAL CITATIONS */
+.terms-page blockquote {
+    border-left: 4px solid #e0e0e0;
+    margin: 1.5rem 0;
+    padding-left: 1.5rem;
+    font-style: italic;
+    color: #555555;
+    background: #fafafa;
+    padding: 1rem 1rem 1rem 1.5rem;
+}
+
+/* CODE AND LEGAL REFERENCES */
+.terms-page .section-content code {
+    background: #f5f5f5;
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 13px;
+    color: #d73a49;
+    border: 1px solid #e1e4e8;
+}
+
+/* SECTION DIVIDERS */
+.terms-page .section-divider {
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin: 3rem 0;
+    height: 0;
+}
+
+/* ARTICLE HEADERS - ENHANCED LEGAL STYLING */
+.terms-page .article-header {
+    background: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    padding: 1rem;
+    margin: 2rem 0 1rem 0;
+    border-radius: 0;
+}
+
+.terms-page .article-header h2 {
+    margin: 0;
+    color: #333333;
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-align: center;
+    border: none;
+    text-transform: uppercase;
+}
+
+/* SUBSECTION INDENTATION */
+.terms-page .subsection-content {
+    margin-left: 1rem;
+    padding-left: 1rem;
+    border-left: 2px solid #f0f0f0;
+}
+
+/* LEGAL CLAUSE NUMBERING */
+.terms-page .clause-number {
+    font-weight: 600;
+    color: #333333;
+    margin-right: 0.5rem;
+}
+
+/* EMPHASIS AND LEGAL TERMS */
+.terms-page .legal-term {
+    font-weight: 600;
+    color: #333333;
+    font-style: italic;
+}
+
+.terms-page .statutory-reference {
+    color: #1976d2;
+    font-weight: 500;
+}
+
+/* MOBILE RESPONSIVE - LEGAL DOCUMENT */
+@media (max-width: 768px) {
+    .terms-page .terms-container {
+        padding: 1.5rem 1rem 2rem 1rem;
+    }
+    
+    .terms-page .header-content h1 {
+        font-size: 1.8rem;
+    }
+    
+    .terms-page .terms-section h2 {
+        font-size: 1.2rem;
+    }
+    
+    .terms-page .section-content {
+        font-size: 14px;
+    }
+    
+    .terms-page .section-content h3 {
+        font-size: 1rem;
+    }
+    
+    .terms-page .footer-actions {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+    }
+    
+    .terms-page .terms-intro {
+        padding: 1rem;
+        font-size: 14px;
+    }
+    
+    .terms-page .legal-compliance,
+    .terms-page .consumer-protection-notice,
+    .terms-page .liability-notice,
+    .terms-page .force-majeure,
+    .terms-page .consumer-rights,
+    .terms-page .legal-warning {
+        padding: 1rem;
+        font-size: 13px;
+    }
 }
 
 @media (max-width: 480px) {
-  .terms-page .header-content h1 {
-    font-size: 1.75rem;
-  }
-  
-  .terms-page .header-content > p {
-    font-size: 1rem;
-  }
-  
-  .terms-page .terms-content {
-    padding: 1.5rem 1rem;
-  }
-  
-  .terms-page .terms-section {
-    margin-bottom: 2rem;
-    padding-bottom: 1.5rem;
-  }
+    .terms-page .terms-container {
+        padding: 1rem 0.75rem 1.5rem 0.75rem;
+    }
+    
+    .terms-page .header-content h1 {
+        font-size: 1.5rem;
+    }
+    
+    .terms-page .section-content {
+        font-size: 13px;
+    }
+    
+    .terms-page .section-content ul,
+    .terms-page .section-content ol {
+        padding-left: 1rem;
+    }
+    
+    .terms-page .subsection-content {
+        margin-left: 0.5rem;
+        padding-left: 0.5rem;
+    }
+    
+    .terms-page table {
+        font-size: 12px;
+    }
+    
+    .terms-page th,
+    .terms-page td {
+        padding: 0.5rem;
+    }
 }
 
-/* Print Styles */
+/* PRINT STYLES - LEGAL DOCUMENT PRINTING */
 @media print {
-  .terms-page {
-    background: white;
-  }
-  
-  .terms-page .back-btn {
-    display: none;
-  }
-  
-  .terms-page .terms-content {
-    box-shadow: none;
-    border: none;
-    padding: 0;
-  }
-  
-  .terms-page .header-content {
-    box-shadow: none;
-    border: none;
-  }
+    .terms-page .back-button,
+    .terms-page .footer-actions {
+        display: none;
+    }
+    
+    .terms-page .terms-container {
+        max-width: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .terms-page {
+        font-size: 11pt;
+        line-height: 1.4;
+        color: #000000;
+    }
+    
+    .terms-page .header-content h1 {
+        font-size: 16pt;
+        color: #000000;
+        page-break-after: avoid;
+    }
+    
+    .terms-page .terms-section h2 {
+        font-size: 13pt;
+        color: #000000;
+        page-break-after: avoid;
+        border-bottom: 1px solid #000000;
+    }
+    
+    .terms-page .section-content h3 {
+        font-size: 12pt;
+        color: #000000;
+        page-break-after: avoid;
+    }
+    
+    .terms-page .section-content {
+        font-size: 10pt;
+        color: #000000;
+    }
+    
+    .terms-page .terms-section {
+        page-break-inside: avoid;
+        border-bottom: 1px solid #cccccc;
+    }
+    
+    .terms-page .legal-compliance,
+    .terms-page .consumer-protection-notice,
+    .terms-page .liability-notice,
+    .terms-page .force-majeure,
+    .terms-page .consumer-rights,
+    .terms-page .legal-warning {
+        border: 1px solid #000000;
+        background: #ffffff;
+        page-break-inside: avoid;
+        font-size: 10pt;
+    }
+    
+    .terms-page .final-acknowledgment,
+    .terms-page .signature-block {
+        border: 1px solid #000000;
+        background: #ffffff;
+        page-break-inside: avoid;
+    }
+    
+    /* Print page numbering */
+    @page {
+        margin: 2cm;
+        @bottom-right {
+            content: "Page " counter(page) " of " counter(pages);
+            font-size: 9pt;
+        }
+    }
 }
 
-/* Focus and Accessibility */
-.terms-page .back-btn:focus-visible {
-  outline: 2px solid #1e40af;
-  outline-offset: 2px;
+/* ACCESSIBILITY ENHANCEMENTS */
+.terms-page .terms-section:focus-within {
+    outline: 2px solid #1a73e8;
+    outline-offset: 4px;
 }
 
-/* Selection */
-.terms-page ::selection {
-  background: #1e40af;
-  color: white;
+.terms-page .back-button:focus,
+.terms-page .privacy-link:focus,
+.terms-page .home-link:focus {
+    outline: 2px solid #1a73e8;
+    outline-offset: 2px;
+}
+
+/* HIGH CONTRAST MODE SUPPORT */
+@media (prefers-contrast: high) {
+    .terms-page {
+        background: #ffffff;
+        color: #000000;
+    }
+    
+    .terms-page .terms-section h2 {
+        border-bottom: 3px solid #000000;
+    }
+    
+    .terms-page .legal-compliance,
+    .terms-page .consumer-protection-notice,
+    .terms-page .liability-notice {
+        border: 2px solid #000000;
+        background: #ffffff;
+    }
+}
+
+/* REDUCED MOTION PREFERENCES */
+@media (prefers-reduced-motion: reduce) {
+    .terms-page * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* LARGE TEXT SUPPORT */
+@media (min-resolution: 192dpi) {
+    .terms-page .section-content {
+        font-size: 16px;
+    }
+    
+    .terms-page .terms-section h2 {
+        font-size: 1.5rem;
+    }
+    
+    .terms-page .section-content h3 {
+        font-size: 1.2rem;
+    }
 }
