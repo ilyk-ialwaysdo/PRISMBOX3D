@@ -1,8 +1,13 @@
-import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import React, { useState, useMemo } from 'react'; // ✅ Add useMemo import
+import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion'; // ✅ Add framer-motion imports
+import Header from './components/Header'; // ✅ Add Header import
+import Footer from './components/Footer'; // ✅ Add Footer import
 import './Filaments.css';
+
+// Rest of your Filaments component code stays exactly the same...
+// Just add the missing imports at the top
+
 
 // SVG Icons
 const CheckIcon = () => (
