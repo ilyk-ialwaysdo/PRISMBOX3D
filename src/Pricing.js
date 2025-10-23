@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import './Pricing.css';
+import Header from './Header';
+import Footer from './Footer';
+// REMOVED: import './Pricing.css'; - TEMPORARILY REMOVED FOR WORKING WEBSITE
 
 // WORKING SVG Icons
 const CalculatorIcon = () => (
@@ -55,7 +55,7 @@ const Pricing = () => {
     };
     
     const handleViewMaterials = () => {
-        navigate('/filaments');
+        navigate('/materials');
     };
 
     // Material pricing with new tiered markups
@@ -104,51 +104,388 @@ const Pricing = () => {
         visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
     };
 
+    // Inline Styles (Professional Pricing CSS)
+    const styles = {
+        pricingPage: {
+            fontFamily: 'Arial, sans-serif',
+            lineHeight: 1.6,
+            color: '#333'
+        },
+        pricingHero: {
+            background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)',
+            color: 'white',
+            padding: '80px 2rem',
+            textAlign: 'center'
+        },
+        heroContainer: {
+            maxWidth: '800px',
+            margin: '0 auto'
+        },
+        heroBadge: {
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            background: 'rgba(255,255,255,0.2)',
+            padding: '8px 16px',
+            borderRadius: '20px',
+            fontSize: '0.9rem',
+            marginBottom: '2rem'
+        },
+        heroTitle: {
+            fontSize: '3.5rem',
+            fontWeight: 'bold',
+            marginBottom: '1rem',
+            textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+        },
+        heroText: {
+            fontSize: '1.2rem',
+            opacity: 0.95,
+            lineHeight: 1.6
+        },
+        section: {
+            padding: '80px 2rem'
+        },
+        container: {
+            maxWidth: '1200px',
+            margin: '0 auto'
+        },
+        sectionHeader: {
+            textAlign: 'center',
+            marginBottom: '4rem'
+        },
+        sectionTitle: {
+            fontSize: '2.5rem',
+            fontWeight: 'bold',
+            color: '#333',
+            marginBottom: '1rem'
+        },
+        materialsGrid: {
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            gap: '2rem'
+        },
+        materialCard: {
+            background: 'white',
+            padding: '30px',
+            borderRadius: '15px',
+            boxShadow: '0 5px 20px rgba(0,0,0,0.1)',
+            border: '2px solid #f0f0f0',
+            transition: 'all 0.3s ease'
+        },
+        materialHeader: {
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '15px'
+        },
+        materialName: {
+            fontSize: '1.3rem',
+            fontWeight: 'bold',
+            color: '#333',
+            margin: 0
+        },
+        categoryBadge: {
+            padding: '4px 12px',
+            borderRadius: '12px',
+            fontSize: '0.8rem',
+            fontWeight: 'bold'
+        },
+        standardBadge: {
+            background: '#e3f2fd',
+            color: '#1976d2'
+        },
+        premiumBadge: {
+            background: '#fff3e0',
+            color: '#f57c00'
+        },
+        price: {
+            fontSize: '2rem',
+            fontWeight: 'bold',
+            color: '#FF6B35',
+            marginBottom: '15px'
+        },
+        materialDescription: {
+            color: '#666',
+            lineHeight: 1.6
+        },
+        discountsSection: {
+            padding: '80px 2rem',
+            background: '#f8f9fa'
+        },
+        discountsGrid: {
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '2rem',
+            marginBottom: '3rem'
+        },
+        discountCard: {
+            background: 'white',
+            padding: '30px',
+            borderRadius: '15px',
+            textAlign: 'center',
+            boxShadow: '0 5px 20px rgba(0,0,0,0.1)'
+        },
+        discountIcon: {
+            width: '50px',
+            height: '50px',
+            background: '#e3f2fd',
+            color: '#1976d2',
+            borderRadius: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: '0 auto 20px'
+        },
+        discountRange: {
+            fontSize: '1.3rem',
+            fontWeight: 'bold',
+            color: '#333',
+            marginBottom: '10px'
+        },
+        discountAmount: {
+            fontSize: '1.1rem',
+            fontWeight: 'bold',
+            color: '#FF6B35',
+            marginBottom: '10px'
+        },
+        discountDescription: {
+            color: '#666',
+            fontSize: '0.9rem'
+        },
+        studentDiscount: {
+            display: 'flex',
+            justifyContent: 'center'
+        },
+        studentCard: {
+            background: 'linear-gradient(135deg, #28a745, #20c997)',
+            color: 'white',
+            padding: '25px 40px',
+            borderRadius: '15px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '20px',
+            boxShadow: '0 5px 20px rgba(40, 167, 69, 0.3)'
+        },
+        studentContent: {
+            textAlign: 'left'
+        },
+        studentTitle: {
+            fontSize: '1.1rem',
+            margin: 0,
+            marginBottom: '5px'
+        },
+        studentOffer: {
+            fontSize: '1.3rem',
+            fontWeight: 'bold'
+        },
+        deliverySection: {
+            padding: '80px 2rem',
+            background: 'white'
+        },
+        deliveryGrid: {
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+            gap: '2rem'
+        },
+        deliveryCard: {
+            background: '#f8f9fa',
+            padding: '30px',
+            borderRadius: '15px',
+            textAlign: 'center',
+            border: '2px solid #e0e0e0'
+        },
+        deliveryTitle: {
+            fontSize: '1.3rem',
+            fontWeight: 'bold',
+            color: '#333',
+            margin: '20px 0 10px'
+        },
+        deliveryText: {
+            color: '#666',
+            fontSize: '1rem'
+        },
+        examplesSection: {
+            padding: '80px 2rem',
+            background: '#f8f9fa'
+        },
+        examplesGrid: {
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+            gap: '2rem'
+        },
+        exampleCard: {
+            background: 'white',
+            padding: '30px',
+            borderRadius: '15px',
+            boxShadow: '0 5px 20px rgba(0,0,0,0.1)'
+        },
+        exampleTitle: {
+            fontSize: '1.3rem',
+            fontWeight: 'bold',
+            color: '#333',
+            marginBottom: '20px'
+        },
+        exampleDetails: {
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '8px'
+        },
+        detail: {
+            display: 'flex',
+            justifyContent: 'space-between',
+            fontSize: '0.95rem'
+        },
+        detailDiscount: {
+            color: '#28a745',
+            fontWeight: 'bold'
+        },
+        total: {
+            display: 'flex',
+            justifyContent: 'space-between',
+            fontSize: '1.1rem',
+            fontWeight: 'bold',
+            color: '#FF6B35',
+            paddingTop: '10px',
+            borderTop: '2px solid #f0f0f0',
+            marginTop: '10px'
+        },
+        howItWorks: {
+            padding: '80px 2rem',
+            background: 'white'
+        },
+        stepsGrid: {
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            gap: '2rem'
+        },
+        stepCard: {
+            background: '#f8f9fa',
+            padding: '30px',
+            borderRadius: '15px',
+            textAlign: 'center',
+            position: 'relative'
+        },
+        stepNumber: {
+            position: 'absolute',
+            top: '-15px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            background: 'linear-gradient(135deg, #FF6B35, #F7931E)',
+            color: 'white',
+            width: '30px',
+            height: '30px',
+            borderRadius: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '1rem',
+            fontWeight: 'bold'
+        },
+        stepTitle: {
+            fontSize: '1.3rem',
+            fontWeight: 'bold',
+            color: '#333',
+            margin: '20px 0 15px'
+        },
+        stepText: {
+            color: '#666',
+            lineHeight: 1.6
+        },
+        ctaSection: {
+            background: 'linear-gradient(135deg, #333 0%, #555 100%)',
+            color: 'white',
+            padding: '80px 2rem',
+            textAlign: 'center'
+        },
+        ctaContent: {
+            maxWidth: '600px',
+            margin: '0 auto'
+        },
+        ctaTitle: {
+            fontSize: '2.5rem',
+            fontWeight: 'bold',
+            marginBottom: '1rem'
+        },
+        ctaText: {
+            fontSize: '1.2rem',
+            marginBottom: '2rem',
+            opacity: 0.9
+        },
+        ctaButton: {
+            background: 'linear-gradient(135deg, #FF6B35, #F7931E)',
+            color: 'white',
+            border: 'none',
+            padding: '15px 30px',
+            borderRadius: '8px',
+            fontSize: '1.2rem',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '10px',
+            boxShadow: '0 4px 15px rgba(255, 107, 53, 0.3)',
+            textDecoration: 'none'
+        },
+        contactFooter: {
+            background: '#2c3e50',
+            color: 'white',
+            padding: '40px 2rem',
+            textAlign: 'center'
+        },
+        contactText: {
+            margin: '5px 0',
+            opacity: 0.9
+        }
+    };
+
     return (
         <>
             <Header />
-            <div className="pricing-page">
+            <div style={styles.pricingPage}>
                 {/* Hero Section */}
                 <motion.section 
-                    className="pricing-hero"
+                    style={styles.pricingHero}
                     initial="hidden"
                     animate="visible"
                     variants={fadeInUp}
                 >
-                    <div className="hero-container">
-                        <div className="hero-badge">
+                    <div style={styles.heroContainer}>
+                        <div style={styles.heroBadge}>
                             <CalculatorIcon />
                             <span>Transparent Pricing</span>
                         </div>
-                        <h1>Simple, Fair Pricing</h1>
-                        <p>All-inclusive pricing with no hidden fees. Every price includes setup, printing, quality control, and packaging.</p>
+                        <h1 style={styles.heroTitle}>Simple, Fair Pricing</h1>
+                        <p style={styles.heroText}>All-inclusive pricing with no hidden fees. Every price includes setup, printing, quality control, and packaging.</p>
                     </div>
                 </motion.section>
 
                 {/* Materials Section */}
                 <motion.section 
-                    className="materials-section"
+                    style={styles.section}
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.3 }}
                     variants={stagger}
                 >
-                    <div className="container">
-                        <div className="section-header">
-                            <h2>Choose from standard to premium materials</h2>
+                    <div style={styles.container}>
+                        <div style={styles.sectionHeader}>
+                            <h2 style={styles.sectionTitle}>Choose from standard to premium materials</h2>
                         </div>
                         
-                        <div className="materials-grid">
+                        <div style={styles.materialsGrid}>
                             {materialPrices.map((material, index) => (
-                                <motion.div key={index} className="material-card" variants={fadeInUp}>
-                                    <div className="material-header">
-                                        <h3>{material.name}</h3>
-                                        <div className={`category-badge ${material.category.toLowerCase()}`}>
+                                <motion.div key={index} style={styles.materialCard} variants={fadeInUp}>
+                                    <div style={styles.materialHeader}>
+                                        <h3 style={styles.materialName}>{material.name}</h3>
+                                        <div style={{
+                                            ...styles.categoryBadge,
+                                            ...(material.category.toLowerCase() === 'standard' ? styles.standardBadge : styles.premiumBadge)
+                                        }}>
                                             {material.category}
                                         </div>
                                     </div>
-                                    <div className="price">₱{material.price.toFixed(2)}/g</div>
-                                    <p>{material.description}</p>
+                                    <div style={styles.price}>₱{material.price.toFixed(2)}/g</div>
+                                    <p style={styles.materialDescription}>{material.description}</p>
                                 </motion.div>
                             ))}
                         </div>
@@ -157,38 +494,38 @@ const Pricing = () => {
 
                 {/* Volume Discounts */}
                 <motion.section 
-                    className="discounts-section"
+                    style={styles.discountsSection}
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.3 }}
                     variants={stagger}
                 >
-                    <div className="container">
-                        <div className="section-header">
-                            <h2>Bigger orders, bigger savings</h2>
+                    <div style={styles.container}>
+                        <div style={styles.sectionHeader}>
+                            <h2 style={styles.sectionTitle}>Bigger orders, bigger savings</h2>
                         </div>
                         
-                        <div className="discounts-grid">
+                        <div style={styles.discountsGrid}>
                             {volumeDiscounts.map((discount, index) => (
-                                <motion.div key={index} className="discount-card" variants={fadeInUp}>
-                                    <div className="discount-icon">
+                                <motion.div key={index} style={styles.discountCard} variants={fadeInUp}>
+                                    <div style={styles.discountIcon}>
                                         <PercentIcon />
                                     </div>
-                                    <h3>{discount.range}</h3>
-                                    <div className="discount-amount">
+                                    <h3 style={styles.discountRange}>{discount.range}</h3>
+                                    <div style={styles.discountAmount}>
                                         {discount.discount > 0 ? `${discount.discount}% OFF` : 'Standard Rate'}
                                     </div>
-                                    <p>{discount.description}</p>
+                                    <p style={styles.discountDescription}>{discount.description}</p>
                                 </motion.div>
                             ))}
                         </div>
                         
-                        <motion.div className="student-discount" variants={fadeInUp}>
-                            <div className="student-card">
+                        <motion.div style={styles.studentDiscount} variants={fadeInUp}>
+                            <div style={styles.studentCard}>
                                 <GraduationCapIcon />
-                                <div className="student-content">
-                                    <h3>Additional</h3>
-                                    <div className="student-offer">**10% OFF** all orders with valid student ID</div>
+                                <div style={styles.studentContent}>
+                                    <h3 style={styles.studentTitle}>Additional</h3>
+                                    <div style={styles.studentOffer}>**10% OFF** all orders with valid student ID</div>
                                 </div>
                             </div>
                         </motion.div>
@@ -197,32 +534,32 @@ const Pricing = () => {
 
                 {/* Delivery Section */}
                 <motion.section 
-                    className="delivery-section"
+                    style={styles.deliverySection}
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.3 }}
                     variants={fadeInUp}
                 >
-                    <div className="container">
-                        <div className="section-header">
-                            <h2>Fast and reliable delivery</h2>
+                    <div style={styles.container}>
+                        <div style={styles.sectionHeader}>
+                            <h2 style={styles.sectionTitle}>Fast and reliable delivery</h2>
                         </div>
                         
-                        <div className="delivery-grid">
-                            <div className="delivery-card">
+                        <div style={styles.deliveryGrid}>
+                            <div style={styles.deliveryCard}>
                                 <TruckIcon />
-                                <h3>FREE Delivery</h3>
-                                <p>Orders ₱4,500+ or 800g+</p>
+                                <h3 style={styles.deliveryTitle}>FREE Delivery</h3>
+                                <p style={styles.deliveryText}>Orders ₱4,500+ or 800g+</p>
                             </div>
-                            <div className="delivery-card">
+                            <div style={styles.deliveryCard}>
                                 <TruckIcon />
-                                <h3>₱150 Delivery</h3>
-                                <p>All other orders</p>
+                                <h3 style={styles.deliveryTitle}>₱150 Delivery</h3>
+                                <p style={styles.deliveryText}>All other orders</p>
                             </div>
-                            <div className="delivery-card">
+                            <div style={styles.deliveryCard}>
                                 <TruckIcon />
-                                <h3>FREE Pickup</h3>
-                                <p>Bulacan area</p>
+                                <h3 style={styles.deliveryTitle}>FREE Pickup</h3>
+                                <p style={styles.deliveryText}>Bulacan area</p>
                             </div>
                         </div>
                     </div>
@@ -230,18 +567,18 @@ const Pricing = () => {
 
                 {/* Examples Section */}
                 <motion.section 
-                    className="examples-section"
+                    style={styles.examplesSection}
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.3 }}
                     variants={stagger}
                 >
-                    <div className="container">
-                        <div className="section-header">
-                            <h2>Real calculations with volume discounts applied</h2>
+                    <div style={styles.container}>
+                        <div style={styles.sectionHeader}>
+                            <h2 style={styles.sectionTitle}>Real calculations with volume discounts applied</h2>
                         </div>
                         
-                        <div className="examples-grid">
+                        <div style={styles.examplesGrid}>
                             {examples.map((example, index) => {
                                 const { discountedPrice, discount } = calculatePrice(example.basePrice, example.weight);
                                 const materialCost = discountedPrice * example.weight;
@@ -250,40 +587,40 @@ const Pricing = () => {
                                 const total = materialCost + serviceFee + packaging;
                                 
                                 return (
-                                    <motion.div key={index} className="example-card" variants={fadeInUp}>
-                                        <h3>{example.item}</h3>
-                                        <div className="example-details">
-                                            <div className="detail">
+                                    <motion.div key={index} style={styles.exampleCard} variants={fadeInUp}>
+                                        <h3 style={styles.exampleTitle}>{example.item}</h3>
+                                        <div style={styles.exampleDetails}>
+                                            <div style={styles.detail}>
                                                 <span>Weight:</span>
                                                 <span>{example.weight}g</span>
                                             </div>
-                                            <div className="detail">
+                                            <div style={styles.detail}>
                                                 <span>Material:</span>
                                                 <span>{example.material}</span>
                                             </div>
-                                            <div className="detail">
+                                            <div style={styles.detail}>
                                                 <span>Base Price:</span>
                                                 <span>₱{example.basePrice}/g</span>
                                             </div>
                                             {discount > 0 && (
-                                                <div className="detail discount">
+                                                <div style={{...styles.detail, ...styles.detailDiscount}}>
                                                     <span>Discount:</span>
                                                     <span>{discount}% OFF</span>
                                                 </div>
                                             )}
-                                            <div className="detail">
+                                            <div style={styles.detail}>
                                                 <span>Material Cost:</span>
                                                 <span>₱{materialCost.toFixed(2)}</span>
                                             </div>
-                                            <div className="detail">
+                                            <div style={styles.detail}>
                                                 <span>Service Fee:</span>
                                                 <span>₱{serviceFee}</span>
                                             </div>
-                                            <div className="detail">
+                                            <div style={styles.detail}>
                                                 <span>Packaging:</span>
                                                 <span>₱{packaging}</span>
                                             </div>
-                                            <div className="total">
+                                            <div style={styles.total}>
                                                 <span>Total:</span>
                                                 <span>₱{total.toFixed(2)}</span>
                                             </div>
@@ -297,32 +634,32 @@ const Pricing = () => {
 
                 {/* How it Works */}
                 <motion.section 
-                    className="how-it-works"
+                    style={styles.howItWorks}
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.3 }}
                     variants={stagger}
                 >
-                    <div className="container">
-                        <div className="section-header">
-                            <h2>Simple and transparent - no hidden surprises</h2>
+                    <div style={styles.container}>
+                        <div style={styles.sectionHeader}>
+                            <h2 style={styles.sectionTitle}>Simple and transparent - no hidden surprises</h2>
                         </div>
                         
-                        <div className="steps-grid">
-                            <motion.div className="step-card" variants={fadeInUp}>
-                                <div className="step-number">1</div>
-                                <h3>Send Your File</h3>
-                                <p>Upload your 3D model via Messenger. We analyze the weight and recommend the best material.</p>
+                        <div style={styles.stepsGrid}>
+                            <motion.div style={styles.stepCard} variants={fadeInUp}>
+                                <div style={styles.stepNumber}>1</div>
+                                <h3 style={styles.stepTitle}>Send Your File</h3>
+                                <p style={styles.stepText}>Upload your 3D model via Messenger. We analyze the weight and recommend the best material.</p>
                             </motion.div>
-                            <motion.div className="step-card" variants={fadeInUp}>
-                                <div className="step-number">2</div>
-                                <h3>Get Exact Price</h3>
-                                <p>Weight × Material price = Your total. Volume and student discounts automatically applied.</p>
+                            <motion.div style={styles.stepCard} variants={fadeInUp}>
+                                <div style={styles.stepNumber}>2</div>
+                                <h3 style={styles.stepTitle}>Get Exact Price</h3>
+                                <p style={styles.stepText}>Weight × Material price = Your total. Volume and student discounts automatically applied.</p>
                             </motion.div>
-                            <motion.div className="step-card" variants={fadeInUp}>
-                                <div className="step-number">3</div>
-                                <h3>Print & Deliver</h3>
-                                <p>Professional printing with quality control. Choose your preferred delivery method.</p>
+                            <motion.div style={styles.stepCard} variants={fadeInUp}>
+                                <div style={styles.stepNumber}>3</div>
+                                <h3 style={styles.stepTitle}>Print & Deliver</h3>
+                                <p style={styles.stepText}>Professional printing with quality control. Choose your preferred delivery method.</p>
                             </motion.div>
                         </div>
                     </div>
@@ -330,17 +667,17 @@ const Pricing = () => {
 
                 {/* CTA Section */}
                 <motion.section 
-                    className="cta-section"
+                    style={styles.ctaSection}
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.3 }}
                     variants={fadeInUp}
                 >
-                    <div className="container">
-                        <div className="cta-content">
-                            <h2>Get Your Quote Now</h2>
-                            <p>Send us your 3D model and receive an exact price based on our transparent pricing</p>
-                            <button className="cta-button" onClick={handleContactMessenger}>
+                    <div style={styles.container}>
+                        <div style={styles.ctaContent}>
+                            <h2 style={styles.ctaTitle}>Get Your Quote Now</h2>
+                            <p style={styles.ctaText}>Send us your 3D model and receive an exact price based on our transparent pricing</p>
+                            <button style={styles.ctaButton} onClick={handleContactMessenger}>
                                 <MessengerIcon />
                                 Message Us Your Files
                             </button>
@@ -349,10 +686,10 @@ const Pricing = () => {
                 </motion.section>
 
                 {/* Contact Footer */}
-                <div className="contact-footer">
-                    <div className="container">
-                        <p><strong>PrismBox 3D Service</strong> | prismbox3dservice@gmail.com</p>
-                        <p>Messenger: Teddy Tapiador</p>
+                <div style={styles.contactFooter}>
+                    <div style={styles.container}>
+                        <p style={styles.contactText}><strong>PrismBox 3D Service</strong> | prismbox3dservice@gmail.com</p>
+                        <p style={styles.contactText}>Messenger: Teddy Tapiador</p>
                     </div>
                 </div>
 
